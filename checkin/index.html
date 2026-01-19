@@ -2,161 +2,42 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Check-in Pro | RuralGesto</title>
+    <title>Check-in | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background: #f9f9f9; -webkit-tap-highlight-color: transparent; }
-        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        
-        /* Capa Cámara iOS */
-        #camera-layer { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
-        #video { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Marco de enfoque */
-        .guide-box { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 85%; aspect-ratio: 1.6/1; border: 3px solid #3b82f6; border-radius: 20px; 
-            box-shadow: 0 0 0 4000px rgba(0,0,0,0.7); 
-        }
-
-        .form-input { width: 100%; padding: 16px; border-radius: 18px; border: 1.5px solid #eee; margin-bottom: 12px; font-weight: 600; background: #fff; outline: none; }
-        .form-input:focus { border-color: #3b82f6; }
-
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfb; }</style>
 </head>
-<body class="p-6 max-w-lg mx-auto pb-10">
-
-    <header class="mb-8 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase text-blue-600">RuralGesto</h1>
-    </header>
-
-    <div id="camera-layer">
-        <video id="video" autoplay playsinline muted></video>
-        <div class="guide-box"></div>
-        <div class="absolute bottom-12 left-0 w-full px-10 flex flex-col items-center">
-            <p class="text-white text-[10px] font-bold uppercase mb-6 bg-blue-600 px-4 py-2 rounded-full shadow-lg">Encuadra el DNI de frente</p>
-            <button onclick="takePhoto()" class="w-20 h-20 bg-white rounded-full border-8 border-white/20 shadow-2xl active:scale-90 transition"></button>
-            <button onclick="stopCamera()" class="mt-8 text-white/50 text-[10px] font-black uppercase italic tracking-widest">Cancelar</button>
-        </div>
-    </div>
-
-    <div id="entry-options" class="space-y-3 mb-8">
-        <button onclick="startCamera()" class="w-full bg-black text-white p-6 rounded-[35px] flex items-center justify-between shadow-xl">
-            <div class="text-left">
-                <p class="italic-black text-lg uppercase leading-none">Usar Cámara</p>
-                <p class="text-[9px] font-bold opacity-40 uppercase mt-1">Escáner en Vivo</p>
-            </div>
-            <span class="text-3xl">📸</span>
+<body class="p-6">
+    <div class="max-w-xl mx-auto">
+        <button onclick="location.href='../hub/index.html'" class="mb-10 flex items-center gap-2 text-gray-400 font-bold text-[10px] uppercase tracking-widest hover:text-emerald-900">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i> Volver al Panel
         </button>
 
-        <label class="w-full bg-white border-2 border-dashed border-gray-200 p-4 rounded-[25px] flex items-center justify-center cursor-pointer">
-            <input type="file" accept="image/*" class="hidden" onchange="handleFile(event)">
-            <span class="text-[10px] font-black text-gray-400 uppercase italic">O subir foto de la galería 🖼️</span>
-        </label>
-    </div>
+        <h2 class="serif text-5xl italic text-emerald-900 mb-8 text-center">Registro de<br>Viajeros</h2>
 
-    <div id="status" class="hidden bg-blue-50 border border-blue-100 p-6 rounded-[30px] mb-8 text-center">
-        <div class="loader mr-3 align-middle"></div>
-        <span class="italic-black uppercase text-xs text-blue-600">Leyendo Documento...</span>
-    </div>
-
-    <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50">
-        <div class="mb-6">
-            <h3 class="italic-black text-xs uppercase text-gray-400 mb-6 italic tracking-widest">Datos Detectados</h3>
+        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100 space-y-6">
+            <div class="flex gap-4">
+                <div class="flex-1">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Nombre</label>
+                    <input type="text" placeholder="Toni" class="w-full p-4 bg-gray-50 rounded-xl mt-1 text-sm outline-none">
+                </div>
+                <div class="flex-1">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-2">DNI / Pasaporte</label>
+                    <input type="text" placeholder="12345678X" class="w-full p-4 bg-gray-50 rounded-xl mt-1 text-sm outline-none">
+                </div>
+            </div>
             
-            <label class="text-[9px] font-black uppercase ml-3 text-gray-400 italic">Nombre Completo</label>
-            <input type="text" id="fname" placeholder="..." class="form-input">
-
-            <label class="text-[9px] font-black uppercase ml-3 text-gray-400 italic">Número de DNI</label>
-            <input type="text" id="doc_num" placeholder="..." class="form-input">
+            <button onclick="alert('Parte de entrada generado y enviado a las autoridades')" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
+                <i data-lucide="shield-check" class="w-5 h-5"></i> Firmar y Enviar
+            </button>
         </div>
 
-        <button onclick="save()" class="w-full bg-blue-600 text-white p-6 rounded-2xl font-black italic uppercase shadow-xl shadow-blue-100">Registrar Entrada</button>
+        <div class="mt-8 p-6 bg-amber-50 rounded-3xl border border-amber-100 flex items-center gap-4">
+            <i data-lucide="alert-circle" class="text-amber-600"></i>
+            <p class="text-[10px] font-bold text-amber-800 uppercase tracking-tighter">Recuerda: Tienes 24h para comunicar el parte a la Guardia Civil / Policía.</p>
+        </div>
     </div>
-
-    <canvas id="canvas" class="hidden"></canvas>
-
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const camLayer = document.getElementById('camera-layer');
-        const statusDiv = document.getElementById('status');
-
-        // INICIAR CÁMARA (Safari Compatible)
-        async function startCamera() {
-            const constraints = { 
-                video: { facingMode: "environment", width: { ideal: 1920 } } 
-            };
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                video.srcObject = stream;
-                camLayer.style.display = 'block';
-                // Forzar reproducción en iOS
-                video.play();
-            } catch (err) {
-                alert("Para usar la cámara, accede vía HTTPS y permite el acceso en Ajustes de Safari.");
-            }
-        }
-
-        function stopCamera() {
-            if(video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
-            camLayer.style.display = 'none';
-        }
-
-        // CAPTURAR Y PROCESAR
-        async function takePhoto() {
-            processImage(video);
-            stopCamera();
-        }
-
-        function handleFile(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const img = new Image();
-            img.onload = () => processImage(img);
-            img.src = URL.createObjectURL(file);
-        }
-
-        async function processImage(source) {
-            statusDiv.classList.remove('hidden');
-            const context = canvas.getContext('2d');
-            
-            // Ajustar resolución según origen
-            canvas.width = source.videoWidth || source.width;
-            canvas.height = source.videoHeight || source.height;
-            context.drawImage(source, 0, 0, canvas.width, canvas.height);
-            
-            try {
-                const worker = await Tesseract.createWorker('spa');
-                const { data: { text } } = await worker.recognize(canvas.toDataURL('image/jpeg', 0.8));
-                
-                // Regex para DNI Español (8 números y 1 letra)
-                const dniRegex = /\d{8}[A-Z]/g;
-                const match = text.match(dniRegex);
-                if(match) document.getElementById('doc_num').value = match[0];
-
-                // Nombre (Lógica: Buscar líneas en mayúsculas)
-                const lines = text.split('\n').filter(l => l.length > 8 && l === l.toUpperCase());
-                if(lines.length > 0) document.getElementById('fname').value = lines[0].trim();
-
-                await worker.terminate();
-            } catch (e) {
-                console.error(e);
-            } finally {
-                statusDiv.classList.add('hidden');
-            }
-        }
-
-        function save() {
-            alert("Check-in guardado con éxito.");
-            location.href = '/hub/';
-        }
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

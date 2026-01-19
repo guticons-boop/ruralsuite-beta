@@ -2,141 +2,122 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGestión | Gestión Profesional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RuralGestión | Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #1a4731; --bg: #fdfdfb; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #1a202c; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .btn-main { background: var(--accent); color: white; padding: 14px 28px; border-radius: 14px; font-weight: 800; transition: 0.3s; }
-        .card-plan { background: white; padding: 40px; border-radius: 35px; border: 1px solid #eee; transition: 0.3s; }
+        .hidden { display: none !important; }
         
-        /* Modal de Login */
-        #login-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.98);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
+        /* Estilo App (Iconos flotantes) */
+        .photo-box { width: 100%; height: 50vh; border-radius: 30px; overflow: hidden; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .nav-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
     </style>
 </head>
 <body>
 
-    <nav class="flex justify-between items-center p-6 md:px-12 fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-50">
-        <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
-        <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest text-gray-400">
-            <a href="#inicio" class="hover:text-emerald-900">Inicio</a>
-            <a href="#servicios" class="hover:text-emerald-900">Servicios</a>
-            <a href="#planes" class="hover:text-emerald-900">Planes</a>
-        </div>
-        <button onclick="toggleLogin(true)" class="border-2 border-emerald-900 text-emerald-900 px-6 py-2 rounded-full font-bold text-xs uppercase hover:bg-emerald-900 hover:text-white transition">Entrar</button>
-    </nav>
+    <div id="vista-web">
+        <nav class="flex justify-between items-center p-6 fixed w-full bg-white/80 backdrop-blur-md z-50">
+            <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
+            <button onclick="abrirModal()" class="border-2 border-emerald-900 px-6 py-2 rounded-full font-bold text-xs uppercase">Entrar</button>
+        </nav>
 
-    <section id="inicio" class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-                <h2 class="serif text-6xl md:text-7xl leading-tight mb-6">La nueva era de la <span class="italic text-emerald-800">gestión rural</span>.</h2>
-                <p class="text-gray-500 text-lg mb-8 max-w-md">Automatiza tus reservas, controla tus finanzas y escala tu negocio con tecnología diseñada para propietarios reales.</p>
-                <button onclick="toggleLogin(true)" class="btn-main shadow-xl shadow-emerald-900/20">Comenzar ahora</button>
-            </div>
-            <div class="order-1 md:order-2 rounded-[40px] overflow-hidden shadow-2xl h-[450px]">
+        <section class="pt-32 pb-10 px-6 max-w-6xl mx-auto">
+            <h2 class="serif text-5xl mb-6">Gestión profesional para tu <span class="italic text-emerald-800">casa rural</span></h2>
+            <div class="rounded-[40px] overflow-hidden shadow-xl mb-10 h-64">
                 <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
             </div>
-        </div>
-    </section>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-6 bg-white rounded-3xl border border-gray-100">
+                    <h4 class="font-bold text-xs uppercase mb-2">Planes</h4>
+                    <p class="text-gray-400 text-xs">Desde 19€/mes con todo incluido.</p>
+                </div>
+                <div class="p-6 bg-white rounded-3xl border border-gray-100">
+                    <h4 class="font-bold text-xs uppercase mb-2">Servicios</h4>
+                    <p class="text-gray-400 text-xs">Check-in, Calendario y Fiscalidad.</p>
+                </div>
+            </div>
+        </section>
+    </div>
 
-    <section id="servicios" class="py-24 bg-[#f8f8f5] px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-16">
-                <h3 class="serif text-4xl mb-2">Todo lo que necesitas</h3>
-                <p class="text-emerald-800/40 font-black text-[10px] uppercase tracking-[0.3em]">Módulos de alto rendimiento</p>
-            </div>
-            <div class="grid md:grid-cols-4 gap-6">
-                <div class="bg-white p-8 rounded-3xl border border-gray-100">
-                    <i data-lucide="calendar" class="text-emerald-900 mb-6"></i>
-                    <h4 class="font-bold uppercase text-xs mb-3">Agenda Pro</h4>
-                    <p class="text-gray-400 text-xs leading-relaxed">Sincronización total con OTAs y gestión de estancias.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-gray-100">
-                    <i data-lucide="bar-chart-3" class="text-emerald-900 mb-6"></i>
-                    <h4 class="font-bold uppercase text-xs mb-3">Administración</h4>
-                    <p class="text-gray-400 text-xs leading-relaxed">Cálculo de IRPF y control de gastos operativos.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-gray-100">
-                    <i data-lucide="megaphone" class="text-emerald-900 mb-6"></i>
-                    <h4 class="font-bold uppercase text-xs mb-3">Marketing IA</h4>
-                    <p class="text-gray-400 text-xs leading-relaxed">Generación de ofertas y CRM para fidelizar clientes.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-gray-100">
-                    <i data-lucide="shield-check" class="text-emerald-900 mb-6"></i>
-                    <h4 class="font-bold uppercase text-xs mb-3">Check-in</h4>
-                    <p class="text-gray-400 text-xs leading-relaxed">Firma digital y envío legal a autoridades.</p>
-                </div>
-            </div>
+    <div id="modal-login" class="hidden fixed inset-0 bg-white/95 z-[100] flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="w-full max-w-sm text-center">
+            <h2 class="serif text-4xl mb-8">Acceso <span class="italic">Toni</span></h2>
+            <input type="text" id="user" placeholder="Usuario" class="w-full p-5 rounded-2xl bg-gray-50 mb-4 border-none outline-none ring-1 ring-gray-100 focus:ring-emerald-800 font-bold">
+            <input type="password" id="pass" placeholder="Contraseña" class="w-full p-5 rounded-2xl bg-gray-50 mb-6 border-none outline-none ring-1 ring-gray-100 focus:ring-emerald-800 font-bold">
+            <button onclick="validarAcceso()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase shadow-lg">Entrar al Panel</button>
+            <button onclick="cerrarModal()" class="mt-6 text-gray-400 text-[10px] font-bold uppercase tracking-widest">Cancelar</button>
         </div>
-    </section>
+    </div>
 
-    <section id="planes" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h3 class="serif text-5xl mb-4">Planes de suscripción</h3>
-            <p class="text-gray-400 text-sm">Escoge el nivel que mejor se adapte a tu propiedad.</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="card-plan">
-                <span class="text-[10px] font-bold text-gray-400 uppercase">Básico</span>
-                <div class="text-4xl font-black my-4">19€<span class="text-sm font-normal text-gray-400">/mes</span></div>
-                <button class="w-full py-3 rounded-xl border border-gray-200 font-bold text-xs uppercase mt-6">Seleccionar</button>
+    <div id="vista-app" class="hidden min-h-screen p-6">
+        <header class="pt-10 pb-8 flex justify-between items-end">
+            <div>
+                <h1 class="serif text-4xl italic">Rural<span class="text-emerald-800 font-normal">Gestión</span></h1>
+                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Panel de Control Premium</p>
             </div>
-            <div class="card-plan border-emerald-900 ring-4 ring-emerald-50">
-                <span class="text-[10px] font-bold text-emerald-900 uppercase">Pro</span>
-                <div class="text-4xl font-black my-4">39€<span class="text-sm font-normal text-gray-400">/mes</span></div>
-                <button class="w-full py-3 rounded-xl bg-emerald-900 text-white font-bold text-xs uppercase mt-6">Más Popular</button>
+            <div class="text-right">
+                <p class="text-[9px] font-black text-emerald-900 uppercase italic">Toni • Plan Pro</p>
             </div>
-            <div class="card-plan">
-                <span class="text-[10px] font-bold text-gray-400 uppercase">Business</span>
-                <div class="text-4xl font-black my-4">59€<span class="text-sm font-normal text-gray-400">/mes</span></div>
-                <button class="w-full py-3 rounded-xl border border-gray-200 font-bold text-xs uppercase mt-6">Seleccionar</button>
-            </div>
-        </div>
-    </section>
+        </header>
 
-    <div id="login-overlay">
-        <div class="w-full max-w-md p-10 text-center">
-            <h2 class="serif text-5xl mb-8">Hola, <span class="italic">Toni</span></h2>
-            <div class="space-y-4">
-                <input type="text" id="user" placeholder="Usuario" class="w-full p-5 rounded-2xl bg-gray-50 border border-gray-100 outline-none focus:border-emerald-900 font-bold">
-                <input type="password" id="pass" placeholder="Contraseña" class="w-full p-5 rounded-2xl bg-gray-50 border border-gray-100 outline-none focus:border-emerald-900 font-bold">
-                <button onclick="validarYEntrar()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase shadow-2xl">Acceder al Panel</button>
-                <button onclick="toggleLogin(false)" class="text-gray-400 text-[10px] uppercase font-bold tracking-widest mt-6">Cerrar y volver a la web</button>
+        <div class="photo-box mb-12 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
+        </div>
+
+        <div class="grid grid-cols-2 gap-y-12 gap-x-6">
+            <div onclick="alert('Abriendo Agenda...')" class="nav-item">
+                <i data-lucide="calendar" class="w-8 h-8 text-slate-800"></i>
+                <span class="nav-label">Agenda</span>
+            </div>
+            <div onclick="alert('Abriendo Marketing...')" class="nav-item">
+                <i data-lucide="send" class="w-8 h-8 text-slate-800"></i>
+                <span class="nav-label">Marketing</span>
+            </div>
+            <div onclick="location.href='/tax/index.html'" class="nav-item">
+                <i data-lucide="bar-chart-3" class="w-8 h-8 text-slate-800"></i>
+                <span class="nav-label">Administración</span>
+            </div>
+            <div onclick="alert('Abriendo Web IA...')" class="nav-item">
+                <i data-lucide="sparkles" class="w-8 h-8 text-slate-800"></i>
+                <span class="nav-label">Web Builder</span>
             </div>
         </div>
+        
+        <footer class="mt-20 text-center">
+            <button onclick="location.reload()" class="text-[9px] font-bold text-gray-300 uppercase tracking-widest border-b border-gray-100 pb-1">Cerrar Sesión</button>
+        </footer>
     </div>
 
     <script>
         lucide.createIcons();
 
-        function toggleLogin(show) {
-            const overlay = document.getElementById('login-overlay');
-            overlay.style.display = show ? 'flex' : 'none';
-            document.body.style.overflow = show ? 'hidden' : 'auto';
+        function abrirModal() {
+            document.getElementById('modal-login').classList.remove('hidden');
         }
 
-        function validarYEntrar() {
-            const u = document.getElementById('user').value;
+        function cerrarModal() {
+            document.getElementById('modal-login').classList.add('hidden');
+        }
+
+        function validarAcceso() {
+            const u = document.getElementById('user').value.toLowerCase();
             const p = document.getElementById('pass').value;
 
             if(u === "toni" && p === "1234") {
-                // Aquí podrías redirigir a la página de la demo o mostrarla
-                alert("¡Acceso concedido! Bienvenido a RuralGestión.");
-                // location.href = 'demo-app.html'; // Descomenta cuando crees el archivo
+                // OCULTAR TODO Y MOSTRAR APP
+                document.getElementById('vista-web').classList.add('hidden');
+                document.getElementById('modal-login').classList.add('hidden');
+                document.getElementById('vista-app').classList.remove('hidden');
+                // Refrescar iconos por si acaso
+                lucide.createIcons();
             } else {
-                alert("Datos incorrectos. Prueba con toni / 1234");
+                alert("Usuario o contraseña incorrectos (Prueba: toni / 1234)");
             }
         }
     </script>

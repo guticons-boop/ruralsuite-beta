@@ -3,69 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RG Marketing</title>
+    <title>Marketing Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <style>body{font-family:'Inter',sans-serif;}.italic-black{font-style:italic;font-weight:900;}</style>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #fcfcfc; color: #1a1a1a; }
+        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #eee; transition: .4s; border-radius: 24px; }
+        input:checked + .slider { background-color: #3b82f6; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .card-campaign { background: white; border-radius: 30px; padding: 24px; border: 1.5px solid #f2f2f2; transition: 0.3s; }
+        .active-campaign { border-color: #3b82f6; background: #f8fbff; }
+    </style>
 </head>
-<body class="p-6 bg-white">
-    <header class="mb-8 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase">Clientes</h1>
+<body class="p-6 max-w-lg mx-auto">
+
+    <header class="mb-10 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase tracking-widest border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase tracking-tighter text-blue-600">Marketing CRM</h1>
     </header>
 
-    <div id="bday-hero"></div>
-
-    <div class="space-y-4 mb-12" id="client-list">
+    <div class="bg-black text-white p-8 rounded-[40px] mb-8 shadow-2xl relative overflow-hidden">
+        <div class="relative z-10">
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2 italic">Audiencia Total</p>
+            <h2 id="total-clients" class="text-5xl italic-black">0</h2>
+            <p class="text-[10px] font-bold text-blue-400 mt-4 uppercase italic">Sincronizado con Check-in Pro</p>
         </div>
-
-    <div class="bg-gray-50 p-8 rounded-[40px] border border-gray-100">
-        <h4 class="italic-black text-lg mb-6 uppercase">Nuevo Registro</h4>
-        <input id="n" type="text" placeholder="Nombre del Huésped" class="w-full p-4 rounded-2xl mb-2 font-bold italic outline-none border-none bg-white shadow-sm">
-        <input id="d" type="date" class="w-full p-4 rounded-2xl mb-6 font-bold outline-none border-none bg-white shadow-sm">
-        <button onclick="add()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic uppercase shadow-xl">Guardar Cliente</button>
+        <div class="absolute right-[-20px] bottom-[-20px] text-9xl opacity-10 italic-black">@</div>
     </div>
 
-    <script>
-        let cls = JSON.parse(localStorage.getItem('rg_cls')) || [];
+    <section class="space-y-4 mb-12">
+        <h3 class="italic-black uppercase text-xs text-gray-400 tracking-widest ml-4 mb-4 italic text-center">Configurar Campañas Automáticas</h3>
         
-        function add() {
-            const n = document.getElementById('n').value;
-            const d = document.getElementById('d').value;
-            if(n && d) {
-                cls.push({n, d});
-                localStorage.setItem('rg_cls', JSON.stringify(cls));
-                location.reload();
-            }
+        <div class="card-campaign flex items-center justify-between" id="card-cumple">
+            <div>
+                <h4 class="font-black italic text-lg uppercase leading-none">Felicitar Cumpleaños</h4>
+                <p class="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">Cupón 10% dto. automático</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="check-cumple" onchange="toggleCampaign('cumple')">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="card-campaign flex items-center justify-between" id="card-navidad">
+            <div>
+                <h4 class="font-black italic text-lg uppercase leading-none">Campaña Navidad</h4>
+                <p class="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">Envío masivo 15 de dic.</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="check-navidad" onchange="toggleCampaign('navidad')">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="card-campaign flex items-center justify-between" id="card-baja">
+            <div>
+                <h4 class="font-black italic text-lg uppercase leading-none">Escapada Matarraña</h4>
+                <p class="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">Promoción entre semana</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="check-baja" onchange="toggleCampaign('baja')">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="italic-black uppercase text-xs text-gray-400 tracking-widest ml-4 mb-4 italic text-center text-center">Acciones Recomendadas Hoy</h3>
+        <div id="action-list" class="space-y-3">
+            </div>
+    </section>
+
+    <script>
+        // Cargamos los clientes del Check-in para tener la base de datos sincronizada
+        let clients = JSON.parse(localStorage.getItem('rg_checkins')) || [];
+        document.getElementById('total-clients').innerText = clients.length;
+
+        // Guardar estado de campañas
+        function toggleCampaign(id) {
+            const isChecked = document.getElementById('check-'+id).checked;
+            const card = document.getElementById('card-'+id);
+            if(isChecked) card.classList.add('active-campaign');
+            else card.classList.remove('active-campaign');
+            localStorage.setItem('camp_'+id, isChecked);
+            renderActions();
         }
 
-        function render() {
-            const list = document.getElementById('client-list');
-            const hero = document.getElementById('bday-hero');
-            const today = new Date().toISOString().slice(5, 10);
-            let hasBday = false;
+        function renderActions() {
+            const list = document.getElementById('action-list');
+            list.innerHTML = "";
+            const today = new Date().toISOString().slice(5, 10); // MM-DD
+            
+            let actionsCount = 0;
 
-            cls.forEach(c => {
-                const isToday = c.d.slice(5, 10) === today;
-                if(isToday) hasBday = true;
-                list.innerHTML += `
-                    <div class="p-6 bg-white border border-gray-100 rounded-3xl flex justify-between items-center shadow-sm">
-                        <div>
-                            <p class="font-black italic uppercase text-sm">${c.n}</p>
-                            <p class="text-[10px] font-bold text-gray-300 uppercase">${c.d}</p>
-                        </div>
-                        <button onclick="window.open('https://wa.me/?text=Hola ${c.n}, ¡Feliz cumpleaños de parte de El Rinconcito!')" class="text-xl">✉️</button>
-                    </div>`;
+            clients.forEach(c => {
+                // Lógica de Cumpleaños (si la campaña está activa)
+                if(localStorage.getItem('camp_cumple') === 'true') {
+                    // Nota: En un caso real compararíamos con la fecha de nacimiento. 
+                    // Como en el checkin pedimos fecha expedición, aquí simulamos una detección.
+                    // Para el ejemplo, si no tiene fecha nacimiento, usamos una fecha fija de prueba
+                    const esCumple = c.expedicion && c.expedicion.slice(5,10) === today; 
+                    
+                    if(esCumple) {
+                        actionsCount++;
+                        list.innerHTML += `
+                            <div class="bg-yellow-50 border-2 border-yellow-100 p-6 rounded-[30px] flex justify-between items-center">
+                                <div>
+                                    <p class="font-black italic text-yellow-800">🎂 ¡CUMPLEAÑOS DE ${c.nombre.toUpperCase()}!</p>
+                                    <p class="text-[9px] font-bold text-yellow-600 uppercase italic">Enviar regalo: Código Rinconcito10</p>
+                                </div>
+                                <button onclick="sendPromo('${c.nombre}', 'cumple')" class="bg-yellow-400 p-3 rounded-2xl text-xl shadow-md">✉️</button>
+                            </div>`;
+                    }
+                }
             });
 
-            if(hasBday) {
-                hero.innerHTML = `<div class="bg-yellow-400 p-8 rounded-[40px] mb-8 shadow-lg shadow-yellow-100 flex items-center justify-between">
-                    <div><h3 class="italic-black text-xl uppercase">¡Cumpleaños hoy!</h3><p class="text-xs font-bold text-yellow-900 italic">Envía una oferta ahora</p></div>
-                    <span class="text-4xl">🎁</span>
-                </div>`;
+            if(actionsCount === 0) {
+                list.innerHTML = `<p class="text-center text-gray-300 italic text-sm py-10">No hay acciones pendientes hoy.<br>Activa campañas para ver sugerencias.</p>`;
             }
         }
-        render();
+
+        function sendPromo(nombre, tipo) {
+            let msg = "";
+            if(tipo === 'cumple') {
+                msg = `¡Hola ${nombre}! 👋 Desde El Rinconcito Matarraña te deseamos un muy feliz cumpleaños. 🎂 Queremos celebrarlo contigo regalándote un 10% de descuento para tu próxima escapada. Código: RICONCITO10. ¡Te esperamos!`;
+            }
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+        }
+
+        // Cargar estados guardados
+        ['cumple', 'navidad', 'baja'].forEach(id => {
+            if(localStorage.getItem('camp_'+id) === 'true') {
+                document.getElementById('check-'+id).checked = true;
+                document.getElementById('card-'+id).classList.add('active-campaign');
+            }
+        });
+
+        renderActions();
     </script>
 </body>
 </html>

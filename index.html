@@ -3,132 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGestión | Portal Profesional</title>
+    <title>RuralGestión | Gestión Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;800&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #1a4731; --bg: #fdfdfb; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #1a202c; scroll-behavior: smooth; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .hidden { display: none; }
-        .glass { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); }
-        .nav-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .btn-main { background: var(--accent); color: white; padding: 14px 28px; border-radius: 14px; font-weight: 800; transition: 0.3s; }
+        .card-plan { background: white; padding: 40px; border-radius: 35px; border: 1px solid #eee; transition: 0.3s; }
+        
+        /* Modal de Login */
+        #login-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.98);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
 
-    <section id="vista-landing">
-        <nav class="flex justify-between items-center p-6 fixed w-full bg-white/80 backdrop-blur-md z-50">
-            <h1 class="serif text-xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
-            <button onclick="mostrarLogin()" class="bg-emerald-900 text-white px-6 py-2 rounded-full font-bold text-xs uppercase">Iniciar Sesión</button>
-        </nav>
+    <nav class="flex justify-between items-center p-6 md:px-12 fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-50">
+        <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
+        <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest text-gray-400">
+            <a href="#inicio" class="hover:text-emerald-900">Inicio</a>
+            <a href="#servicios" class="hover:text-emerald-900">Servicios</a>
+            <a href="#planes" class="hover:text-emerald-900">Planes</a>
+        </div>
+        <button onclick="toggleLogin(true)" class="border-2 border-emerald-900 text-emerald-900 px-6 py-2 rounded-full font-bold text-xs uppercase hover:bg-emerald-900 hover:text-white transition">Entrar</button>
+    </nav>
 
-        <header class="pt-32 pb-20 px-8 max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-            <div>
-                <h2 class="serif text-6xl mb-6">El software que tu <span class="italic text-emerald-800">negocio rural</span> merece.</h2>
-                <p class="text-gray-500 mb-8">Gestión de calendarios, impuestos y marketing en un solo lugar.</p>
-                <button onclick="mostrarLogin()" class="bg-emerald-900 text-white px-8 py-4 rounded-2xl font-black uppercase text-sm shadow-xl">Probar Demo Ahora</button>
+    <section id="inicio" class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1">
+                <h2 class="serif text-6xl md:text-7xl leading-tight mb-6">La nueva era de la <span class="italic text-emerald-800">gestión rural</span>.</h2>
+                <p class="text-gray-500 text-lg mb-8 max-w-md">Automatiza tus reservas, controla tus finanzas y escala tu negocio con tecnología diseñada para propietarios reales.</p>
+                <button onclick="toggleLogin(true)" class="btn-main shadow-xl shadow-emerald-900/20">Comenzar ahora</button>
             </div>
-            <div class="rounded-[40px] overflow-hidden shadow-2xl h-80 md:h-[450px]">
+            <div class="order-1 md:order-2 rounded-[40px] overflow-hidden shadow-2xl h-[450px]">
                 <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
             </div>
-        </header>
+        </div>
     </section>
 
-    <section id="vista-login" class="hidden fixed inset-0 bg-white z-[100] flex items-center justify-center p-6">
-        <div class="w-full max-w-md text-center">
-            <h2 class="serif text-4xl mb-2">Bienvenido, Toni</h2>
-            <p class="text-gray-400 mb-8 uppercase text-[10px] font-bold tracking-widest">Introduce tus credenciales</p>
+    <section id="servicios" class="py-24 bg-[#f8f8f5] px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <h3 class="serif text-4xl mb-2">Todo lo que necesitas</h3>
+                <p class="text-emerald-800/40 font-black text-[10px] uppercase tracking-[0.3em]">Módulos de alto rendimiento</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white p-8 rounded-3xl border border-gray-100">
+                    <i data-lucide="calendar" class="text-emerald-900 mb-6"></i>
+                    <h4 class="font-bold uppercase text-xs mb-3">Agenda Pro</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Sincronización total con OTAs y gestión de estancias.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-gray-100">
+                    <i data-lucide="bar-chart-3" class="text-emerald-900 mb-6"></i>
+                    <h4 class="font-bold uppercase text-xs mb-3">Administración</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Cálculo de IRPF y control de gastos operativos.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-gray-100">
+                    <i data-lucide="megaphone" class="text-emerald-900 mb-6"></i>
+                    <h4 class="font-bold uppercase text-xs mb-3">Marketing IA</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Generación de ofertas y CRM para fidelizar clientes.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-gray-100">
+                    <i data-lucide="shield-check" class="text-emerald-900 mb-6"></i>
+                    <h4 class="font-bold uppercase text-xs mb-3">Check-in</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Firma digital y envío legal a autoridades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="planes" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h3 class="serif text-5xl mb-4">Planes de suscripción</h3>
+            <p class="text-gray-400 text-sm">Escoge el nivel que mejor se adapte a tu propiedad.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="card-plan">
+                <span class="text-[10px] font-bold text-gray-400 uppercase">Básico</span>
+                <div class="text-4xl font-black my-4">19€<span class="text-sm font-normal text-gray-400">/mes</span></div>
+                <button class="w-full py-3 rounded-xl border border-gray-200 font-bold text-xs uppercase mt-6">Seleccionar</button>
+            </div>
+            <div class="card-plan border-emerald-900 ring-4 ring-emerald-50">
+                <span class="text-[10px] font-bold text-emerald-900 uppercase">Pro</span>
+                <div class="text-4xl font-black my-4">39€<span class="text-sm font-normal text-gray-400">/mes</span></div>
+                <button class="w-full py-3 rounded-xl bg-emerald-900 text-white font-bold text-xs uppercase mt-6">Más Popular</button>
+            </div>
+            <div class="card-plan">
+                <span class="text-[10px] font-bold text-gray-400 uppercase">Business</span>
+                <div class="text-4xl font-black my-4">59€<span class="text-sm font-normal text-gray-400">/mes</span></div>
+                <button class="w-full py-3 rounded-xl border border-gray-200 font-bold text-xs uppercase mt-6">Seleccionar</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="login-overlay">
+        <div class="w-full max-w-md p-10 text-center">
+            <h2 class="serif text-5xl mb-8">Hola, <span class="italic">Toni</span></h2>
             <div class="space-y-4">
-                <input type="text" id="user" placeholder="Usuario" class="w-full p-4 rounded-2xl bg-gray-100 border-none font-bold outline-none focus:ring-2 ring-emerald-800">
-                <input type="password" id="pass" placeholder="Contraseña" class="w-full p-4 rounded-2xl bg-gray-100 border-none font-bold outline-none focus:ring-2 ring-emerald-800">
-                <button onclick="validarAcceso()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase">Entrar al Panel</button>
-                <button onclick="location.reload()" class="text-gray-400 text-xs uppercase font-bold mt-4">Volver atrás</button>
+                <input type="text" id="user" placeholder="Usuario" class="w-full p-5 rounded-2xl bg-gray-50 border border-gray-100 outline-none focus:border-emerald-900 font-bold">
+                <input type="password" id="pass" placeholder="Contraseña" class="w-full p-5 rounded-2xl bg-gray-50 border border-gray-100 outline-none focus:border-emerald-900 font-bold">
+                <button onclick="validarYEntrar()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase shadow-2xl">Acceder al Panel</button>
+                <button onclick="toggleLogin(false)" class="text-gray-400 text-[10px] uppercase font-bold tracking-widest mt-6">Cerrar y volver a la web</button>
             </div>
         </div>
-    </section>
-
-    <section id="vista-app" class="hidden min-h-screen bg-[#fdfdfb]">
-        <header class="p-8 pt-12 flex justify-between items-center">
-            <div>
-                <h1 class="serif text-3xl italic">Rural<span class="text-emerald-800 font-normal">Gestión</span></h1>
-                <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Panel de Toni • <span id="plan-tag">Plan Pro</span></p>
-            </div>
-            <button onclick="location.reload()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"><i data-lucide="log-out" class="w-4 h-4"></i></button>
-        </header>
-
-        <div class="p-6">
-            <div class="rounded-[30px] overflow-hidden h-64 shadow-lg mb-10">
-                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
-            </div>
-
-            <nav class="grid grid-cols-2 gap-8 px-4">
-                <div onclick="alert('Abriendo Agenda...')" class="nav-item">
-                    <i data-lucide="calendar" class="w-7 h-7 text-emerald-900"></i>
-                    <span class="text-[11px] font-black uppercase tracking-wider">Agenda</span>
-                </div>
-                <div onclick="alert('Abriendo Marketing...')" class="nav-item">
-                    <i data-lucide="megaphone" class="w-7 h-7 text-emerald-900"></i>
-                    <span class="text-[11px] font-black uppercase tracking-wider">Marketing</span>
-                </div>
-                <div onclick="alert('Abriendo Finanzas...')" class="nav-item">
-                    <i data-lucide="bar-chart-3" class="w-7 h-7 text-emerald-900"></i>
-                    <span class="text-[11px] font-black uppercase tracking-wider">Finanzas</span>
-                </div>
-                <div onclick="alert('Abriendo Web IA...')" class="nav-item">
-                    <i data-lucide="sparkles" class="w-7 h-7 text-emerald-900"></i>
-                    <span class="text-[11px] font-black uppercase tracking-wider">Web IA</span>
-                </div>
-            </nav>
-
-            <div class="mt-12 p-4">
-                <h3 class="font-black text-[10px] uppercase text-gray-400 mb-4 tracking-widest">Actividad Reciente</h3>
-                <div id="historial" class="space-y-3">
-                    <p class="text-xs text-gray-400 italic">No hay movimientos recientes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
 
     <script>
-        // LÓGICA DE NAVEGACIÓN
-        function mostrarLogin() {
-            document.getElementById('vista-landing').classList.add('hidden');
-            document.getElementById('vista-login').classList.remove('hidden');
+        lucide.createIcons();
+
+        function toggleLogin(show) {
+            const overlay = document.getElementById('login-overlay');
+            overlay.style.display = show ? 'flex' : 'none';
+            document.body.style.overflow = show ? 'hidden' : 'auto';
         }
 
-        function validarAcceso() {
+        function validarYEntrar() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
 
-            // Usuario: toni | Pass: 1234 (puedes cambiarlo)
             if(u === "toni" && p === "1234") {
-                document.getElementById('vista-login').classList.add('hidden');
-                document.getElementById('vista-app').classList.remove('hidden');
-                cargarHistorial();
+                // Aquí podrías redirigir a la página de la demo o mostrarla
+                alert("¡Acceso concedido! Bienvenido a RuralGestión.");
+                // location.href = 'demo-app.html'; // Descomenta cuando crees el archivo
             } else {
-                alert("Usuario o contraseña incorrectos. Prueba con toni / 1234");
+                alert("Datos incorrectos. Prueba con toni / 1234");
             }
         }
-
-        function cargarHistorial() {
-            const hist = document.getElementById('historial');
-            const datos = [
-                {accion: "Reserva confirmada", fecha: "Hoy, 10:30", icon: "check-circle"},
-                {accion: "Gasto limpieza registrado", fecha: "Ayer, 18:45", icon: "minus-circle"}
-            ];
-            
-            hist.innerHTML = datos.map(d => `
-                <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-50 shadow-sm">
-                    <span class="text-xs font-bold">${d.accion}</span>
-                    <span class="text-[9px] text-gray-400 font-bold uppercase">${d.fecha}</span>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        lucide.createIcons();
     </script>
 </body>
 </html>

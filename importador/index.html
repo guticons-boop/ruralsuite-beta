@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Importador</title>
+    <title>RuralGesto | Importador y Check-ins</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -11,7 +11,6 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .tab-btn.active { background-color: #be123c; color: white; }
-        .drop-active { border-color: #be123c; background-color: #fff1f2; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
@@ -19,77 +18,125 @@
         <header class="flex justify-between items-center mb-8">
             <div class="flex items-center gap-4">
                 <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <h2 class="serif text-2xl italic text-rose-950 font-bold">RuralGesto Engine</h2>
+                <div>
+                    <h2 class="serif text-2xl italic text-rose-950 font-bold">RuralGesto Engine</h2>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-rose-600">Gestión de Viajeros</p>
+                </div>
             </div>
-            <div id="badge-count" class="bg-rose-100 px-4 py-2 rounded-2xl border border-rose-200">
+            <div id="badge-total" class="bg-rose-50 px-4 py-2 rounded-2xl border border-rose-100">
                 <p class="text-[8px] font-black text-rose-900 uppercase">0 Registros</p>
             </div>
         </header>
 
-        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-[25px] mb-8">
-            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest transition-all">Check-ins</button>
-            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500 transition-all">Clientes</button>
-            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500 transition-all italic">Importar/Limpiar</button>
+        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-[30px] mb-8 border border-slate-200">
+            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest transition-all">Check-ins</button>
+            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase text-slate-500 tracking-widest transition-all">Clientes</button>
+            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase text-slate-500 tracking-widest transition-all italic">Importar/Limpiar</button>
         </div>
 
         <div id="view-checkins" class="space-y-4">
-            <div id="lista-reservas" class="space-y-3"></div>
+            <div id="lista-checkins" class="space-y-3">
+                </div>
         </div>
 
         <div id="view-clientes" class="hidden">
             <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-slate-50 text-[9px] font-black uppercase text-slate-400">
-                        <tr><th class="p-4">Cliente</th><th class="p-4">Contacto</th><th class="p-4">Cumpleaños</th><th class="p-4">Acción</th></tr>
+                        <tr>
+                            <th class="p-5">Nombre y Apellido</th>
+                            <th class="p-5">Teléfono / Email</th>
+                            <th class="p-5">Cumpleaños</th>
+                        </tr>
                     </thead>
-                    <tbody id="tabla-clientes-body"></tbody>
+                    <tbody id="tabla-clientes-body" class="divide-y divide-slate-50">
+                        </tbody>
                 </table>
             </div>
         </div>
 
-        <div id="view-import" class="hidden space-y-6 text-center">
-            <div id="drop-zone" class="bg-white border-2 border-dashed border-slate-200 rounded-[40px] p-16 relative">
+        <div id="view-import" class="hidden space-y-6">
+            <div id="drop-zone" class="bg-white border-2 border-dashed border-slate-200 rounded-[40px] p-16 text-center relative hover:border-rose-400 transition-all">
                 <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls">
-                <div id="status-ui">
-                    <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-rose-500 mb-4"></i>
-                    <p class="serif text-xl italic font-bold">Cargar Nuevo Excel</p>
-                </div>
+                <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-rose-500 mb-4"></i>
+                <p class="serif text-xl italic font-bold">Suelte el Excel de Reservas</p>
+                <p class="text-[10px] font-black uppercase text-slate-400 mt-2">Booking, Airbnb o Manual</p>
             </div>
 
-            <button id="btn-procesar" onclick="procesarExcel()" class="hidden w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest">Confirmar Importación</button>
-            
+            <div id="area-confirmacion" class="hidden bg-emerald-50 p-6 rounded-[30px] border border-emerald-100 text-center">
+                <p id="txt-conteo" class="text-sm font-bold text-emerald-800 mb-4">0 reservas detectadas</p>
+                <button onclick="guardarDatosFinales()" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest shadow-xl">
+                    Confirmar e Importar a RuralGesto
+                </button>
+            </div>
+
             <div class="pt-10 border-t border-slate-100">
-                <button onclick="borrarTodo()" class="text-rose-600 font-black text-[9px] uppercase tracking-widest flex items-center gap-2 mx-auto">
-                    <i data-lucide="alert-triangle" class="w-4 h-4"></i> Borrar Base de Datos Actual
+                <button onclick="vaciarMemoria()" class="w-full py-4 text-rose-600 font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 italic">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> Borrar todos los datos actuales
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        let datosExcel = [];
+        let datosPendientes = [];
 
         function switchTab(tab) {
             document.querySelectorAll('#view-checkins, #view-clientes, #view-import').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('active');
+                b.classList.remove('active', 'text-white');
                 b.classList.add('text-slate-500');
             });
             document.getElementById('view-' + tab).classList.remove('hidden');
-            const activeBtn = document.getElementById('tab-' + tab);
-            activeBtn.classList.add('active');
-            activeBtn.classList.remove('text-slate-500');
-            renderizar();
+            const btn = document.getElementById('tab-' + tab);
+            btn.classList.add('active');
+            btn.classList.remove('text-slate-500');
+            renderizarTodo();
         }
 
-        // LECTURA DE EXCEL
+        // LEER EXCEL
         document.getElementById('file-input').addEventListener('change', function(e) {
-            const file = e.target.files[0];
             const reader = new FileReader();
             reader.onload = function(evt) {
                 const data = new Uint8Array(evt.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
-                const rawData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                const raw = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
                 
-                // Mapeo inteligente según tu Excel
-                datosExcel = rawData.map(r
+                // Mapeo según tu foto: NOMBRE, APELLIDO 1, TELEFONO, EMAIL, FECHA NACIMIENTO
+                datosPendientes = raw.map(r => ({
+                    nombre: `${r['NOMBRE'] || ''} ${r['APELLIDO 1'] || ''}`.trim() || 'Huésped',
+                    tel: r['TELEFONO'] || r['686586692'] || '000',
+                    mail: r['EMAIL'] || r['yolandasan'] || '-',
+                    cumple: r['FECHA NACIMIENTO'] || r['25/05/1995'] || '-',
+                    apto: r['APARTAMENTO'] || r['El Rinconcit'] || 'RuralGesto',
+                    entrada: r['ENTRADA'] || r['06/12/2024'] || '-',
+                    loc: 'RG-' + Math.floor(1000 + Math.random() * 9000),
+                    importe: r['Importe'] || 0
+                }));
+
+                document.getElementById('area-confirmacion').classList.remove('hidden');
+                document.getElementById('txt-conteo').innerText = datosPendientes.length + " Reservas listas para importar";
+            };
+            reader.readAsArrayBuffer(e.target.files[0]);
+        });
+
+        function guardarDatosFinales() {
+            localStorage.setItem('reservas_ruralgesto', JSON.stringify(datosPendientes));
+            alert("¡Importación completada!");
+            document.getElementById('area-confirmacion').classList.add('hidden');
+            switchTab('checkins');
+        }
+
+        function vaciarMemoria() {
+            if(confirm("¿Seguro que quieres borrar todo?")) {
+                localStorage.removeItem('reservas_ruralgesto');
+                renderizarTodo();
+            }
+        }
+
+        function renderizarTodo() {
+            const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
+            document.getElementById('badge-total').innerText = data.length + " REGISTROS";
+            
+            const listaCheckins = document.getElementById('lista-checkins');
+            const tablaClientes = document.getElementById('tabla-

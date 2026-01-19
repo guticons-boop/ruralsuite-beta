@@ -1,135 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operaciones | El Rinconcito</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpieza | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
-        .status-card { transition: all 0.3s ease; }
     </style>
 </head>
-<body class="p-4 md:p-8 pb-32">
-
-    <div class="max-w-4xl mx-auto">
-        <header class="flex justify-between items-center mb-10">
-            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
-                <i data-lucide="arrow-left" class="text-gray-400"></i>
-            </button>
-            <div class="text-center">
-                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Operaciones</h2>
-                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600 italic">El Rinconcito de Matarraña</p>
-            </div>
-            <button onclick="window.open('https://calendar.google.com')" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100 text-blue-600">
-                <i data-lucide="calendar"></i>
-            </button>
+<body class="p-6 md:p-12 pb-32">
+    <div class="max-w-2xl mx-auto">
+        <header class="flex items-center gap-6 mb-12">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl border border-slate-100 shadow-sm transition-all active:scale-90"><i data-lucide="arrow-left"></i></button>
+            <h2 class="serif text-3xl italic text-rose-950">Limpieza y Mantenimiento</h2>
         </header>
 
-        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8">
-            <button onclick="switchTab('limpieza')" id="tab-limpieza" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest transition-all">Limpieza</button>
-            <button onclick="switchTab('mantenimiento')" id="tab-mantenimiento" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest transition-all italic text-rose-600">Mantenimiento</button>
-        </div>
-
-        <div id="view-limpieza" class="space-y-4">
-            <div class="bg-white p-6 rounded-[40px] border border-gray-100 shadow-sm flex items-center justify-between status-card">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center"><i data-lucide="check-circle"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm italic">La Tirolina</h4>
-                        <p class="text-[10px] text-emerald-600 font-black uppercase">Listo para Check-in</p>
-                    </div>
-                </div>
-                <button class="text-slate-300 hover:text-emerald-600"><i data-lucide="refresh-cw" class="w-5 h-5"></i></button>
-            </div>
-            <div class="bg-white p-6 rounded-[40px] border border-gray-100 shadow-sm flex items-center justify-between status-card">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center"><i data-lucide="clock"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm italic">La Ermita</h4>
-                        <p class="text-[10px] text-amber-500 font-black uppercase italic">Pendiente (Salida hoy)</p>
-                    </div>
-                </div>
-                <button onclick="this.innerText='Hecho'; this.className='bg-emerald-600 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase';" class="bg-emerald-900 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase transition">Terminar</button>
-            </div>
-            <div class="bg-white p-6 rounded-[40px] border border-gray-100 shadow-sm flex items-center justify-between status-card">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center"><i data-lucide="check-circle"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm italic">Los Almendros</h4>
-                        <p class="text-[10px] text-emerald-600 font-black uppercase">Listo para Check-in</p>
-                    </div>
-                </div>
-                <button class="text-slate-300 hover:text-emerald-600"><i data-lucide="refresh-cw" class="w-5 h-5"></i></button>
-            </div>
-        </div>
-
-        <div id="view-mantenimiento" class="hidden space-y-4">
-            <div class="bg-rose-50 p-6 rounded-[40px] border border-rose-100 shadow-sm">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white text-rose-600 rounded-2xl flex items-center justify-center shadow-sm"><i data-lucide="wrench"></i></div>
-                        <div>
-                            <h4 class="font-bold text-sm italic">Los Almendros</h4>
-                            <p class="text-[10px] text-rose-600 font-black uppercase">Incidencia técnica</p>
-                        </div>
-                    </div>
-                    <span class="bg-rose-600 text-white text-[8px] font-black px-3 py-1 rounded-full uppercase italic">Urgente</span>
-                </div>
-                <p class="text-[11px] text-slate-600 italic mb-4 font-semibold">"El grifo de la cocina gotea un poco al cerrar."</p>
-                <div class="flex gap-2">
-                    <button onclick="alert('Aviso enviado al fontanero')" class="flex-1 py-3 bg-white text-rose-600 rounded-2xl font-black text-[9px] uppercase border border-rose-200">Avisar Técnico</button>
-                    <button onclick="this.parentElement.parentElement.style.display='none'" class="px-5 py-3 bg-rose-600 text-white rounded-2xl font-black text-[9px] uppercase shadow-lg shadow-rose-200">Resuelto</button>
-                </div>
+        <div class="space-y-4">
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 flex justify-between items-center">
+                <div><h4 class="serif text-2xl italic text-rose-950">La Tirolina</h4><p class="text-[9px] font-black uppercase text-slate-400 mt-1">Salida hoy</p></div>
+                <button onclick="this.classList.toggle('bg-emerald-500'); this.classList.toggle('text-white'); this.innerText=(this.innerText=='PENDIENTE'?'LISTA':'PENDIENTE')" class="px-6 py-3 bg-slate-50 rounded-full text-[9px] font-black uppercase tracking-widest transition-all">Pendiente</button>
             </div>
 
-            <button onclick="crearAviso()" class="w-full py-8 border-2 border-dashed border-slate-200 rounded-[40px] flex flex-col items-center gap-2 group hover:bg-slate-50 transition">
-                <i data-lucide="plus-circle" class="text-slate-300 group-hover:text-rose-500"></i>
-                <span class="text-[10px] font-black uppercase text-slate-400">Añadir aviso de mantenimiento</span>
-            </button>
-        </div>
-
-        <div class="mt-12 p-8 bg-slate-900 rounded-[50px] text-white relative overflow-hidden shadow-2xl">
-            <div class="relative z-10">
-                <h3 class="serif text-xl italic mb-2">Sincronización Equipo</h3>
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-6 leading-loose">Copia este enlace para el Google Calendar de tu personal.</p>
-                <div class="flex gap-2">
-                    <input id="ical-url" type="text" readonly value="https://calendar.google.com/rinconcito/limpiezas" class="flex-1 bg-white/10 border border-white/20 rounded-2xl p-4 text-[10px] font-mono outline-none">
-                    <button onclick="copyUrl()" class="p-4 bg-white text-emerald-950 rounded-2xl hover:bg-emerald-400 transition">
-                        <i data-lucide="copy" class="w-4 h-4"></i>
-                    </button>
-                </div>
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 flex justify-between items-center">
+                <div><h4 class="serif text-2xl italic text-rose-950">La Ermita</h4><p class="text-[9px] font-black uppercase text-slate-400 mt-1">Sin cambios</p></div>
+                <span class="px-6 py-3 bg-emerald-500 text-white rounded-full text-[9px] font-black uppercase tracking-widest">Lista</span>
             </div>
-            <i data-lucide="calendar" class="absolute -right-10 -bottom-10 w-48 h-48 opacity-10"></i>
+
+            <div class="bg-rose-50 p-8 rounded-[40px] border border-rose-100 flex justify-between items-center">
+                <div><h4 class="serif text-2xl italic text-rose-900">Avería: Los Almendros</h4><p class="text-[9px] font-black uppercase text-rose-400 mt-1">Revisar caldera</p></div>
+                <div class="p-4 bg-white rounded-2xl text-rose-600 shadow-sm"><i data-lucide="alert-triangle"></i></div>
+            </div>
         </div>
     </div>
-
-    <script>
-        lucide.createIcons();
-
-        function switchTab(tab) {
-            document.getElementById('view-limpieza').classList.toggle('hidden', tab !== 'limpieza');
-            document.getElementById('view-mantenimiento').classList.toggle('hidden', tab !== 'mantenimiento');
-            document.getElementById('tab-limpieza').classList.toggle('active', tab === 'limpieza');
-            document.getElementById('tab-mantenimiento').classList.toggle('active', tab === 'mantenimiento');
-        }
-
-        function crearAviso() {
-            const apto = prompt("¿En qué apartamento?");
-            const desc = prompt("¿Qué ocurre?");
-            if(apto && desc) alert("Tarea añadida al calendario de " + apto);
-        }
-
-        function copyUrl() {
-            const copyText = document.getElementById("ical-url");
-            copyText.select();
-            navigator.clipboard.writeText(copyText.value);
-            alert("Enlace copiado al portapapeles");
-        }
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

@@ -5,83 +5,166 @@
     <title>Check-in Scan | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; overflow-x: hidden; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #be123c; color: white; border-color: #be123c; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #be123c; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        .tab-btn.active { background-color: #be123c; color: white; }
+        .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
     <div class="max-w-2xl mx-auto">
-        <header class="flex items-center gap-4 mb-8">
-            <button onclick="window.history.back()" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100 hover:bg-slate-50 transition-all"><i data-lucide="arrow-left"></i></button>
-            <div>
-                <h2 class="serif text-3xl italic text-rose-950 font-bold">Check-in Scan</h2>
-                <p id="ocr-status" class="text-[9px] font-black uppercase text-slate-400 mt-1 tracking-widest">Listo para escanear</p>
+        <header class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-4">
+                <button onclick="window.history.back()" class="p-4 bg-white rounded-3xl shadow-sm border border-slate-100"><i data-lucide="arrow-left"></i></button>
+                <h2 class="serif text-2xl italic text-rose-950 font-bold">Check-in Scan</h2>
             </div>
+            <div id="status-badge" class="px-4 py-2 bg-slate-100 rounded-2xl text-[10px] font-black uppercase text-slate-400">Listo</div>
         </header>
 
         <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8">
-            <button onclick="switchView('scan')" id="btn-scan" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Escanear / Nuevo</button>
-            <button onclick="switchView('base')" id="btn-base" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Huéspedes</button>
+            <button onclick="tab('scan')" id="btn-scan" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Escanear / Nuevo</button>
+            <button onclick="tab('list')" id="btn-list" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Historial</button>
         </div>
 
-        <div id="view-scan" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="relative bg-rose-600 p-8 rounded-[40px] text-white text-center shadow-lg active:scale-95 transition-all overflow-hidden group">
-                    <input type="file" accept="image/*" capture="camera" onchange="iniciarOCR(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20">
-                    <i data-lucide="camera" class="mx-auto mb-2 w-8 h-8 group-hover:scale-110 transition-transform"></i>
-                    <p class="font-black uppercase text-[10px] tracking-tighter">Escanear DNI ahora</p>
+        <div id="sec-scan" class="space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="relative bg-rose-600 p-8 rounded-[40px] text-white text-center shadow-xl active:scale-95 transition-all">
+                    <input type="file" accept="image/*" capture="camera" onchange="hacerOCR(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <div id="ocr-icon"><i data-lucide="camera" class="mx-auto mb-2 w-8 h-8"></i></div>
+                    <div id="ocr-loading" class="hidden"><div class="spinner mb-2"></div></div>
+                    <p class="font-black uppercase text-[10px]">Escanear DNI</p>
                 </div>
-                <div onclick="enviarEnlace()" class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm text-center cursor-pointer hover:bg-slate-50 transition-all">
-                    <i data-lucide="share-2" class="mx-auto mb-2 w-8 h-8 text-rose-500"></i>
-                    <p class="font-black uppercase text-[10px] text-slate-800 tracking-tighter">Enviar Enlace al Cliente</p>
+                <div onclick="mandarLink()" class="bg-white p-8 rounded-[40px] border border-slate-100 text-center cursor-pointer hover:bg-slate-50">
+                    <i data-lucide="send" class="mx-auto mb-2 w-8 h-8 text-rose-500"></i>
+                    <p class="font-black uppercase text-[10px] text-slate-800">Enviar Enlace</p>
                 </div>
             </div>
 
-            <div class="bg-white p-8 md:p-10 rounded-[50px] border border-slate-100 shadow-xl space-y-6">
-                <h3 class="serif text-xl font-bold italic border-b pb-4">Datos del Viajero</h3>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Nombre y Apellidos</label>
-                        <input type="text" id="nombre" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-sm" placeholder="Se rellenará al escanear...">
+            <div class="bg-white p-8 rounded-[50px] border border-slate-100 shadow-xl space-y-4">
+                <h4 class="serif text-lg font-bold italic mb-4 border-b pb-2">Ficha de Entrada</h4>
+                <div class="space-y-3">
+                    <input type="text" id="f-nombre" placeholder="Nombre y Apellidos" class="w-full p-4 bg-slate-50 rounded-2xl outline-none text-sm font-bold">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="f-dni" placeholder="DNI / NIE" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm font-mono">
+                        <input type="date" id="f-nac" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm text-slate-400">
                     </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Nº Documento (DNI/NIE)</label>
-                            <input type="text" id="dni" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-mono text-sm uppercase">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">F. Nacimiento</label>
-                            <input type="date" id="nacimiento" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none text-sm">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Teléfono WhatsApp</label>
-                            <input type="tel" id="telefono" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none text-sm" placeholder="34600000000">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Email</label>
-                            <input type="email" id="email" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none text-sm">
-                        </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="tel" id="f-tel" placeholder="WhatsApp (346...)" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm">
+                        <input type="email" id="f-mail" placeholder="Email" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm">
                     </div>
                 </div>
-
-                <button onclick="guardarCheckin()" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[11px] uppercase tracking-widest hover:bg-rose-950 transition-all shadow-xl flex items-center justify-center gap-3">
-                    <i data-lucide="save"></i> Guardar y Finalizar Check-in
+                <button onclick="guardar()" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[11px] uppercase tracking-widest mt-4 shadow-lg active:bg-rose-900 transition-colors">
+                    Guardar Registro Oficial
                 </button>
             </div>
         </div>
 
-        <div id="view-base" class="hidden">
-            <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-[11px]">
-                    <thead class="bg-slate-50 border-b border-slate-10
+        <div id="sec-list" class="hidden">
+            <div id="lista-vacia" class="text-center py-20 text-slate-300 font-bold uppercase text-xs italic">No hay registros hoy</div>
+            <div id="contenedor-lista" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('ruralgesto_pata_negra') || '[]');
+
+        function tab(t) {
+            document.getElementById('sec-scan').classList.toggle('hidden', t !== 'scan');
+            document.getElementById('sec-list').classList.toggle('hidden', t !== 'list');
+            document.getElementById('btn-scan').classList.toggle('active', t === 'scan');
+            document.getElementById('btn-list').classList.toggle('active', t === 'list');
+            if(t === 'list') renderList();
+        }
+
+        async function hacerOCR(input) {
+            if (!input.files || !input.files[0]) return;
+            
+            document.getElementById('ocr-icon').classList.add('hidden');
+            document.getElementById('ocr-loading').classList.remove('hidden');
+            document.getElementById('status-badge').innerText = "Escaneando...";
+            document.getElementById('status-badge').classList.add('text-rose-600', 'animate-pulse');
+
+            try {
+                const img = input.files[0];
+                const result = await Tesseract.recognize(img, 'spa');
+                const text = result.data.text;
+
+                // Extracción inteligente de DNI (8 números + Letra)
+                const dniMatch = text.match(/\d{8}[A-Z]/i);
+                if(dniMatch) document.getElementById('f-dni').value = dniMatch[0].toUpperCase();
+
+                // Intento de extraer nombre (primera línea con texto)
+                const lines = text.split('\n').filter(l => l.trim().length > 4);
+                if(lines.length > 0) document.getElementById('f-nombre').value = lines[0].trim();
+
+                document.getElementById('status-badge').innerText = "Completado";
+                alert("DNI leído con éxito. Revisa los datos.");
+            } catch (e) {
+                alert("Error al leer la imagen. Inténtalo de nuevo.");
+            } finally {
+                document.getElementById('ocr-icon').classList.remove('hidden');
+                document.getElementById('ocr-loading').classList.add('hidden');
+                document.getElementById('status-badge').classList.remove('animate-pulse');
+            }
+        }
+
+        function guardar() {
+            const nom = document.getElementById('f-nombre').value;
+            const dni = document.getElementById('f-dni').value;
+            if(!nom || !dni) return alert("Falta Nombre o DNI");
+
+            const nuevo = {
+                nombre: nom,
+                dni: dni,
+                tel: document.getElementById('f-tel').value,
+                mail: document.getElementById('f-mail').value,
+                fecha: new Date().toLocaleDateString()
+            };
+
+            db.push(nuevo);
+            localStorage.setItem('ruralgesto_pata_negra', JSON.stringify(db));
+            alert("¡Huésped registrado!");
+            
+            // Limpiar
+            document.querySelectorAll('input').forEach(i => i.value = "");
+            tab('list');
+        }
+
+        function renderList() {
+            const cont = document.getElementById('contenedor-lista');
+            const vacia = document.getElementById('lista-vacia');
+            
+            if(db.length === 0) {
+                vacia.classList.remove('hidden');
+                cont.innerHTML = '';
+            } else {
+                vacia.classList.add('hidden');
+                cont.innerHTML = db.map((r, i) => `
+                    <div class="bg-white p-6 rounded-[35px] border border-slate-100 flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[9px] font-black text-rose-600 uppercase italic">${r.fecha}</p>
+                            <h4 class="font-bold text-slate-800">${r.nombre}</h4>
+                            <p class="text-[10px] font-mono text-slate-400">${r.dni}</p>
+                        </div>
+                        <button onclick="window.open('https://wa.me/${r.tel}')" class="p-4 bg-emerald-50 text-emerald-600 rounded-2xl">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                `).reverse().join('');
+            }
+            lucide.createIcons();
+        }
+
+        function mandarLink() {
+            const tel = prompt("Teléfono WhatsApp:");
+            if(tel) window.open(`https://wa.me/${tel}?text=Hola, rellena el check-in aquí: https://ruralgesto.com/form`);
+        }
+
+        window.onload = () => { lucide.createIcons(); };
+    </script>
+</body>
+</html>

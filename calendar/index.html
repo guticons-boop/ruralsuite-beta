@@ -3,118 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Multi-Cal | RuralGesto</title>
+    <title>Reserva por Rango | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfd; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .day-cell { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-size: 13px; font-weight: 800; cursor: pointer; border: 1px solid #f0f0f0; background: white; }
-        .occupied { background: #ef4444 !important; color: white !important; border-color: #ef4444; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; padding: 20px; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .apt-selector { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-        .apt-btn { display: inline-block; padding: 10px 20px; border-radius: 15px; font-weight: 800; font-size: 10px; text-transform: uppercase; margin-right: 8px; border: 2px solid #eee; background: white; }
-        .apt-active { background: #000; color: #fff; border-color: #000; }
+        .day-cell { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; border: 1px solid #f0f0f0; background: white; transition: 0.2s; }
+        
+        /* Estados de los días */
+        .occupied { background: #fee2e2 !important; color: #ef4444 !important; border-color: #fecaca; text-decoration: line-through; }
+        .selected-start { background: #2563eb !important; color: white !important; border-radius: 12px 0 0 12px; }
+        .selected-end { background: #2563eb !important; color: white !important; border-radius: 0 12px 12px 0; }
+        .in-range { background: #dbeafe !important; color: #2563eb !important; border-radius: 0; }
+        
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; padding: 20px; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
     </style>
 </head>
 <body class="pb-32">
 
     <header class="sticky top-0 bg-white/90 backdrop-blur-md p-6 z-50 border-b border-gray-100">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-4">
             <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-100 px-4 py-2 rounded-full">← Volver</button>
-            <h1 class="italic-black text-xl uppercase text-blue-600 italic">Disponibilidad</h1>
+            <h1 class="italic-black text-xl uppercase text-blue-600 italic">Planificador</h1>
         </div>
-
-        <div class="apt-selector">
-            <button onclick="selectApt('apt1', this)" class="apt-btn apt-active">Apartamento 1</button>
-            <button onclick="selectApt('apt2', this)" class="apt-btn">Apartamento 2</button>
-            <button onclick="selectApt('casa_rural', this)" class="apt-btn">Casa Rural</button>
+        <div id="apt-list" class="flex gap-2 overflow-x-auto pb-2">
+            <button onclick="changeApt('apt1', this)" class="bg-black text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase italic min-w-fit">Apartamento 1</button>
+            <button onclick="changeApt('apt2', this)" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-xl text-[10px] font-black uppercase italic min-w-fit">Casa Piedra</button>
         </div>
     </header>
 
-    <div id="calendar-container" class="p-6 space-y-10">
-        </div>
+    <div id="calendar-container" class="p-6 space-y-8"></div>
 
     <div id="reserva-modal" class="modal">
         <div class="bg-white w-full max-w-sm p-8 rounded-[40px] shadow-2xl">
-            <h3 class="italic-black text-xl uppercase mb-6 text-blue-600 italic">Nueva Reserva</h3>
-            <p id="fecha-label" class="text-[10px] font-bold text-gray-400 uppercase mb-4"></p>
+            <h3 class="italic-black text-xl uppercase mb-2 text-blue-600 italic">Confirmar Estancia</h3>
+            <p id="rango-info" class="text-[10px] font-black text-gray-400 uppercase mb-6 tracking-widest"></p>
             
-            <input type="text" id="res-nombre" placeholder="Nombre del Huésped" class="w-full p-4 rounded-xl bg-gray-50 mb-3 font-bold">
-            <input type="number" id="res-pago" placeholder="Precio Total (€)" class="w-full p-4 rounded-xl bg-gray-50 mb-6 font-bold">
-
-            <div class="flex gap-2">
-                <button onclick="closeModal()" class="flex-1 p-4 bg-gray-100 rounded-2xl font-black italic uppercase text-xs">Cancelar</button>
-                <button onclick="saveReserva()" class="flex-1 p-4 bg-blue-600 text-white rounded-2xl font-black italic uppercase text-xs">Bloquear Día</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentApt = 'apt1';
-        let selectedDayId = null;
-
-        function selectApt(id, btn) {
-            currentApt = id;
-            document.querySelectorAll('.apt-btn').forEach(b => b.classList.remove('apt-active'));
-            btn.classList.add('apt-active');
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const container = document.getElementById('calendar-container');
-            container.innerHTML = "";
-            const now = new Date(2026, 0, 1); // Empezamos en Enero 2026
-
-            // Generamos 12 meses hacia abajo
-            for (let i = 0; i < 12; i++) {
-                const currentMonth = new Date(now.getFullYear(), now.getMonth() + i, 1);
-                const monthName = currentMonth.toLocaleString('es', { month: 'long' }).toUpperCase();
-                const year = currentMonth.getFullYear();
-                
-                let monthHtml = `
-                    <div>
-                        <h2 class="italic-black text-2xl uppercase italic mb-4">${monthName} <span class="text-gray-200">${year}</span></h2>
-                        <div class="grid grid-cols-7 gap-2">
-                `;
-
-                const daysInMonth = new Date(year, currentMonth.getMonth() + 1, 0).getDate();
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const dayId = `${currentApt}-${year}-${currentMonth.getMonth()+1}-${d}`;
-                    const isOccupied = localStorage.getItem(dayId) === 'true';
-                    monthHtml += `
-                        <div onclick="openModal('${dayId}')" class="day-cell ${isOccupied ? 'occupied' : ''}">
-                            ${d}
-                        </div>
-                    `;
-                }
-
-                monthHtml += `</div></div>`;
-                container.innerHTML += monthHtml;
-            }
-        }
-
-        function openModal(dayId) {
-            selectedDayId = dayId;
-            document.getElementById('fecha-label').innerText = "Día seleccionado: " + dayId.split('-').slice(1).join('/');
-            document.getElementById('reserva-modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('reserva-modal').style.display = 'none';
-        }
-
-        function saveReserva() {
-            const nombre = document.getElementById('res-nombre').value;
-            if(!nombre) return alert("Pon un nombre");
-            
-            localStorage.setItem(selectedDayId, 'true');
-            alert("Reserva guardada en " + currentApt);
-            closeModal();
-            renderCalendar();
-        }
-
-        renderCalendar();
-    </script>
-</body>
-</html>
+            <input type="text" id="res-nombre" placeholder="Nombre del Huésped" class="w-

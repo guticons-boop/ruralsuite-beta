@@ -5,145 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Marketing Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #fcfcfc; color: #1a1a1a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f9fafb; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #eee; transition: .4s; border-radius: 24px; }
-        input:checked + .slider { background-color: #3b82f6; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider:before { transform: translateX(20px); }
-        .card-campaign { background: white; border-radius: 30px; padding: 24px; border: 1.5px solid #f2f2f2; transition: 0.3s; }
-        .active-campaign { border-color: #3b82f6; background: #f8fbff; }
+        .card { background: white; border-radius: 35px; padding: 25px; border: 1px solid #eee; }
+        .input-mkt { width: 100%; padding: 15px; border-radius: 18px; background: #f3f4f6; border: 1px solid transparent; font-weight: 700; margin-top: 5px; outline: none; }
+        .input-mkt:focus { border-color: #2563eb; background: #fff; }
+        #preview-img { width: 100%; height: 200px; object-fit: cover; border-radius: 25px; display: none; margin-top: 15px; }
     </style>
 </head>
-<body class="p-6 max-w-lg mx-auto">
+<body class="p-6 max-w-lg mx-auto pb-32">
 
-    <header class="mb-10 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase tracking-widest border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase tracking-tighter text-blue-600">Marketing CRM</h1>
+    <header class="mb-8 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase text-blue-600">Marketing</h1>
     </header>
 
-    <div class="bg-black text-white p-8 rounded-[40px] mb-8 shadow-2xl relative overflow-hidden">
-        <div class="relative z-10">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2 italic">Audiencia Total</p>
-            <h2 id="total-clients" class="text-5xl italic-black">0</h2>
-            <p class="text-[10px] font-bold text-blue-400 mt-4 uppercase italic">Sincronizado con Check-in Pro</p>
+    <div class="card shadow-xl mb-8">
+        <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-[0.2em]">Creador de Campañas</h2>
+
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Imagen de la Campaña</label>
+        <div onclick="document.getElementById('file-input').click()" class="w-full py-10 border-2 border-dashed border-gray-200 rounded-[25px] flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition mt-1">
+            <span class="text-3xl">🖼️</span>
+            <p class="text-[10px] font-bold text-gray-400 uppercase mt-2">Pulsa para subir foto</p>
+            <input type="file" id="file-input" class="hidden" accept="image/*" onchange="previewFile()">
+            <img id="preview-img" src="" alt="Vista previa">
         </div>
-        <div class="absolute right-[-20px] bottom-[-20px] text-9xl opacity-10 italic-black">@</div>
+
+        <div class="mt-6">
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Título de la Oferta</label>
+            <input type="text" id="mkt-titulo" placeholder="Ej: Escapada Romántica -20%" class="input-mkt mb-4">
+
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Instrucciones para la IA (¿Qué quieres vender?)</label>
+            <textarea id="mkt-ia-prompt" placeholder="Ej: Crea un texto para WhatsApp ofreciendo un 15% de descuento para parejas en febrero..." class="input-mkt h-24 mb-4"></textarea>
+
+            <button onclick="generarConIA()" class="w-full bg-slate-900 text-white p-4 rounded-2xl font-black italic uppercase text-[10px] mb-6 flex items-center justify-center gap-2">
+                <span>✨</span> Generar Texto con Inteligencia Artificial
+            </button>
+
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Resultado Final (Editable)</label>
+            <textarea id="mkt-resultado" class="input-mkt h-32 text-blue-600 italic"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mt-6">
+            <button onclick="enviar('WhatsApp')" class="bg-green-500 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-green-100">Enviar WhatsApp</button>
+            <button onclick="enviar('Email')" class="bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-blue-100">Enviar Email</button>
+        </div>
     </div>
 
-    <section class="space-y-4 mb-12">
-        <h3 class="italic-black uppercase text-xs text-gray-400 tracking-widest ml-4 mb-4 italic text-center">Configurar Campañas Automáticas</h3>
-        
-        <div class="card-campaign flex items-center justify-between" id="card-cumple">
-            <div>
-                <h4 class="font-black italic text-lg uppercase leading-none">Felicitar Cumpleaños</h4>
-                <p class="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">Cupón 10% dto. automático</p>
-            </div>
-            <label class="switch">
-                <input type="checkbox" id="check-cumple" onchange="toggleCampaign('cumple')">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="card-campaign flex items-center justify-between" id="card-navidad">
-            <div>
-                <h4 class="font-black italic text-lg uppercase leading-none">Campaña Navidad</h4>
-                <p class="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">Envío masivo 15 de dic.</p>
-            </div>
-            <label class="switch">
-                <input type="checkbox" id="check-navidad" onchange="toggleCampaign('navidad')">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="card-campaign flex items-center justify-between" id="card-baja">
-            <div>
-                <h4 class="font-black italic text-lg uppercase leading-none">Escapada Matarraña</h4>
-                <p class="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">Promoción entre semana</p>
-            </div>
-            <label class="switch">
-                <input type="checkbox" id="check-baja" onchange="toggleCampaign('baja')">
-                <span class="slider"></span>
-            </label>
-        </div>
-    </section>
-
-    <section>
-        <h3 class="italic-black uppercase text-xs text-gray-400 tracking-widest ml-4 mb-4 italic text-center text-center">Acciones Recomendadas Hoy</h3>
-        <div id="action-list" class="space-y-3">
-            </div>
-    </section>
-
     <script>
-        // Cargamos los clientes del Check-in para tener la base de datos sincronizada
-        let clients = JSON.parse(localStorage.getItem('rg_checkins')) || [];
-        document.getElementById('total-clients').innerText = clients.length;
+        // Previsualizar la imagen subida
+        function previewFile() {
+            const preview = document.getElementById('preview-img');
+            const file = document.getElementById('file-input').files[0];
+            const reader = new FileReader();
 
-        // Guardar estado de campañas
-        function toggleCampaign(id) {
-            const isChecked = document.getElementById('check-'+id).checked;
-            const card = document.getElementById('card-'+id);
-            if(isChecked) card.classList.add('active-campaign');
-            else card.classList.remove('active-campaign');
-            localStorage.setItem('camp_'+id, isChecked);
-            renderActions();
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            }
+
+            if (file) { reader.readAsDataURL(file); } 
         }
 
-        function renderActions() {
-            const list = document.getElementById('action-list');
-            list.innerHTML = "";
-            const today = new Date().toISOString().slice(5, 10); // MM-DD
+        // Simulador de IA (Para el prototipo)
+        function generarConIA() {
+            const prompt = document.getElementById('mkt-ia-prompt').value;
+            const res = document.getElementById('mkt-resultado');
             
-            let actionsCount = 0;
+            if(!prompt) return alert("Dime qué quieres que escriba la IA.");
 
-            clients.forEach(c => {
-                // Lógica de Cumpleaños (si la campaña está activa)
-                if(localStorage.getItem('camp_cumple') === 'true') {
-                    // Nota: En un caso real compararíamos con la fecha de nacimiento. 
-                    // Como en el checkin pedimos fecha expedición, aquí simulamos una detección.
-                    // Para el ejemplo, si no tiene fecha nacimiento, usamos una fecha fija de prueba
-                    const esCumple = c.expedicion && c.expedicion.slice(5,10) === today; 
-                    
-                    if(esCumple) {
-                        actionsCount++;
-                        list.innerHTML += `
-                            <div class="bg-yellow-50 border-2 border-yellow-100 p-6 rounded-[30px] flex justify-between items-center">
-                                <div>
-                                    <p class="font-black italic text-yellow-800">🎂 ¡CUMPLEAÑOS DE ${c.nombre.toUpperCase()}!</p>
-                                    <p class="text-[9px] font-bold text-yellow-600 uppercase italic">Enviar regalo: Código Rinconcito10</p>
-                                </div>
-                                <button onclick="sendPromo('${c.nombre}', 'cumple')" class="bg-yellow-400 p-3 rounded-2xl text-xl shadow-md">✉️</button>
-                            </div>`;
-                    }
-                }
-            });
-
-            if(actionsCount === 0) {
-                list.innerHTML = `<p class="text-center text-gray-300 italic text-sm py-10">No hay acciones pendientes hoy.<br>Activa campañas para ver sugerencias.</p>`;
-            }
+            res.value = "Generando...";
+            
+            setTimeout(() => {
+                const textosSimulados = [
+                    "¡Hola! 🌿 En RuralGesto queremos que vuelvas a desconectar. Solo esta semana, usa el código RURAL26 y llévate un 15% en tu reserva de febrero. ¡Te esperamos!",
+                    "¿Buscas el regalo perfecto? 🎁 Sorprende a tu pareja con nuestra oferta especial de San Valentín. Un entorno rural mágico te espera. ¡Reserva ahora!",
+                    "¡Vuelve el sol! ☀️ Disfruta de nuestro jardín y piscina con esta oferta exclusiva para antiguos clientes. Haz clic aquí para ver disponibilidad."
+                ];
+                res.value = textosSimulados[Math.floor(Math.random() * textosSimulados.length)];
+            }, 1500);
         }
 
-        function sendPromo(nombre, tipo) {
-            let msg = "";
-            if(tipo === 'cumple') {
-                msg = `¡Hola ${nombre}! 👋 Desde El Rinconcito Matarraña te deseamos un muy feliz cumpleaños. 🎂 Queremos celebrarlo contigo regalándote un 10% de descuento para tu próxima escapada. Código: RICONCITO10. ¡Te esperamos!`;
-            }
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+        function enviar(canal) {
+            const texto = document.getElementById('mkt-resultado').value;
+            if(!texto) return alert("Primero genera o escribe un mensaje.");
+            alert(`Campaña lista para enviar por ${canal}. En la versión final, esto abriría tu lista de clientes de RuralGesto.`);
         }
-
-        // Cargar estados guardados
-        ['cumple', 'navidad', 'baja'].forEach(id => {
-            if(localStorage.getItem('camp_'+id) === 'true') {
-                document.getElementById('check-'+id).checked = true;
-                document.getElementById('card-'+id).classList.add('active-campaign');
-            }
-        });
-
-        renderActions();
     </script>
 </body>
 </html>

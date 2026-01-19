@@ -10,116 +10,30 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-active { color: #be123c; border-bottom: 3px solid #be123c; }
+        .tab-active { color: #be123c; border-bottom: 4px solid #be123c; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
     <div class="max-w-5xl mx-auto">
         <header class="flex justify-between items-center mb-10">
-            <h2 class="serif text-3xl font-bold italic text-rose-950">Asistente Fiscal</h2>
-            <select id="mes-filtro" onchange="renderFiscal()" class="p-3 bg-white border border-slate-100 rounded-2xl font-black text-[10px] uppercase">
-                <option value="all">Todo el Año</option>
-                <option value="1">Enero</option><option value="2">Febrero</option>
-            </select>
+            <div class="flex items-center gap-4">
+                <button onclick="window.history.back()" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+                <h2 class="serif text-3xl font-bold italic text-rose-950">Asistente Fiscal</h2>
+            </div>
+            <div class="flex gap-2">
+                <select id="filtro-mes" onchange="render()" class="p-3 bg-white border border-slate-100 rounded-2xl font-black text-[10px] uppercase outline-none">
+                    <option value="all">Todo el Año</option>
+                    <option value="0">Enero</option><option value="1">Febrero</option>
+                    <option value="2">Marzo</option><option value="3">Abril</option>
+                </select>
+                <button onclick="enviarGestor()" class="p-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase flex items-center gap-2">
+                    <i data-lucide="send" class="w-3 h-3"></i> Enviar al Gestor
+                </button>
+            </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-[45px] border border-slate-100 shadow-sm text-center">
-                <h4 class="serif font-bold italic mb-6">Estado de Cuentas</h4>
-                <canvas id="chartFiscal"></canvas>
-                <div class="mt-6">
-                    <select id="iva-particular" onchange="renderFiscal()" class="w-full p-3 bg-slate-50 rounded-xl text-[10px] font-black uppercase">
-                        <option value="0">Particular (Sin IVA)</option>
-                        <option value="0.10">Turístico (10%)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="md:col-span-2 space-y-6">
-                <div class="flex border-b border-slate-100 mb-6">
-                    <button onclick="tab('in')" id="t-in" class="flex-1 py-4 font-black text-[10px] uppercase tab-active">Ingresos</button>
-                    <button onclick="tab('ex')" id="t-ex" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Gastos</button>
-                    <button onclick="tab('tax')" id="t-tax" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Declaración</button>
-                </div>
-
-                <div id="form-fiscal" class="bg-white p-6 rounded-[35px] border border-slate-100 flex gap-2">
-                    <input type="text" id="conc" placeholder="Concepto..." class="flex-1 p-4 bg-slate-50 rounded-2xl outline-none text-sm">
-                    <input type="number" id="imp" placeholder="€" class="w-24 p-4 bg-slate-50 rounded-2xl outline-none text-sm font-bold">
-                    <button onclick="addMovimiento()" class="p-4 bg-rose-600 text-white rounded-2xl"><i data-lucide="plus"></i></button>
-                </div>
-
-                <div id="lista-mov" class="space-y-2"></div>
-
-                <div id="panel-renta" class="hidden bg-slate-900 p-8 rounded-[40px] text-white">
-                    <h5 class="serif text-xl italic mb-4">Borrador IRPF / Renta</h5>
-                    <div class="space-y-3 text-[11px] uppercase opacity-80">
-                        <div class="flex justify-between"><span>Bruto:</span><span id="r-bruto">0€</span></div>
-                        <div class="flex justify-between"><span>Gastos:</span><span id="r-gastos">0€</span></div>
-                        <div class="flex justify-between border-t pt-3 font-black opacity-100"><span>Rendimiento:</span><span id="r-neto">0€</span></div>
-                    </div>
-                    <button onclick="alert('Enviando informe al gestor...')" class="w-full py-4 bg-white/10 rounded-2xl mt-6 font-black text-[10px]">ENVIAR AL GESTOR</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let f_tab = 'in';
-        let f_data = JSON.parse(localStorage.getItem('rg_fiscal') || '{"in":[], "ex":[]}');
-        let chart;
-
-        function tab(t) {
-            f_tab = t;
-            document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active', 'text-slate-400'));
-            document.getElementById('t-'+t).classList.add('tab-active');
-            document.getElementById('form-fiscal').classList.toggle('hidden', t === 'tax');
-            document.getElementById('lista-mov').classList.toggle('hidden', t === 'tax');
-            document.getElementById('panel-renta').classList.toggle('hidden', t !== 'tax');
-            renderFiscal();
-        }
-
-        function addMovimiento() {
-            const c = document.getElementById('conc').value;
-            const i = parseFloat(document.getElementById('imp').value);
-            if(!c || !i) return;
-            f_data[f_tab].push({c, i, m: new Date().getMonth() + 1});
-            localStorage.setItem('rg_fiscal', JSON.stringify(f_data));
-            renderFiscal();
-        }
-
-        function renderFiscal() {
-            let tin = 0; let tex = 0;
-            const list = document.getElementById('lista-mov');
-            list.innerHTML = '';
-            
-            f_data.in.forEach(x => { tin += x.i; if(f_tab === 'in') list.innerHTML += itemHtml(x, 'emerald'); });
-            f_data.ex.forEach(x => { tex += x.i; if(f_tab === 'ex') list.innerHTML += itemHtml(x, 'rose'); });
-
-            const iva = tin * parseFloat(document.getElementById('iva-particular').value);
-            document.getElementById('r-bruto').innerText = tin.toFixed(2) + "€";
-            document.getElementById('r-gastos').innerText = tex.toFixed(2) + "€";
-            document.getElementById('r-neto').innerText = (tin - tex - iva).toFixed(2) + "€";
-
-            updateChart(tin, tex, iva);
-            lucide.createIcons();
-        }
-
-        function itemHtml(x, col) {
-            return `<div class="bg-white p-4 rounded-2xl border border-slate-50 flex justify-between font-bold text-[11px]"><span>${x.c}</span><span class="text-${col}-600">${x.i}€</span></div>`;
-        }
-
-        function updateChart(i, e, v) {
-            const ctx = document.getElementById('chartFiscal');
-            if(chart) chart.destroy();
-            chart = new Chart(ctx, {
-                type: 'doughnut',
-                data: { datasets: [{ data: [i, e, v], backgroundColor: ['#10b981', '#f43f5e', '#3b82f6'] }] },
-                options: { cutout: '80%' }
-            });
-        }
-
-        window.onload = () => tab('in');
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-white p-8 rounded-[45px] border border-slate-100 shadow-sm text-center">
+                    <h4 class="serif font-bold italic mb-6">Resumen de Caja</h4>
+                    <div class

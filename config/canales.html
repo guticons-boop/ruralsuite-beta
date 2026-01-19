@@ -3,53 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conexiones | El Rinconcito</title>
+    <title>Sincronización | El Rinconcito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .channel-active { border-left: 4px solid #10b981; }
+        .channel-pending { border-left: 4px solid #f59e0b; }
+        .channel-off { border-left: 4px solid #e2e8f0; opacity: 0.6; }
+        .accordion-content { display: none; }
+        .accordion-content.open { display: block; }
+    </style>
 </head>
-<body class="p-6 bg-[#fdfdfb]">
+<body class="p-4 md:p-8 pb-32">
+
     <div class="max-w-4xl mx-auto">
-        <header class="mb-10 flex items-center gap-4">
+        <header class="flex items-center gap-4 mb-10">
             <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-            <h1 class="text-2xl font-extrabold text-emerald-950 italic">Canales y Sincronización</h1>
+            <div>
+                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Channel Manager</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600">Sincronización El Rinconcito</p>
+            </div>
         </header>
 
-        <div class="grid gap-4">
-            <div class="bg-white p-6 rounded-[35px] border border-gray-100 flex justify-between items-center shadow-sm">
-                <div class="flex items-center gap-4">
-                    <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <div>
-                        <p class="font-black text-xs uppercase tracking-widest">La Tirolina</p>
-                        <p class="text-[10px] text-gray-400">Sincronizado con Booking.com</p>
-                    </div>
-                </div>
-                <button class="text-[9px] font-black uppercase text-emerald-600 border border-emerald-100 px-4 py-2 rounded-xl">Activo</button>
+        <div class="bg-blue-600 text-white p-6 rounded-[40px] mb-8 shadow-xl flex items-center gap-6">
+            <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
+                <i data-lucide="calendar"></i>
             </div>
-
-            <div class="bg-white p-6 rounded-[35px] border border-gray-100 flex justify-between items-center shadow-sm">
-                <div class="flex items-center gap-4">
-                    <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <div>
-                        <p class="font-black text-xs uppercase tracking-widest">La Ermita</p>
-                        <p class="text-[10px] text-gray-400">Sincronizado con Motor Web</p>
-                    </div>
-                </div>
-                <button class="text-[9px] font-black uppercase text-emerald-600 border border-emerald-100 px-4 py-2 rounded-xl">Activo</button>
-            </div>
-
-            <div class="bg-white p-6 rounded-[35px] border border-gray-100 flex justify-between items-center shadow-sm">
-                <div class="flex items-center gap-4">
-                    <div class="w-3 h-3 bg-amber-500 rounded-full"></div>
-                    <div>
-                        <p class="font-black text-xs uppercase tracking-widest">Los Almendros</p>
-                        <p class="text-[10px] text-gray-400">Pendiente de revisión Booking</p>
-                    </div>
-                </div>
-                <button class="text-[9px] font-black uppercase text-amber-600 border border-amber-100 px-4 py-2 rounded-xl">Revisar</button>
+            <div>
+                <p class="text-[10px] font-black uppercase opacity-80 tracking-widest">Recomendación RuralGesto</p>
+                <p class="text-sm font-bold">Sincronizado con Google Calendar</p>
+                <p class="text-[10px] opacity-70 italic">Tus reservas se verán automáticamente en tu móvil.</p>
             </div>
         </div>
+
+        <div class="space-y-4">
+            <div class="bg-white rounded-[40px] border border-gray-100 shadow-sm overflow-hidden">
+                <div onclick="toggleAccordion('tirolina')" class="p-8 cursor-pointer flex justify-between items-center hover:bg-slate-50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center"><i data-lucide="home"></i></div>
+                        <div>
+                            <h3 class="font-black text-sm uppercase">La Tirolina</h3>
+                            <p class="text-[10px] text-emerald-600 font-bold">3 Canales Activos</p>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-down" id="icon-tirolina"></i>
+                </div>
+                
+                <div id="content-tirolina" class="accordion-content p-8 pt-0 border-t border-gray-50 bg-slate-50/30">
+                    <div class="space-y-3 mt-4">
+                        <div class="channel-active bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm">
+                            <span class="text-xs font-bold italic">Booking.com</span>
+                            <span class="bg-emerald-100 text-emerald-700 text-[8px] font-black px-3 py-1 rounded-full uppercase">Sincronizado</span>
+                        </div>
+                        <div class="channel-pending bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm">
+                            <span class="text-xs font-bold italic">Airbnb</span>
+                            <button class="bg-amber-100 text-amber-700 text-[8px] font-black px-3 py-1 rounded-full uppercase">Conectar iCal</button>
+                        </div>
+                        <div class="channel-active bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm">
+                            <span class="text-xs font-bold italic">Web Directa (RuralGesto)</span>
+                            <span class="bg-emerald-100 text-emerald-700 text-[8px] font-black px-3 py-1 rounded-full uppercase">Sincronizado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[40px] border border-gray-100 shadow-sm overflow-hidden">
+                <div onclick="toggleAccordion('ermita')" class="p-8 cursor-pointer flex justify-between items-center hover:bg-slate-50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center"><i data-lucide="home"></i></div>
+                        <div>
+                            <h3 class="font-black text-sm uppercase">La Ermita</h3>
+                            <p class="text-[10px] text-amber-500 font-bold">1 Canal Pendiente</p>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-down" id="icon-ermita"></i>
+                </div>
+                <div id="content-ermita" class="accordion-content p-8 pt-0 border-t border-gray-50 bg-slate-50/30">
+                    <div class="space-y-3 mt-4">
+                        <div class="channel-active bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm font-bold text-xs italic">Booking.com <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded">OK</span></div>
+                        <div class="channel-off bg-white p-4 rounded-2xl flex justify-between items-center font-bold text-xs italic">Airbnb <span class="text-[9px] uppercase opacity-50">Desactivado</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[40px] border border-gray-100 shadow-sm overflow-hidden">
+                <div onclick="toggleAccordion('almendros')" class="p-8 cursor-pointer flex justify-between items-center hover:bg-slate-50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center"><i data-lucide="home"></i></div>
+                        <div>
+                            <h3 class="font-black text-sm uppercase">Los Almendros</h3>
+                            <p class="text-[10px] text-gray-400 font-bold">Sin Conexiones</p>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-down" id="icon-almendros"></i>
+                </div>
+                <div id="content-almendros" class="accordion-content p-8 pt-0 border-t border-gray-50 bg-slate-50/30">
+                    <p class="text-[10px] font-bold text-slate-400 text-center py-6">Haz clic en el botón '+' para añadir canales a este apartamento.</p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="alert('Conectando con Google Calendar iCal...')" class="w-full mt-10 py-6 bg-emerald-950 text-white rounded-[30px] font-black uppercase text-[10px] tracking-widest shadow-xl hover:bg-black transition">
+            Exportar Calendario Maestro (iCal)
+        </button>
     </div>
-    <script>lucide.createIcons();</script>
+
+    <script>
+        lucide.createIcons();
+        function toggleAccordion(id) {
+            const content = document.getElementById('content-' + id);
+            const icon = document.getElementById('icon-' + id);
+            content.classList.toggle('open');
+            // Rotar icono
+            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    </script>
 </body>
 </html>

@@ -1,64 +1,107 @@
-<script>
-    // ... (Mantén el resto del código igual, solo actualizamos la función de procesado)
+<div class="grid grid-cols-3 gap-2 bg-rose-50 p-1.5 rounded-[30px] mb-8 border border-rose-100">
+            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest">Check-ins</button>
+            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-rose-900">Clientes</button>
+            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-rose-900 italic">Config / Import</button>
+        </div>
 
-    function procesarYGuardar() {
-        const datosFinales = datosTemporales.map(r => {
-            // Unimos NOMBRE + APELLIDO 1 de tu Excel
-            const nombreCompleto = `${r['NOMBRE'] || ''} ${r['APELLIDO 1'] || ''}`.trim();
+        <div id="view-checkins" class="space-y-4">
+            <div id="lista-reservas" class="space-y-3">
+                </div>
+        </div>
+
+        <div id="view-clientes" class="hidden">
+            <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 text-[9px] font-black uppercase text-slate-400">
+                        <tr>
+                            <th class="p-4">Nombre / Email</th>
+                            <th class="p-4">Teléfono</th>
+                            <th class="p-4">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-clientes-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-import" class="hidden space-y-6">
+            <div id="drop-zone" class="bg-white border-2 border-dashed border-slate-200 rounded-[40px] p-16 text-center relative">
+                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls">
+                <div id="status-initial">
+                    <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-rose-500 mb-4"></i>
+                    <p class="serif text-xl italic font-bold italic">Importar nuevo Excel</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button id="btn-procesar" onclick="procesarYGuardar()" class="hidden w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest shadow-xl">
+                    Confirmar y añadir a la base de datos
+                </button>
+                
+                <button onclick="borrarTodaLaBaseDeDatos()" class="w-full py-4 border-2 border-rose-100 text-rose-600 rounded-[30px] font-black text-[9px] uppercase tracking-widest hover:bg-rose-50 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> Borrar todos los registros actuales
+                </button>
+            </div>
+        </div>
+
+    <script>
+        // ... (Lógica de lectura de Excel que ya teníamos)
+
+        function borrarTodaLaBaseDeDatos() {
+            if(confirm("¿Estás seguro de que quieres borrar las 860 reservas? Esta acción no se puede deshacer.")) {
+                localStorage.removeItem('reservas_ruralgesto');
+                renderizarDatos();
+                alert("Base de datos limpiada correctamente.");
+                switchTab('import');
+            }
+        }
+
+        function borrarRegistro(index) {
+            let data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
+            data.splice(index, 1); // Borra el elemento en esa posición
+            localStorage.setItem('reservas_ruralgesto', JSON.stringify(data));
+            renderizarDatos();
+        }
+
+        function renderizarDatos() {
+            const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
+            const lista = document.getElementById('lista-reservas');
+            const tablaClientes = document.getElementById('tabla-clientes-body');
             
-            // Mapeo según la foto que me has pasado
-            return {
-                cliente: nombreCompleto || 'Cliente Sin Nombre',
-                // Buscamos la columna de email (parece que es la que tiene la @)
-                email: r['yolandasan'] || r['email'] || 'Sin Email', 
-                // Buscamos la columna del teléfono (la que empieza por 6 o 34)
-                movil: r['686586692'] || r['TELEFONO'] || '000000000',
-                // Fecha de nacimiento para marketing de cumpleaños
-                nacimiento: r['25/05/1995'] || r['FECHA NACIMIENTO'] || '',
-                // Fecha de entrada
-                fechaEntrada: r['06/12/2024'] || r['ENTRADA'] || '',
-                apartamento: r['El Rinconcit'] || 'Apartamento',
-                localizador: 'RG-' + Math.floor(1000 + Math.random() * 9000)
-            };
-        });
-        
-        localStorage.setItem('reservas_ruralgesto', JSON.stringify(datosFinales));
-        alert("¡Éxito! Se han procesado los nombres, emails, teléfonos y fechas de nacimiento.");
-        switchTab('checkins');
-    }
+            lista.innerHTML = '';
+            tablaClientes.innerHTML = '';
 
-    function renderizarDatos() {
-        const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-        const lista = document.getElementById('lista-reservas');
-        const tablaClientes = document.getElementById('tabla-clientes-body');
-        
-        lista.innerHTML = '';
-        tablaClientes.innerHTML = '';
+            if(data.length === 0) {
+                lista.innerHTML = '<p class="text-center text-slate-400 text-[10px] py-20 uppercase font-black italic tracking-widest">Base de datos vacía</p>';
+                return;
+            }
 
-        data.forEach(reserva => {
-            // Render en Check-ins
-            lista.innerHTML += `
-                <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm flex justify-between items-center">
-                    <div>
-                        <h4 class="font-bold text-sm text-slate-800">${reserva.cliente}</h4>
-                        <p class="text-[9px] font-black text-rose-600 uppercase italic">${reserva.apartamento} • Entra: ${reserva.fechaEntrada}</p>
-                    </div>
-                    <button onclick="enviarWA('${reserva.movil}', '${reserva.apartamento}', '${reserva.localizador}')" class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                        <i data-lucide="send" class="w-4 h-4"></i>
-                    </button>
-                </div>`;
-            
-            // Render en Base de Datos de Clientes (con Fecha de Nacimiento)
-            tablaClientes.innerHTML += `
-                <tr class="border-b border-slate-50">
-                    <td class="p-4">
-                        <p class="font-bold text-slate-700">${reserva.cliente}</p>
-                        <p class="text-[8px] text-slate-400">${reserva.email}</p>
-                    </td>
-                    <td class="p-4 font-mono text-slate-500">${reserva.movil}</td>
-                    <td class="p-4 text-[10px] text-rose-600 font-bold italic">${reserva.nacimiento}</td>
-                </tr>`;
-        });
-        lucide.createIcons();
-    }
-</script>
+            data.forEach((reserva, index) => {
+                // Render Check-ins con papelera
+                lista.innerHTML += `
+                    <div class="bg-white p-5 rounded-[30px] border border-slate-100 shadow-sm flex justify-between items-center">
+                        <div class="flex gap-4 items-center">
+                            <button onclick="borrarRegistro(${index})" class="p-2 text-slate-300 hover:text-rose-500 transition-colors"><i data-lucide="trash" class="w-4 h-4"></i></button>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">${reserva.cliente}</h4>
+                                <p class="text-[9px] font-black text-rose-600 uppercase italic">${reserva.apartamento}</p>
+                            </div>
+                        </div>
+                        <button onclick="enviarWA('${reserva.movil}', '${reserva.apartamento}', '${reserva.localizador}')" class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
+                    </div>`;
+                
+                // Render Clientes con papelera
+                tablaClientes.innerHTML += `
+                    <tr class="border-b border-slate-50">
+                        <td class="p-4 font-bold text-slate-700">${reserva.cliente}<br><span class="text-[8px] font-normal text-slate-400">${reserva.email}</span></td>
+                        <td class="p-4 font-mono text-slate-500">${reserva.movil}</td>
+                        <td class="p-4"><button onclick="borrarRegistro(${index})" class="text-rose-400"><i data-lucide="x-circle" class="w-4 h-4"></i></button></td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+        
+        // Cargar al inicio
+        window.onload = renderizarDatos;
+    </script>

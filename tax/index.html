@@ -8,73 +8,137 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #be123c; color: white; border-color: #be123c; }
+        .tab-active { background-color: #be123c; color: white; box-shadow: 0 10px 20px -5px rgba(190, 18, 60, 0.3); }
         .pie-chart {
-            width: 220px; height: 220px; border-radius: 50%;
-            background: conic-gradient(#be123c 0% 40%, #fb7185 40% 70%, #fda4af 70% 100%);
-            margin: 0 auto; position: relative;
-            box-shadow: 0 10px 25px -5px rgba(190, 18, 60, 0.2);
+            width: 200px; height: 200px; border-radius: 50%;
+            background: conic-gradient(#be123c 0% 45%, #fb7185 45% 75%, #fda4af 75% 100%);
+            position: relative; margin: 0 auto;
         }
-        .pie-chart::before { content: ""; position: absolute; inset: 45px; background: white; border-radius: 50%; }
+        .pie-chart::after { content: ""; position: absolute; inset: 40px; background: white; border-radius: 50%; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
     <div class="max-w-4xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
             <div class="flex items-center gap-4">
-                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-slate-100">
-                    <i data-lucide="arrow-left"></i>
-                </button>
-                <div>
-                    <h2 class="serif text-3xl italic text-rose-950 font-bold">Asistente Fiscal</h2>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">El Rinconcito de Toni</p>
-                </div>
+                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-slate-100"><i data-lucide="arrow-left"></i></button>
+                <h2 class="serif text-3xl italic text-rose-950 font-bold">Asistente Fiscal</h2>
             </div>
-            <div class="flex bg-slate-100 p-1.5 rounded-[20px] border border-slate-200">
-                <button onclick="changeTime('mes')" id="time-mes" class="px-6 py-3 text-[9px] font-black uppercase rounded-[15px] bg-white shadow-sm text-slate-900 transition-all">Mensual</button>
-                <button onclick="changeTime('año')" id="time-año" class="px-6 py-3 text-[9px] font-black uppercase rounded-[15px] text-slate-400 transition-all">Anual</button>
+            <div class="flex bg-slate-200/50 p-1 rounded-[22px] border border-slate-200">
+                <button onclick="setTime('mes')" id="t-mes" class="px-6 py-3 text-[10px] font-black uppercase rounded-[18px] bg-white shadow-sm text-slate-900 transition-all">Mensual</button>
+                <button onclick="setTime('año')" id="t-año" class="px-6 py-3 text-[10px] font-black uppercase rounded-[18px] text-slate-500 transition-all">Anual</button>
             </div>
         </header>
 
-        <div class="grid grid-cols-3 gap-2 mb-8 bg-white p-1 rounded-[25px] shadow-sm border border-slate-100">
-            <button onclick="switchTab('resumen')" id="tab-resumen" class="tab-btn active py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest transition-all border border-transparent">Resumen</button>
-            <button onclick="switchTab('graficos')" id="tab-graficos" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest transition-all border border-transparent">Gráficos</button>
-            <button onclick="switchTab('declara')" id="tab-declara" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest transition-all border border-transparent">Declaración</button>
+        <div class="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-[30px] mb-8 shadow-sm border border-slate-100">
+            <button onclick="setTab('resumen')" id="tab-resumen" class="tab-active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest transition-all">Resumen</button>
+            <button onclick="setTab('graficos')" id="tab-graficos" class="py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest text-slate-500 transition-all">Gráficos</button>
+            <button onclick="setTab('declara')" id="tab-declara" class="py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest text-slate-500 transition-all">Declaración</button>
         </div>
 
         <div id="view-resumen" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-8 rounded-[40px] border border-emerald-100 text-center shadow-sm">
-                    <p class="text-[9px] font-black uppercase text-slate-400 mb-2 italic">Ingresos Brutos (<span class="current-time">Mes</span>)</p>
-                    <p id="ingresos-val" class="serif text-5xl italic font-bold text-emerald-700">4.580€</p>
+                <div onclick="toggleDetails('det-ingresos')" class="bg-white p-8 rounded-[45px] border border-emerald-100 shadow-sm cursor-pointer hover:border-emerald-300 transition-all">
+                    <p class="text-[10px] font-black uppercase text-slate-400 mb-2 italic text-center">Ingresos Brutos (<span class="lbl-time">Enero</span>)</p>
+                    <p id="val-ingresos" class="serif text-5xl italic font-bold text-emerald-700 text-center">4.580€</p>
+                    <p class="text-[9px] text-center text-emerald-500 font-bold mt-2 uppercase tracking-tighter">Ver 12 Reservas ↓</p>
                 </div>
-                <div class="bg-white p-8 rounded-[40px] border border-rose-100 text-center shadow-sm">
-                    <p class="text-[9px] font-black uppercase text-slate-400 mb-2 italic">Gastos Detectados</p>
-                    <p id="gastos-val" class="serif text-5xl italic font-bold text-rose-600">1.120€</p>
+                <div onclick="toggleDetails('det-gastos')" class="bg-white p-8 rounded-[45px] border border-rose-100 shadow-sm cursor-pointer hover:border-rose-300 transition-all">
+                    <p class="text-[10px] font-black uppercase text-slate-400 mb-2 italic text-center">Gastos Totales</p>
+                    <p id="val-gastos" class="serif text-5xl italic font-bold text-rose-600 text-center">1.120€</p>
+                    <p class="text-[9px] text-center text-rose-400 font-bold mt-2 uppercase tracking-tighter">Ver Detalle ↓</p>
                 </div>
             </div>
-            <div class="bg-slate-900 p-8 rounded-[40px] text-white flex justify-between items-center shadow-xl">
-                <div><p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Neto</p><p id="neto-val" class="serif text-3xl italic text-emerald-400">3.460€</p></div>
-                <i data-lucide="trending-up" class="text-emerald-500 w-10 h-10"></i>
+
+            <div class="bg-slate-900 p-8 rounded-[45px] text-white flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl">
+                <div class="text-center md:text-left">
+                    <p class="text-[10px] font-black uppercase text-slate-400 tracking-[0.3em]">IVA a Liquidar (10%)</p>
+                    <p id="val-iva" class="serif text-4xl italic text-amber-400 font-bold">458,00€</p>
+                </div>
+                <div class="h-px w-full md:w-px md:h-12 bg-slate-700"></div>
+                <div class="text-center md:text-right">
+                    <p class="text-[10px] font-black uppercase text-slate-400 tracking-[0.3em]">Beneficio Limpio</p>
+                    <p id="val-neto" class="serif text-4xl italic text-emerald-400 font-bold">3.002,00€</p>
+                </div>
+            </div>
+
+            <div id="det-ingresos" class="hidden animate-in slide-in-from-top-4 duration-300">
+                <div class="bg-white rounded-[35px] border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400">
+                            <tr><th class="p-4">Fecha</th><th class="p-4">Apartamento</th><th class="p-4">Importe</th></tr>
+                        </thead>
+                        <tbody id="list-ingresos" class="divide-y divide-slate-50 font-bold">
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <div id="view-graficos" class="hidden">
-            <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm text-center">
-                <div class="pie-chart mb-8"></div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-                    <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-[9px] font-black text-rose-600 uppercase">La Tirolina</p><p id="val-t" class="font-bold">1.832€ (40%)</p></div>
-                    <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-[9px] font-black text-rose-400 uppercase">La Ermita</p><p id="val-e" class="font-bold">1.374€ (30%)</p></div>
-                    <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-[9px] font-black text-rose-300 uppercase">Los Almendros</p><p id="val-a" class="font-bold">1.374€ (30%)</p></div>
+            <div class="bg-white p-10 rounded-[50px] border border-slate-100 shadow-sm">
+                <h3 class="serif text-2xl font-bold italic text-center text-rose-950 mb-10">Rendimiento por Propiedad</h3>
+                <div class="flex flex-col md:flex-row items-center justify-around gap-12">
+                    <div class="pie-chart shadow-2xl"></div>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <span class="w-4 h-4 rounded-full bg-[#be123c]"></span>
+                            <div><p class="text-[9px] font-black uppercase text-slate-400">La Tirolina</p><p class="font-bold text-lg" id="g-t">2.061€</p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="w-4 h-4 rounded-full bg-[#fb7185]"></span>
+                            <div><p class="text-[9px] font-black uppercase text-slate-400">La Ermita</p><p class="font-bold text-lg" id="g-e">1.374€</p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="w-4 h-4 rounded-full bg-[#fda4af]"></span>
+                            <div><p class="text-[9px] font-black uppercase text-slate-400">Los Almendros</p><p class="font-bold text-lg" id="g-a">1.145€</p></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="view-declara" class="hidden">
-            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm space-y-6">
-                <h4 class="serif text-xl italic font-bold text-rose-950">Gastos Deducibles Renta</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="number" placeholder="Amortización (3%)" class="p-4 bg-slate-50 rounded-2xl text-xs font-bold outline-none border border-transparent focus:border-rose-200">
-                    <input type="number" placeholder="IBI y Tasas" class="p
+        <div id="view-declara" class="hidden space-y-6">
+            <div class="bg-rose-950 p-10 rounded-[50px] text-white shadow-2xl">
+                <h3 class="serif text-3xl italic mb-6">Borrador Renta 2026</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-white/10 p-4 rounded-2xl">
+                            <label class="text-[9px] font-black uppercase text-rose-300 italic block mb-1">Amortización Inmueble (3%)</label>
+                            <input type="number" id="r-amort" placeholder="Calculado: 1.450€" class="bg-transparent border-b border-rose-400 w-full outline-none font-bold text-sm">
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-2xl">
+                            <label class="text-[9px] font-black uppercase text-rose-300 italic block mb-1">Intereses de Hipoteca</label>
+                            <input type="number" id="r-hipo" placeholder="Ej: 840€" class="bg-transparent border-b border-rose-400 w-full outline-none font-bold text-sm">
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-white/10 p-4 rounded-2xl">
+                            <label class="text-[9px] font-black uppercase text-rose-300 italic block mb-1">Seguros (RC y Hogar)</label>
+                            <input type="number" id="r-seg" placeholder="Ej: 320€" class="bg-transparent border-b border-rose-400 w-full outline-none font-bold text-sm">
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-2xl">
+                            <label class="text-[9px] font-black uppercase text-rose-300 italic block mb-1">IBI y Tasas Basuras</label>
+                            <input type="number" id="r-ibi" placeholder="Ej: 410€" class="bg-transparent border-b border-rose-400 w-full outline-none font-bold text-sm">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="sendToGestor()" class="w-full mt-8 py-6 bg-white text-rose-950 rounded-[30px] font-black text-xs uppercase tracking-[0.2em] shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3">
+                    <i data-lucide="file-text"></i> Generar y Enviar al Gestor
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        let currentMode = 'mes';
+
+        function setTab(tab) {
+            document.querySelectorAll('#view-resumen, #view-graficos, #view-declara').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(b => { b.classList.remove('tab-active'); b.classList.add('text-slate-500'); });
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('tab-active');
+            document.getElementById('tab

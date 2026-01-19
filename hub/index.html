@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub RuralGesto | Gestión Integral</title>
+    <title>RuralGesto | Hub de Gestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -11,99 +11,77 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .card-shadow { box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); }
-        .card-active:active { scale: 0.98; }
+        .property-tag { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
     </style>
 </head>
 <body class="p-6 md:p-12 pb-24">
     <div class="max-w-6xl mx-auto">
-        <header class="mb-12 flex justify-between items-end">
+        <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>
-                <h1 class="serif text-6xl italic text-rose-950 font-bold mb-2">RuralGesto</h1>
-                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Sistema de Gestión de Propiedades v2.0</p>
+                <div class="flex items-center gap-3 mb-2">
+                    <h1 class="serif text-6xl italic text-rose-950 font-bold">RuralGesto</h1>
+                    <span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-[10px] font-black uppercase tracking-widest">Pro Edition</span>
+                </div>
+                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Panel de Control: Can Fanga · Masía El Olivo</p>
             </div>
-            <div class="hidden md:block text-right">
-                <p class="text-[10px] font-black uppercase text-rose-600">Estado del Sistema</p>
-                <p class="text-xs font-bold text-slate-800">● 100% Operativo</p>
+            <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4">
+                <div class="text-right">
+                    <p class="text-[9px] font-black text-slate-400 uppercase">Sincronización</p>
+                    <p class="text-xs font-bold text-emerald-600">En línea ahora</p>
+                </div>
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
             </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <div onclick="location.href='checkin/index.html'" class="card-active group cursor-pointer bg-white p-8 rounded-[45px] border border-slate-100 card-shadow hover:bg-rose-600 transition-all duration-500">
+            <div onclick="location.href='calendar/index.html'" class="group cursor-pointer bg-white p-8 rounded-[50px] border border-slate-100 card-shadow hover:border-blue-200 transition-all">
                 <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-rose-50 rounded-2xl group-hover:bg-rose-500 transition-colors">
-                        <i data-lucide="scan" class="text-rose-600 group-hover:text-white w-7 h-7"></i>
+                    <div class="p-4 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-all">
+                        <i data-lucide="calendar" class="text-blue-600 group-hover:text-white w-7 h-7"></i>
                     </div>
-                    <span class="text-[9px] font-black uppercase text-rose-500 group-hover:text-rose-200 tracking-widest">Activo</span>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-rose-950 group-hover:text-white mb-2">Check-in Scan</h3>
-                <p class="text-slate-500 group-hover:text-rose-100 text-xs">Escaneo DNI y Parte de Entrada oficial.</p>
-            </div>
-
-            <div onclick="location.href='tax/index.html'" class="card-active group cursor-pointer bg-white p-8 rounded-[45px] border border-slate-100 card-shadow hover:bg-slate-900 transition-all duration-500">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-emerald-50 rounded-2xl group-hover:bg-emerald-500 transition-colors">
-                        <i data-lucide="pie-chart" class="text-emerald-600 group-hover:text-white w-7 h-7"></i>
-                    </div>
-                    <span class="text-[9px] font-black uppercase text-emerald-500 group-hover:text-emerald-200 tracking-widest">Activo</span>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-rose-950 group-hover:text-white mb-2">Asistente Fiscal</h3>
-                <p class="text-slate-500 group-hover:text-slate-400 text-xs">Control de gastos e ingresos 2026.</p>
-            </div>
-
-            <div onclick="alert('Abriendo Calendario Maestro...')" class="card-active group cursor-pointer bg-white p-8 rounded-[45px] border border-slate-100 card-shadow hover:border-rose-200 transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-blue-50 rounded-2xl">
-                        <i data-lucide="calendar" class="text-blue-600 w-7 h-7"></i>
-                    </div>
+                    <i data-lucide="external-link" class="w-4 h-4 text-slate-200"></i>
                 </div>
                 <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Calendario</h3>
-                <p class="text-slate-500 text-xs">Disponibilidad y reservas confirmadas.</p>
+                <p class="text-slate-500 text-xs">Gestión de fechas y disponibilidad real por propiedad.</p>
             </div>
 
-            <div onclick="alert('Abriendo Editor Web...')" class="card-active group cursor-pointer bg-white p-8 rounded-[45px] border border-slate-100 card-shadow hover:border-rose-200 transition-all">
+            <div onclick="location.href='checkin/index.html'" class="group cursor-pointer bg-rose-600 p-8 rounded-[50px] card-shadow hover:bg-rose-700 transition-all">
                 <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-amber-50 rounded-2xl">
-                        <i data-lucide="globe" class="text-amber-600 w-7 h-7"></i>
+                    <div class="p-4 bg-white/10 rounded-2xl">
+                        <i data-lucide="scan" class="text-white w-7 h-7"></i>
+                    </div>
+                    <span class="text-[9px] font-black uppercase text-rose-200 tracking-widest">Acceso Rápido</span>
+                </div>
+                <h3 class="serif text-2xl font-bold italic text-white mb-2">Check-in Scan</h3>
+                <p class="text-rose-100 text-xs text-opacity-80">Escanear DNI y envío de enlaces SES.HOSPEDAJE.</p>
+            </div>
+
+            <div onclick="location.href='tax/index.html'" class="group cursor-pointer bg-slate-900 p-8 rounded-[45px] card-shadow hover:bg-black transition-all">
+                <div class="flex justify-between items-start mb-10">
+                    <div class="p-4 bg-emerald-500 rounded-2xl">
+                        <i data-lucide="pie-chart" class="text-white w-7 h-7"></i>
+                    </div>
+                </div>
+                <h3 class="serif text-2xl font-bold italic text-white mb-2">Asistente Fiscal</h3>
+                <p class="text-slate-400 text-xs">Gráficos de ingresos, gastos y borrador de renta.</p>
+            </div>
+
+            <div onclick="location.href='web/index.html'" class="group cursor-pointer bg-white p-8 rounded-[50px] border border-slate-100 card-shadow hover:border-amber-200 transition-all">
+                <div class="flex justify-between items-start mb-10">
+                    <div class="p-4 bg-amber-50 rounded-2xl group-hover:bg-amber-500 transition-all">
+                        <i data-lucide="globe" class="text-amber-600 group-hover:text-white w-7 h-7"></i>
                     </div>
                 </div>
                 <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Web Engine</h3>
-                <p class="text-slate-500 text-xs">Gestión del motor de reservas propio.</p>
+                <p class="text-slate-500 text-xs">Editor de contenido y motor de reservas directas.</p>
             </div>
 
-            <div onclick="alert('Sincronizando con Booking, Airbnb...')" class="card-active group cursor-pointer bg-white p-8 rounded-[45px] border border-slate-100 card-shadow hover:border-rose-200 transition-all">
+            <div onclick="location.href='channel/index.html'" class="group cursor-pointer bg-white p-8 rounded-[50px] border border-slate-100 card-shadow hover:border-indigo-200 transition-all">
                 <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-indigo-50 rounded-2xl">
-                        <i data-lucide="refresh-cw" class="text-indigo-600 w-7 h-7"></i>
+                    <div class="p-4 bg-indigo-50 rounded-2xl group-hover:bg-indigo-600 transition-all">
+                        <i data-lucide="refresh-cw" class="text-indigo-600 group-hover:text-white w-7 h-7"></i>
                     </div>
                 </div>
                 <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Channel Manager</h3>
-                <p class="text-slate-500 text-xs">Sincronización de OTAs y portales.</p>
-            </div>
-
-            <div onclick="alert('Entrando a la Comunidad...')" class="card-active group cursor-pointer bg-white p-8 rounded-[45px] border border-slate-100 card-shadow hover:border-rose-200 transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-rose-50 rounded-2xl">
-                        <i data-lucide="users" class="text-rose-600 w-7 h-7"></i>
-                    </div>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Club Propietarios</h3>
-                <p class="text-slate-500 text-xs">Servicios exclusivos y formación.</p>
-            </div>
-
-        </div>
-
-        <footer class="mt-20 border-t border-slate-100 pt-10 text-center">
-            <div class="flex justify-center gap-8 mb-6">
-                <div class="text-center"><p class="text-xl font-bold text-rose-950">12</p><p class="text-[8px] font-black uppercase text-slate-400">Reservas Mes</p></div>
-                <div class="text-center"><p class="text-xl font-bold text-rose-950">84%</p><p class="text-[8px] font-black uppercase text-slate-400">Ocupación</p></div>
-            </div>
-            <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.5em]">© 2026 RuralGesto Ecosystem</p>
-        </footer>
-    </div>
-
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+                <p class="text-slate-500 text-xs

@@ -3,85 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Hub de Gestión</title>
+    <title>RuralGesto | Panel de Toni</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .card-shadow { box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); }
-        .property-tag { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
     </style>
 </head>
-<body class="p-6 md:p-12 pb-24">
+<body class="p-6 md:p-12">
     <div class="max-w-6xl mx-auto">
-        <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        
+        <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
-                <div class="flex items-center gap-3 mb-2">
-                    <h1 class="serif text-6xl italic text-rose-950 font-bold">RuralGesto</h1>
-                    <span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-[10px] font-black uppercase tracking-widest">Pro Edition</span>
-                </div>
-                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Panel de Control: Can Fanga · Masía El Olivo</p>
+                <h1 class="serif text-6xl italic text-rose-950 font-bold mb-2">RuralGesto</h1>
+                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Gestión Profesional: El Rinconcito</p>
             </div>
-            <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4">
-                <div class="text-right">
-                    <p class="text-[9px] font-black text-slate-400 uppercase">Sincronización</p>
-                    <p class="text-xs font-bold text-emerald-600">En línea ahora</p>
+            
+            <div class="flex flex-wrap gap-2">
+                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[7px] font-black text-slate-400 uppercase tracking-tighter">Apt 1</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">La Tirolina</p>
                 </div>
-                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[7px] font-black text-slate-400 uppercase tracking-tighter">Apt 2</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">La Ermita</p>
+                </div>
+                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[7px] font-black text-slate-400 uppercase tracking-tighter">Apt 3</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">Los Almendros</p>
+                </div>
             </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <div onclick="location.href='calendar/index.html'" class="group cursor-pointer bg-white p-8 rounded-[50px] border border-slate-100 card-shadow hover:border-blue-200 transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-blue-50 rounded-2xl group-hover:bg-blue-600 transition-all">
-                        <i data-lucide="calendar" class="text-blue-600 group-hover:text-white w-7 h-7"></i>
+            <div onclick="location.href='checkin/index.html'" class="group cursor-pointer bg-rose-600 p-10 rounded-[50px] card-shadow hover:bg-rose-700 transition-all text-white">
+                <div class="flex justify-between items-start mb-12">
+                    <div class="p-4 bg-white/10 rounded-3xl">
+                        <i data-lucide="scan" class="w-8 h-8 text-white"></i>
                     </div>
-                    <i data-lucide="external-link" class="w-4 h-4 text-slate-200"></i>
                 </div>
-                <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Calendario</h3>
-                <p class="text-slate-500 text-xs">Gestión de fechas y disponibilidad real por propiedad.</p>
+                <h3 class="serif text-3xl font-bold italic mb-2">Check-in Scan</h3>
+                <p class="text-rose-100 text-sm">Escaneo de DNI y partes oficiales SES.HOSPEDAJE.</p>
             </div>
 
-            <div onclick="location.href='checkin/index.html'" class="group cursor-pointer bg-rose-600 p-8 rounded-[50px] card-shadow hover:bg-rose-700 transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-white/10 rounded-2xl">
-                        <i data-lucide="scan" class="text-white w-7 h-7"></i>
-                    </div>
-                    <span class="text-[9px] font-black uppercase text-rose-200 tracking-widest">Acceso Rápido</span>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-white mb-2">Check-in Scan</h3>
-                <p class="text-rose-100 text-xs text-opacity-80">Escanear DNI y envío de enlaces SES.HOSPEDAJE.</p>
-            </div>
-
-            <div onclick="location.href='tax/index.html'" class="group cursor-pointer bg-slate-900 p-8 rounded-[45px] card-shadow hover:bg-black transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-emerald-500 rounded-2xl">
-                        <i data-lucide="pie-chart" class="text-white w-7 h-7"></i>
-                    </div>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-white mb-2">Asistente Fiscal</h3>
-                <p class="text-slate-400 text-xs">Gráficos de ingresos, gastos y borrador de renta.</p>
-            </div>
-
-            <div onclick="location.href='web/index.html'" class="group cursor-pointer bg-white p-8 rounded-[50px] border border-slate-100 card-shadow hover:border-amber-200 transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-amber-50 rounded-2xl group-hover:bg-amber-500 transition-all">
-                        <i data-lucide="globe" class="text-amber-600 group-hover:text-white w-7 h-7"></i>
-                    </div>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Web Engine</h3>
-                <p class="text-slate-500 text-xs">Editor de contenido y motor de reservas directas.</p>
-            </div>
-
-            <div onclick="location.href='channel/index.html'" class="group cursor-pointer bg-white p-8 rounded-[50px] border border-slate-100 card-shadow hover:border-indigo-200 transition-all">
-                <div class="flex justify-between items-start mb-10">
-                    <div class="p-4 bg-indigo-50 rounded-2xl group-hover:bg-indigo-600 transition-all">
-                        <i data-lucide="refresh-cw" class="text-indigo-600 group-hover:text-white w-7 h-7"></i>
-                    </div>
-                </div>
-                <h3 class="serif text-2xl font-bold italic text-rose-950 mb-2">Channel Manager</h3>
-                <p class="text-slate-500 text-xs
+            <div onclick="location.href='tax/index.html'" class="group cursor-pointer bg-slate-900 p-10 rounded-[50px] card-shadow hover:bg-black transition-all text-white">
+                <div class="flex justify-between items-start mb-12">

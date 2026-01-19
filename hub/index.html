@@ -3,117 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Panel de Control</title>
+    <title>RuralGesto | Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .card-grad { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-grad:hover { transform: translateY(-5px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
-        .glass-tag { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); }
+        .app-card { 
+            transition: all 0.3s ease; 
+            background: white;
+            border: 1px solid #f1f1f1;
+        }
+        .app-card:hover { 
+            border-color: #e2e8f0;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.03);
+        }
+        .icon-box {
+            background-color: #f8fafc;
+            color: #64748b;
+        }
     </style>
 </head>
-<body class="p-4 md:p-12 pb-24">
+<body class="p-6 md:p-16 pb-32">
     <div class="max-w-6xl mx-auto">
-        <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <header class="mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
             <div>
-                <h1 class="serif text-7xl italic text-rose-950 font-bold mb-3 tracking-tighter">RuralGesto</h1>
-                <div class="flex items-center gap-3">
-                    <span class="flex h-3 w-3 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <p class="text-[11px] font-black uppercase tracking-[0.4em] text-slate-400">Panel de Control · El Rinconcito de Toni</p>
+                <h1 class="serif text-7xl italic text-rose-950 font-medium mb-4 tracking-tight">RuralGesto</h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Panel de Gestión Profesional</span>
+                    <span class="h-px w-12 bg-slate-200"></span>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">2026</p>
                 </div>
             </div>
             
-            <div class="flex flex-wrap gap-3">
-                <div class="px-5 py-3 bg-white rounded-[22px] shadow-sm border border-slate-100">
-                    <p class="text-[8px] font-black text-slate-300 uppercase mb-1">Apt 1</p>
-                    <p class="text-sm font-bold text-rose-950 serif italic">La Tirolina</p>
-                </div>
-                <div class="px-5 py-3 bg-white rounded-[22px] shadow-sm border border-slate-100">
-                    <p class="text-[8px] font-black text-slate-300 uppercase mb-1">Apt 2</p>
-                    <p class="text-sm font-bold text-rose-950 serif italic">La Ermita</p>
-                </div>
-                <div class="px-5 py-3 bg-white rounded-[22px] shadow-sm border border-slate-100">
-                    <p class="text-[8px] font-black text-slate-300 uppercase mb-1">Apt 3</p>
-                    <p class="text-sm font-bold text-rose-950 serif italic">Los Almendros</p>
+            <div class="flex gap-2">
+                <div class="px-5 py-3 border border-slate-100 rounded-2xl bg-white shadow-sm">
+                    <p class="text-[8px] font-black text-slate-300 uppercase mb-1 tracking-widest">Estado</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">3 Propiedades Activas</p>
                 </div>
             </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <div onclick="location.href='../checkin/index.html'" class="card-grad group cursor-pointer bg-gradient-to-br from-rose-500 to-rose-700 p-10 rounded-[55px] shadow-2xl text-white">
-                <div class="flex justify-between items-start mb-14">
-                    <div class="p-5 bg-white/20 rounded-[24px] glass-tag">
-                        <i data-lucide="scan-line" class="w-8 h-8"></i>
-                    </div>
-                    <span class="text-[10px] font-black uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full">Operativo</span>
+            <div onclick="location.href='../checkin/index.html'" class="app-card group cursor-pointer p-10 rounded-[40px]">
+                <div class="icon-box p-5 rounded-3xl w-fit mb-12 group-hover:bg-rose-50 group-hover:text-rose-600 transition-colors">
+                    <i data-lucide="scan" class="w-8 h-8"></i>
                 </div>
-                <h3 class="serif text-3xl font-bold italic mb-2 tracking-tight">Check-in Scan</h3>
-                <p class="text-rose-100/80 text-sm">Escaneo de documentos y partes oficiales.</p>
+                <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">Check-in Scan</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Registro legal de viajeros y envío automatizado de partes.</p>
             </div>
 
-            <div onclick="location.href='../tax/index.html'" class="card-grad group cursor-pointer bg-gradient-to-br from-emerald-500 to-teal-700 p-10 rounded-[55px] shadow-2xl text-white">
-                <div class="flex justify-between items-start mb-14">
-                    <div class="p-5 bg-white/20 rounded-[24px] glass-tag">
-                        <i data-lucide="pie-chart" class="w-8 h-8"></i>
-                    </div>
+            <div onclick="location.href='../tax/index.html'" class="app-card group cursor-pointer p-10 rounded-[40px]">
+                <div class="icon-box p-5 rounded-3xl w-fit mb-12 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
+                    <i data-lucide="pie-chart" class="w-8 h-8"></i>
                 </div>
-                <h3 class="serif text-3xl font-bold italic mb-2 tracking-tight">Asistente Fiscal</h3>
-                <p class="text-emerald-100/80 text-sm">Control de ingresos, gastos e IVA.</p>
+                <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">Asistente Fiscal</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Control de rendimiento neto, IVA y liquidación de impuestos.</p>
             </div>
 
-            <div onclick="location.href='../calendar/index.html'" class="card-grad group cursor-pointer bg-gradient-to-br from-blue-600 to-indigo-800 p-10 rounded-[55px] shadow-2xl text-white">
-                <div class="flex justify-between items-start mb-14">
-                    <div class="p-5 bg-white/20 rounded-[24px] glass-tag">
-                        <i data-lucide="calendar-days" class="w-8 h-8"></i>
-                    </div>
+            <div onclick="location.href='../calendar/index.html'" class="app-card group cursor-pointer p-10 rounded-[40px]">
+                <div class="icon-box p-5 rounded-3xl w-fit mb-12 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                    <i data-lucide="calendar" class="w-8 h-8"></i>
                 </div>
-                <h3 class="serif text-3xl font-bold italic mb-2 tracking-tight">Calendario</h3>
-                <p class="text-blue-100/80 text-sm">Disponibilidad y reservas en tiempo real.</p>
+                <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">Calendario</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Sincronización centralizada de disponibilidad y estancias.</p>
             </div>
 
-            <div onclick="location.href='../web/index.html'" class="card-grad group cursor-pointer bg-gradient-to-br from-amber-400 to-orange-600 p-10 rounded-[55px] shadow-2xl text-white">
-                <div class="flex justify-between items-start mb-14">
-                    <div class="p-5 bg-white/20 rounded-[24px] glass-tag">
-                        <i data-lucide="globe" class="w-8 h-8"></i>
-                    </div>
+            <div onclick="location.href='../web/index.html'" class="app-card group cursor-pointer p-10 rounded-[40px]">
+                <div class="icon-box p-5 rounded-3xl w-fit mb-12 group-hover:bg-amber-50 group-hover:text-amber-600 transition-colors">
+                    <i data-lucide="globe" class="w-8 h-8"></i>
                 </div>
-                <h3 class="serif text-3xl font-bold italic mb-2 tracking-tight">Web Engine</h3>
-                <p class="text-amber-50/80 text-sm">Venta directa y marketing digital.</p>
+                <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">Web Engine</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Motor de reservas directas y posicionamiento de marca.</p>
             </div>
 
-            <div onclick="location.href='../channel/index.html'" class="card-grad group cursor-pointer bg-gradient-to-br from-violet-600 to-purple-900 p-10 rounded-[55px] shadow-2xl text-white">
-                <div class="flex justify-between items-start mb-14">
-                    <div class="p-5 bg-white/20 rounded-[24px] glass-tag">
-                        <i data-lucide="layers" class="w-8 h-8"></i>
-                    </div>
+            <div onclick="location.href='../channel/index.html'" class="app-card group cursor-pointer p-10 rounded-[40px]">
+                <div class="icon-box p-5 rounded-3xl w-fit mb-12 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+                    <i data-lucide="refresh-cw" class="w-8 h-8"></i>
                 </div>
-                <h3 class="serif text-3xl font-bold italic mb-2 tracking-tight">Channel Manager</h3>
-                <p class="text-violet-100/80 text-sm">Sincronización con Booking y Airbnb.</p>
+                <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">Channel Manager</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Conexión en tiempo real con Airbnb, Booking y Expedia.</p>
             </div>
 
-            <div onclick="location.href='../club/index.html'" class="card-grad group cursor-pointer bg-gradient-to-br from-slate-700 to-slate-900 p-10 rounded-[55px] shadow-2xl text-white">
-                <div class="flex justify-between items-start mb-14">
-                    <div class="p-5 bg-white/20 rounded-[24px] glass-tag">
-                        <i data-lucide="crown" class="w-8 h-8"></i>
-                    </div>
+            <div onclick="location.href='../club/index.html'" class="app-card group cursor-pointer p-10 rounded-[40px]">
+                <div class="icon-box p-5 rounded-3xl w-fit mb-12 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                    <i data-lucide="award" class="w-8 h-8"></i>
                 </div>
-                <h3 class="serif text-3xl font-bold italic mb-2 tracking-tight">El Club Pro</h3>
-                <p class="text-slate-300 text-sm">Servicios exclusivos RuralGesto.</p>
+                <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">El Club Pro</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Comunidad exclusiva y servicios preferentes RuralGesto.</p>
             </div>
 
         </div>
 
-        <footer class="mt-24 text-center">
-            <p class="text-[10px] font-black uppercase text-slate-300 tracking-[0.8em]">© 2026 RuralGesto Ecosystem</p>
+        <footer class="mt-32 pt-12 border-t border-slate-100 flex justify-between items-center">
+            <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.5em]">© RuralGesto Ecosystem</p>
+            <div class="flex gap-6">
+                <i data-lucide="instagram" class="w-4 h-4 text-slate-300"></i>
+                <i data-lucide="linkedin" class="w-4 h-4 text-slate-300"></i>
+            </div>
         </footer>
     </div>
-
-    <script>
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

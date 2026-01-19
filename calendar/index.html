@@ -5,60 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Master Cal | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #fff; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #1a1a1a; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .day-cell { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer; border: 1.5px solid #f8f8f8; position: relative; }
-        .occupied { background: #000 !important; color: #fff !important; border-color: #000; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; padding: 20px; align-items: center; justify-content: center; }
-        .input-cal { width: 100%; padding: 12px; border-radius: 12px; background: #f4f4f4; border: none; margin-bottom: 10px; font-weight: 600; }
+        .day-cell { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 18px; font-size: 14px; font-weight: 800; cursor: pointer; border: 1px solid #f0f0f0; transition: 0.2s; position: relative; }
+        .occupied { background: #ef4444 !important; color: white !important; border-color: #ef4444; }
+        .sync-booking { border-bottom: 4px solid #003580; } /* Marca visual para Booking */
+        .sync-airbnb { border-bottom: 4px solid #FF5A5F; }  /* Marca visual para Airbnb */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; padding: 20px; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .input-cal { width: 100%; padding: 14px; border-radius: 15px; background: #f4f4f4; border: 1px solid #eee; margin-bottom: 12px; font-weight: 700; outline: none; }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto pb-32">
 
     <header class="mb-8 flex justify-between items-center">
         <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-100 px-4 py-2 rounded-full">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase text-blue-600">Calendario Pro</h1>
+        <div class="text-right">
+            <h1 class="italic-black text-xl uppercase text-blue-600 leading-none">Calendario</h1>
+            <p class="text-[9px] font-black text-gray-400 uppercase italic">Gestión de Reservas VUT</p>
+        </div>
     </header>
 
-    <div id="month-display" class="flex justify-between items-center mb-8 bg-gray-50 p-4 rounded-[30px]">
-        <button onclick="changeMonth(-1)" class="font-black">←</button>
-        <div class="text-center">
-            <h2 id="month-name" class="italic-black text-2xl uppercase">Enero</h2>
-            <p id="year-name" class="text-[10px] font-bold text-gray-400 uppercase">2026</p>
+    <div class="bg-slate-900 text-white p-6 rounded-[35px] mb-8 shadow-xl">
+        <p class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 italic">Propiedad Activa</p>
+        <h2 class="text-2xl italic-black uppercase italic">Vivienda Turística Principal</h2>
+        <div class="flex gap-3 mt-4">
+            <div class="flex items-center gap-1 text-[8px] font-bold uppercase border border-white/20 px-2 py-1 rounded-md">
+                <span class="w-2 h-2 bg-red-500 rounded-full"></span> Manual
+            </div>
+            <div class="flex items-center gap-1 text-[8px] font-bold uppercase border border-white/20 px-2 py-1 rounded-md opacity-50">
+                <span class="w-2 h-2 bg-blue-500 rounded-full"></span> iCal Sync
+            </div>
         </div>
-        <button onclick="changeMonth(1)" class="font-black">→</button>
+    </div>
+
+    <div class="flex justify-between items-center mb-6 px-2">
+        <button onclick="changeMonth(-1)" class="w-10 h-10 bg-gray-100 rounded-full font-black">←</button>
+        <div class="text-center">
+            <h2 id="month-name" class="italic-black text-2xl uppercase italic leading-none">Enero</h2>
+            <p id="year-name" class="text-[10px] font-black text-gray-400 uppercase tracking-widest">2026</p>
+        </div>
+        <button onclick="changeMonth(1)" class="w-10 h-10 bg-gray-100 rounded-full font-black">→</button>
     </div>
 
     <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-10"></div>
 
     <div id="reserva-modal" class="modal">
         <div class="bg-white w-full max-w-sm p-8 rounded-[40px] shadow-2xl">
-            <h3 class="italic-black text-xl uppercase mb-6 text-blue-600 italic">Nueva Reserva</h3>
+            <h3 class="italic-black text-xl uppercase mb-6 text-blue-600 italic">Registrar Reserva</h3>
             
             <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Huésped</label>
-            <input type="text" id="res-nombre" placeholder="Nombre completo" class="input-cal">
+            <input type="text" id="res-nombre" placeholder="Nombre del cliente" class="input-cal">
 
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Monto Total (€)</label>
-            <input type="number" id="res-pago" placeholder="Ej: 350" class="input-cal">
-
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Plataforma</label>
-            <select id="res-canal" class="input-cal">
-                <option value="0">Directa</option>
-                <option value="15">Booking (15%)</option>
-                <option value="18">Airbnb (18%)</option>
-            </select>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Importe Bruto (€)</label>
+                    <input type="number" id="res-pago" placeholder="Ej: 450" class="input-cal">
+                </div>
+                <div>
+                    <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Origen</label>
+                    <select id="res-canal" class="input-cal">
+                        <option value="0">Directa</option>
+                        <option value="15">Booking (15%)</option>
+                        <option value="18">Airbnb (18%)</option>
+                    </select>
+                </div>
+            </div>
 
             <div class="flex gap-2 mt-4">
                 <button onclick="closeModal()" class="flex-1 p-4 bg-gray-100 rounded-2xl font-black italic uppercase text-xs">Cancelar</button>
-                <button onclick="confirmarReserva()" class="flex-1 p-4 bg-blue-600 text-white rounded-2xl font-black italic uppercase text-xs">Guardar</button>
+                <button onclick="confirmarReserva()" class="flex-1 p-4 bg-blue-600 text-white rounded-2xl font-black italic uppercase text-xs">Confirmar</button>
             </div>
         </div>
     </div>
 
     <script>
-        let date = new Date();
+        let date = new Date(2026, 0, 1); // Forzamos Enero 2026 para el ejemplo
         let selectedDayId = null;
 
         function render() {
@@ -68,9 +91,10 @@
             
             for(let d=1; d <= daysInMonth; d++) {
                 const dayId = `${date.getFullYear()}-${date.getMonth() + 1}-${d}`;
-                const isOccupied = localStorage.getItem(`cal_almendros_${dayId}`) === 'true';
+                const isOccupied = localStorage.getItem(`rg_cal_${dayId}`) === 'true';
+                
                 grid.innerHTML += `
-                    <div onclick="openModal('${dayId}')" class="day-cell ${isOccupied ? 'occupied' : 'bg-white text-gray-400'}">
+                    <div onclick="openModal('${dayId}')" class="day-cell ${isOccupied ? 'occupied' : 'bg-white text-gray-400 hover:bg-gray-50'}">
                         ${d}
                     </div>`;
             }
@@ -89,28 +113,26 @@
 
         function confirmarReserva() {
             const nombre = document.getElementById('res-nombre').value;
-            const pagoBruto = parseFloat(document.getElementById('res-pago').value);
+            const bruto = parseFloat(document.getElementById('res-pago').value);
             const canalPct = parseFloat(document.getElementById('res-canal').value);
-            const neto = pagoBruto - (pagoBruto * (canalPct / 100));
+            const neto = bruto - (bruto * (canalPct / 100));
 
-            if(!nombre || !pagoBruto) return alert("Faltan datos");
+            if(!nombre || isNaN(bruto)) return alert("Por favor, rellena los datos mínimos.");
 
-            // 1. Marcar Calendario
-            localStorage.setItem(`cal_almendros_${selectedDayId}`, 'true');
+            // 1. Guardar en Calendario (Bloquear día)
+            localStorage.setItem(`rg_cal_${selectedDayId}`, 'true');
 
-            // 2. CRUZAR DATOS A TAX (Contabilidad)
+            // 2. Sincronizar con TAX (Contabilidad)
             let taxData = JSON.parse(localStorage.getItem('rg_tax_v2')) || { ingresos: [], gastos: [], totalIng: 0, totalGas: 0 };
-            
             taxData.ingresos.push({
                 cliente: nombre,
                 fecha: selectedDayId,
                 neto: neto
             });
             taxData.totalIng += neto;
-
             localStorage.setItem('rg_tax_v2', JSON.stringify(taxData));
 
-            alert(`Sincronizado: ${nombre} guardado en Calendario y Contabilidad`);
+            alert(`Sincronizado: ${nombre} registrado en Calendario y Tax.`);
             closeModal();
             render();
         }

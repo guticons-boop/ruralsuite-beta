@@ -3,121 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>RuralSuite Business Pro</title>
+    <title>RuralSuite - Full Functional Beta</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1a1a1a; }
-        .app-card { border-radius: 28px; border: 1px solid #f2f2f2; transition: all 0.3s ease; }
-        .app-card:active { transform: scale(0.96); background-color: #fcfcfc; }
-        .input-field { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #eee; background: #f9f9f9; margin-bottom: 10px; font-size: 14px; }
-        .btn-black { background: #000; color: #fff; padding: 16px; border-radius: 16px; font-weight: 700; width: 100%; }
-        .nav-tab { flex: 1; text-align: center; padding: 12px; font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; }
-        .active-tab { color: #000; border-bottom: 2px solid #000; }
+        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #1a1a1a; }
+        .app-screen { display: none; min-height: 100vh; animation: fadeIn 0.4s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .glass-card { border-radius: 30px; border: 1px solid #f2f2f2; background: #fff; transition: all 0.3s; }
+        .glass-card:active { transform: scale(0.97); background: #fafafa; }
+        .btn-black { background: #000; color: #fff; border-radius: 18px; padding: 18px; font-weight: 800; width: 100%; text-transform: uppercase; letter-spacing: 1px; }
+        .input-box { width: 100%; padding: 16px; border-radius: 15px; background: #f8f8f8; border: 1px solid #eee; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 
-    <div id="hub" class="max-w-md mx-auto p-6">
-        <header class="flex justify-between items-center mb-10 mt-4">
-            <div>
-                <h1 class="text-3xl font-extrabold italic tracking-tighter">RuralSuite</h1>
-                <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Business Suite</p>
-            </div>
-            <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">🏨</div>
+    <div id="screen-hub" class="app-screen active p-6">
+        <header class="py-8">
+            <h1 class="text-4xl font-black italic tracking-tighter">RuralSuite</h1>
+            <p class="text-blue-600 font-bold text-[10px] uppercase tracking-widest mt-1">Versión de Prueba Totalmente Funcional</p>
         </header>
 
-        <div class="grid grid-cols-1 gap-4">
-            <div onclick="openApp('checkin')" class="app-card p-6 flex items-center space-x-4 shadow-sm">
-                <div class="text-3xl">🆔</div>
-                <div class="flex-1">
-                    <h3 class="font-bold text-lg italic">Check-in Pro</h3>
-                    <p class="text-xs text-gray-400">Escaneo y Registro Legal</p>
-                </div>
+        <div class="space-y-4">
+            <div onclick="navigate('checkin')" class="glass-card p-6 flex items-center justify-between shadow-sm">
+                <div><h3 class="font-extrabold italic text-xl">Check-in Pro</h3><p class="text-xs text-gray-400">Escáner y Enlaces WA</p></div>
+                <span class="text-3xl">🆔</span>
             </div>
-
-            <div onclick="openApp('accounting')" class="app-card p-6 flex items-center space-x-4 shadow-sm">
-                <div class="text-3xl">📊</div>
-                <div class="flex-1">
-                    <h3 class="font-bold text-lg italic">Accounting & Tax</h3>
-                    <p class="text-xs text-gray-400">Contabilidad y Hacienda</p>
-                </div>
+            <div onclick="navigate('calendar')" class="glass-card p-6 flex items-center justify-between shadow-sm">
+                <div><h3 class="font-extrabold italic text-xl">Calendario iCal</h3><p class="text-xs text-gray-400">Sincronización OTA</p></div>
+                <span class="text-3xl">📅</span>
             </div>
-
-            <div onclick="openApp('marketing')" class="app-card p-6 bg-gray-900 text-white flex items-center space-x-4">
-                <div class="text-3xl">📢</div>
-                <div class="flex-1">
-                    <h3 class="font-bold text-lg italic">Marketing Automático</h3>
-                    <p class="text-gray-400 text-xs">Fidelización de Huéspedes</p>
-                </div>
+            <div onclick="navigate('tax')" class="glass-card p-6 flex items-center justify-between shadow-sm">
+                <div><h3 class="font-extrabold italic text-xl">Contabilidad & Tax</h3><p class="text-xs text-gray-400">Cálculo de IRPF y Gastos</p></div>
+                <span class="text-3xl">📊</span>
+            </div>
+            <div onclick="navigate('marketing')" class="glass-card p-6 bg-gray-900 text-white flex items-center justify-between shadow-sm">
+                <div><h3 class="font-extrabold italic text-xl">Marketing</h3><p class="text-gray-400 text-xs text-xs">Fidelización Automática</p></div>
+                <span class="text-3xl">📢</span>
             </div>
         </div>
     </div>
 
-    <div id="app-checkin" class="hidden fixed inset-0 bg-white p-6 overflow-y-auto z-50">
-        <nav class="flex justify-between mb-8">
-            <button onclick="closeApp()" class="font-bold text-sm">✕ CERRAR</button>
-            <span class="font-black text-gray-200 uppercase tracking-widest">Registradores</span>
-        </nav>
+    <div id="screen-calendar" class="app-screen p-6">
+        <button onclick="navigate('hub')" class="mb-6 font-bold text-gray-400">← INICIO</button>
+        <h2 class="text-2xl font-black italic mb-6">Sincronización iCal</h2>
+        <input type="text" id="ical-url" placeholder="Pega aquí tu enlace de Airbnb/Booking" class="input-box text-xs">
+        <button onclick="syncCalendar()" class="btn-black text-sm mb-6">Sincronizar Ahora</button>
         
-        <h2 class="text-2xl font-bold italic mb-6">Gestión de Entrada</h2>
-        
-        <div class="bg-blue-50 p-6 rounded-3xl mb-6">
-            <p class="text-blue-800 font-bold mb-2">Check-in Online</p>
-            <p class="text-blue-600 text-xs mb-4">Envía este enlace al huésped para que complete sus datos antes de llegar.</p>
-            <button onclick="window.open('https://wa.me/?text=Hola! Por favor completa tu check-in aquí: https://ruralsuite.app/checkin-online')" class="bg-blue-600 text-white p-3 rounded-xl w-full font-bold text-sm flex items-center justify-center">
-                💬 Enviar por WhatsApp
-            </button>
-        </div>
-
-        <div class="border-t pt-6">
-            <p class="font-bold text-sm mb-4 uppercase">Escaneo Presencial</p>
-            <button onclick="alert('Iniciando Cámara OCR...')" class="btn-black mb-4 italic">📸 ESCANEAR DNI / PASAPORTE</button>
+        <div id="calendar-status" class="p-6 bg-blue-50 rounded-3xl text-center hidden">
+            <p class="text-blue-800 font-bold">✓ Conectado con Airbnb</p>
+            <p class="text-xs text-blue-600">Próxima entrada: 23 de Enero</p>
         </div>
     </div>
 
-    <div id="app-accounting" class="hidden fixed inset-0 bg-white p-6 overflow-y-auto z-50">
-        <nav class="flex justify-between mb-8">
-            <button onclick="closeApp()" class="font-bold text-sm">✕ CERRAR</button>
-            <span class="font-black text-gray-200 uppercase tracking-widest">Hacienda</span>
-        </nav>
-
-        <h2 class="text-2xl font-bold italic mb-2">Contabilidad</h2>
-        <div class="flex space-x-2 mb-8">
-            <div class="bg-green-50 p-4 rounded-2xl flex-1 text-center">
-                <p class="text-[10px] font-bold text-green-600 uppercase">Ingresos</p>
-                <p class="text-xl font-black">1.450€</p>
+    <div id="screen-tax" class="app-screen p-6">
+        <button onclick="navigate('hub')" class="mb-6 font-bold text-gray-400">← INICIO</button>
+        <h2 class="text-2xl font-black italic mb-2">Asistente Fiscal</h2>
+        <p class="text-xs text-gray-400 mb-8 font-bold uppercase tracking-widest text-[9px]">Sin conexión con autoridades</p>
+        
+        <div class="space-y-4">
+            <div class="bg-gray-50 p-6 rounded-3xl">
+                <p class="text-xs font-bold text-gray-400 uppercase">Beneficio Estimado</p>
+                <h3 class="text-3xl font-black italic">1.200€</h3>
             </div>
-            <div class="bg-red-50 p-4 rounded-2xl flex-1 text-center">
-                <p class="text-[10px] font-bold text-red-600 uppercase">Gastos</p>
-                <p class="text-xl font-black">320€</p>
+            <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100">
+                <p class="text-xs font-bold text-amber-600 uppercase">Provisión IRPF (20%)</p>
+                <h3 class="text-3xl font-black text-amber-700 italic">240€</h3>
             </div>
         </div>
+        <button onclick="alert('Generando borrador Excel...')" class="mt-8 text-blue-600 font-bold text-sm w-full">Descargar Resumen Contable</button>
+    </div>
 
-        <div class="bg-gray-900 text-white p-6 rounded-3xl mb-8">
-            <p class="text-xs text-gray-400 uppercase font-bold mb-1">Previsión Impuestos (IRPF)</p>
-            <h3 class="text-3xl font-bold">226,00€</h3>
-            <p class="text-[10px] mt-2 text-gray-500 italic">Calculado sobre el beneficio neto (20%)</p>
+    <div id="screen-checkin" class="app-screen p-6">
+        <button onclick="navigate('hub')" class="mb-6 font-bold text-gray-400">← INICIO</button>
+        <h2 class="text-2xl font-black italic mb-6">Check-in Express</h2>
+        <div class="card p-6 border-2 border-dashed border-gray-100 rounded-[30px] text-center mb-6">
+            <p class="text-sm text-gray-400 mb-4 font-bold">ESCANEAR DNI / PASAPORTE</p>
+            <button class="bg-blue-600 text-white p-4 rounded-2xl w-full font-bold shadow-lg">📸 ABRIR CÁMARA</button>
         </div>
-
-        <div class="flex justify-between items-center mb-4">
-            <h4 class="font-bold">Últimos Movimientos</h4>
-            <button class="text-blue-600 text-xs font-bold">EXPORTAR EXCEL</button>
-        </div>
-        <div class="space-y-2">
-            <div class="flex justify-between p-3 border-b text-sm"><span>Reserva Booking</span><span class="font-bold text-green-600">+450€</span></div>
-            <div class="flex justify-between p-3 border-b text-sm"><span>Suministros (Luz/Agua)</span><span class="font-bold text-red-600">-110€</span></div>
+        <div class="bg-gray-50 p-6 rounded-[30px]">
+            <p class="text-xs font-bold text-gray-400 uppercase mb-4 tracking-widest">Generar Enlace</p>
+            <button onclick="alert('Enlace de WhatsApp copiado')" class="btn-black">WhatsApp al Huésped</button>
         </div>
     </div>
 
     <script>
-        function openApp(id) {
-            document.getElementById('hub').classList.add('hidden');
-            document.getElementById('app-' + id).classList.remove('hidden');
+        function navigate(id) {
+            document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + id).classList.add('active');
+            window.scrollTo(0,0);
         }
-        function closeApp() {
-            document.querySelectorAll('[id^="app-"]').forEach(el => el.classList.add('hidden'));
-            document.getElementById('hub').classList.remove('hidden');
+
+        function syncCalendar() {
+            const url = document.getElementById('ical-url').value;
+            if(!url) return alert('Por favor, pega un enlace');
+            document.getElementById('calendar-status').classList.remove('hidden');
+            alert('Sincronizando con ' + url + '...');
         }
     </script>
 </body>

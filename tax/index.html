@@ -3,54 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RG Tax</title>
+    <title>Tax Assistant Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <style>body{font-family:'Inter',sans-serif;}.italic-black{font-style:italic;font-weight:900;}</style>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f4f4f7; color: #1a1a1a; }
+        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        .input-tax { width: 100%; padding: 14px; border-radius: 14px; background: #f9f9f9; border: 1px solid #eee; font-weight: 700; margin-top: 4px; outline: none; }
+        .tab-btn { padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 12px; transition: 0.3s; }
+        .tab-active { background: black; color: white; }
+    </style>
 </head>
-<body class="p-6 bg-white">
+<body class="p-6 max-w-lg mx-auto pb-20">
+
     <header class="mb-8 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase">Finanzas</h1>
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase tracking-widest border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase text-blue-600">Tax Assistant</h1>
     </header>
 
-    <div class="bg-black text-white p-10 rounded-[40px] mb-6 shadow-2xl">
-        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mb-2 italic text-center">Impuestos a Reservar (20%)</p>
-        <h2 id="t-tax" class="text-5xl italic-black text-center">0.00€</h2>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mb-8">
-        <div class="p-6 bg-gray-50 rounded-[30px] text-center border border-gray-100">
-            <p class="text-[9px] font-black text-gray-400 uppercase italic">Ingresos</p>
-            <p id="t-in" class="text-xl font-black italic text-black">0€</p>
-        </div>
-        <div class="p-6 bg-gray-50 rounded-[30px] text-center border border-gray-100">
-            <p class="text-[9px] font-black text-gray-400 uppercase italic">Gastos</p>
-            <p id="t-out" class="text-xl font-black italic text-black">0€</p>
+    <div class="bg-black text-white p-8 rounded-[40px] mb-8 shadow-2xl">
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Previsión Renta Anual</p>
+        <h2 id="final-tax" class="text-5xl italic-black">0,00€</h2>
+        <div class="flex items-center mt-4 text-[10px] font-bold text-green-400 italic uppercase">
+            <span class="mr-2">●</span> Módulo de Renta Activo
         </div>
     </div>
 
-    <div class="space-y-3">
-        <button onclick="add('in')" class="w-full bg-black text-white p-6 rounded-3xl font-black italic uppercase shadow-lg">Registrar Ingreso</button>
-        <button onclick="add('out')" class="w-full bg-white text-black border-2 border-black p-6 rounded-3xl font-black italic uppercase">Añadir Gasto</button>
-        <button onclick="reset()" class="w-full text-[9px] font-black text-gray-200 mt-6 uppercase italic">Limpiar Trimestre</button>
+    <div class="flex space-x-2 mb-6 bg-gray-200 p-1.5 rounded-2xl">
+        <button onclick="switchTab('ingreso')" id="btn-ing" class="flex-1 tab-btn tab-active italic uppercase">+ Reserva</button>
+        <button onclick="switchTab('gasto')" id="btn-gas" class="flex-1 tab-btn italic uppercase">- Gasto</button>
+    </div>
+
+    <div id="form-ingreso" class="card mb-8">
+        <h3 class="italic-black text-sm uppercase mb-6 border-b pb-4">Nueva Reserva</h3>
+        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Monto Pagado por Cliente</label>
+        <input type="number" id="monto-bruto" placeholder="Ej: 300" class="input-tax mb-4">
+        
+        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Canal de Venta</label>
+        <select id="canal" class="input-tax mb-4" onchange="checkComision()">
+            <option value="0">Directa (Web/WhatsApp) - 0%</option>
+            <option value="15">Booking.com - 15%</option>
+            <option value="18">Airbnb - 18%</option>
+            <option value="custom">Otra Comisión (Manual)</option>
+        </select>
+        
+        <div id="manual-com" class="hidden">
+            <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Comisión %</label>
+            <input type="number" id="com-val" placeholder="%" class="input-tax mb-4">
+        </div>
+
+        <button onclick="registrarReserva()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black italic uppercase mt-2 shadow-xl shadow-blue-100 text-sm">Añadir a Contabilidad</button>
+    </div>
+
+    <div id="form-gasto" class="card mb-8 hidden">
+        <h3 class="italic-black text-sm uppercase mb-6 border-b pb-4 text-red-500">Registrar Gasto</h3>
+        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Importe del Gasto</label>
+        <input type="number" id="gasto-val" placeholder="Ej: 45.50" class="input-tax mb-4">
+        
+        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Categoría Hacienda</label>
+        <select id="gasto-cat" class="input-tax mb-4">
+            <option value="suministros">Luz, Agua, Gas</option>
+            <option value="limpieza">Limpieza y Lavandería</option>
+            <option value="reparaciones">Mantenimiento</option>
+            <option value="marketing">Publicidad / Booking</option>
+        </select>
+
+        <button onclick="registrarGasto()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic uppercase mt-2 shadow-xl text-sm">Guardar Factura</button>
+    </div>
+
+    <div class="card bg-blue-50 border-blue-100 flex items-center justify-between p-6">
+        <div>
+            <h4 class="italic-black text-blue-900 text-lg uppercase leading-none">Generar Renta</h4>
+            <p class="text-[10px] font-bold text-blue-400 uppercase mt-1 italic">Datos listos para Hacienda</p>
+        </div>
+        <button onclick="mostrarRenta()" class="bg-blue-600 text-white p-4 rounded-2xl text-xl">📄</button>
     </div>
 
     <script>
-        let d = JSON.parse(localStorage.getItem('rg_tax')) || {in:0, out:0};
-        function up() {
-            document.getElementById('t-in').innerText = d.in.toFixed(2)+'€';
-            document.getElementById('t-out').innerText = d.out.toFixed(2)+'€';
-            let tax = (d.in - d.out) * 0.20;
-            document.getElementById('t-tax').innerText = (tax > 0 ? tax : 0).toFixed(2)+'€';
-            localStorage.setItem('rg_tax', JSON.stringify(d));
+        let db = JSON.parse(localStorage.getItem('rg_tax_pro')) || { ingresos: 0, gastos: 0, neto: 0 };
+
+        function switchTab(t) {
+            document.getElementById('form-ingreso').classList.toggle('hidden', t !== 'ingreso');
+            document.getElementById('form-gasto').classList.toggle('hidden', t !== 'gasto');
+            document.getElementById('btn-ing').classList.toggle('tab-active', t === 'ingreso');
+            document.getElementById('btn-gas').classList.toggle('tab-active', t === 'gasto');
         }
-        function add(t) {
-            let v = prompt("Importe en €:");
-            if(v && !isNaN(v)) { d[t] += parseFloat(v); up(); }
+
+        function checkComision() {
+            document.getElementById('manual-com').classList.toggle('hidden', document.getElementById('canal').value !== 'custom');
         }
-        function reset() { if(confirm("¿Borrar datos?")) { d={in:0,out:0}; up(); } }
-        up();
+
+        function registrarReserva() {
+            let bruto = parseFloat(document.getElementById('monto-bruto').value);
+            let canal = document.getElementById('canal').value;
+            let pct = canal === 'custom' ? parseFloat(document.getElementById('com-val').value) : parseFloat(canal);
+            
+            if(bruto) {
+                let comision = bruto * (pct / 100);
+                let neto = bruto - comision;
+                db.ingresos += neto;
+                update();
+                alert("Reserva registrada. Neto: " + neto.toFixed(2) + "€");
+            }
+        }
+
+        function registrarGasto() {
+            let val = parseFloat(document.getElementById('gasto-val').value);
+            if(val) {
+                db.gastos += val;
+                update();
+                alert("Gasto deducible guardado.");
+            }
+        }
+
+        function update() {
+            db.neto = db.ingresos - db.gastos;
+            let irpf = db.neto > 0 ? db.neto * 0.20 : 0;
+            document.getElementById('final-tax').innerText = irpf.toFixed(2) + "€";
+            localStorage.setItem('rg_tax_pro', JSON.stringify(db));
+        }
+
+        function mostrarRenta() {
+            alert(`RESUMEN RENTA 2026\n-------------------\nIngresos Netos: ${db.ingresos.toFixed(2)}€\nGastos Deducibles: ${db.gastos.toFixed(2)}€\nBase Imponible: ${db.neto.toFixed(2)}€\n\nEste documento está listo para tu declaración.`);
+        }
+
+        update();
     </script>
 </body>
 </html>

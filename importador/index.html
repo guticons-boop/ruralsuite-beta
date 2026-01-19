@@ -3,76 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Hub | El Rinconcito de Matarraña</title>
+    <title>Check-in Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .card-hub { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .card-hub:hover { transform: translateY(-10px); }
+        .tab-active { border-bottom: 3px solid #065f46; color: #065f46; }
     </style>
 </head>
-<body class="p-6 md:p-12 pb-24">
+<body class="p-4 md:p-8 pb-32">
 
-    <header class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
-        <div>
-            <h1 class="serif text-4xl italic text-emerald-950 font-bold">El Rinconcito de Matarraña</h1>
-            <p class="text-emerald-600 text-[10px] font-black uppercase tracking-[0.3em] mt-3 italic">RuralGesto: Panel de Control</p>
-        </div>
-        <div class="hidden md:block text-right text-slate-400">
-            <p class="text-[9px] font-black uppercase">Propiedades</p>
-            <p class="text-xs font-bold italic text-slate-600">Tirolina · Ermita · Almendros</p>
-        </div>
-    </header>
+    <div class="max-w-4xl mx-auto">
+        <header class="flex items-center gap-4 mb-10">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+            <div>
+                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Gestión de Entrada</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600 italic">El Rinconcito de Matarraña</p>
+            </div>
+        </header>
 
-    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <div onclick="location.href='../calendar/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 group">
-            <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-700 group-hover:text-white transition-colors duration-500"><i data-lucide="calendar"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Agenda</p>
-            <p class="serif text-2xl italic text-slate-900">Reservas</p>
+        <div class="flex border-b border-slate-200 mb-8">
+            <button onclick="switchMode('online')" id="btn-online" class="flex-1 py-4 text-[10px] font-black uppercase tracking-widest tab-active">Check-in Online (Cliente)</button>
+            <button onclick="switchMode('import')" id="btn-import" class="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Importar Check-in Scan</button>
         </div>
 
-        <div onclick="location.href='../importador/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-emerald-100 cursor-pointer hover:bg-emerald-50 group border-2">
-            <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-800 group-hover:text-white transition-colors duration-500"><i data-lucide="file-down"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600">Check-in Scan</p>
-            <p class="serif text-2xl italic text-slate-900">Importar Viajeros</p>
+        <div id="view-online" class="space-y-6">
+            <div class="bg-white p-8 rounded-[50px] border border-gray-100 shadow-sm">
+                <h3 class="serif text-2xl italic font-bold mb-6 text-slate-900">Enviar Registro al Cliente</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-slate-400 ml-4 mb-2 block">Seleccionar Alojamiento</label>
+                        <select id="house-select" class="w-full p-5 bg-slate-50 border-none rounded-[25px] text-sm font-bold outline-none">
+                            <option>La Tirolina</option>
+                            <option>La Ermita</option>
+                            <option>Los Almendros</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-slate-400 ml-4 mb-2 block">Teléfono del Huésped</label>
+                        <input type="tel" id="guest-phone" placeholder="600 000 000" class="w-full p-5 bg-slate-50 border-none rounded-[25px] text-sm font-bold outline-none">
+                    </div>
+                    <button onclick="generateLink()" class="w-full py-6 bg-emerald-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
+                        <i data-lucide="send"></i> Generar y Enviar por WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <div id="link-result" class="hidden p-6 bg-emerald-50 rounded-[35px] border border-emerald-100 animate-pulse text-center">
+                <p class="text-[10px] font-black uppercase text-emerald-600 mb-2 italic">Enlace generado listo para enviar:</p>
+                <p class="text-xs font-mono font-bold text-slate-600">ruralgesto.com/checkin/el-rinconcito-t678</p>
+            </div>
         </div>
 
-        <div onclick="location.href='../limpieza/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-amber-50 group">
-            <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-500"><i data-lucide="sparkles"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Operaciones</p>
-            <p class="serif text-2xl italic text-slate-900">Limpieza & Averías</p>
+        <div id="view-import" class="hidden space-y-6">
+            <div class="bg-white p-10 rounded-[50px] border-2 border-dashed border-slate-200 text-center">
+                <input type="file" id="file-input" class="hidden" onchange="processFile(this)">
+                <div onclick="document.getElementById('file-input').click()" class="cursor-pointer group">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition">
+                        <i data-lucide="file-text"></i>
+                    </div>
+                    <p class="text-xs font-black uppercase italic tracking-widest text-slate-700">Subir Listado Check-in Scan</p>
+                    <p class="text-[10px] text-slate-400 mt-2 italic">Extraer datos de marketing y agenda automáticamente</p>
+                </div>
+            </div>
+            
+            <div id="import-preview" class="hidden p-8 bg-white border border-gray-100 rounded-[50px] shadow-sm">
+                <p class="text-[10px] font-black uppercase text-blue-600 mb-4 italic text-center">Previsualización de datos</p>
+                <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+                    <div class="bg-slate-50 p-4 rounded-2xl"><p class="text-[8px] font-black text-slate-400 uppercase">Huésped</p><p class="font-bold">María García</p></div>
+                    <div class="bg-slate-50 p-4 rounded-2xl"><p class="text-[8px] font-black text-slate-400 uppercase">Teléfono</p><p class="font-bold">655 XXX XXX</p></div>
+                </div>
+                <button onclick="location.href='../calendar/index.html'" class="w-full py-5 bg-blue-900 text-white rounded-3xl font-black text-[10px] uppercase tracking-widest italic">Confirmar e Importar</button>
+            </div>
         </div>
 
-        <div onclick="location.href='../tax/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-rose-50 group">
-            <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-500"><i data-lucide="calculator"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Contabilidad</p>
-            <p class="serif text-2xl italic text-slate-900">Asistente Fiscal</p>
-        </div>
+    </div>
 
-        <div onclick="location.href='../marketing/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-blue-50 group">
-            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500"><i data-lucide="megaphone"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Marketing</p>
-            <p class="serif text-2xl italic text-slate-900">Fidelización IA</p>
-        </div>
+    <script>
+        lucide.createIcons();
 
-        <div onclick="location.href='../config/canales.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-purple-50 group">
-            <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-500"><i data-lucide="share-2"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Channel Manager</p>
-            <p class="serif text-2xl italic text-slate-900">Sincronización</p>
-        </div>
+        function switchMode(mode) {
+            document.getElementById('view-online').classList.add('hidden');
+            document.getElementById('view-import').classList.add('hidden');
+            document.getElementById('btn-online').classList.remove('tab-active', 'text-emerald-900');
+            document.getElementById('btn-import').classList.remove('tab-active', 'text-emerald-900');
+            document.getElementById('btn-online').classList.add('text-slate-400');
+            document.getElementById('btn-import').classList.add('text-slate-400');
 
-        <div onclick="location.href='../web-builder/index.html'" class="card-hub bg-emerald-900 p-8 rounded-[50px] shadow-xl border border-emerald-800 cursor-pointer hover:bg-emerald-950 lg:col-span-3 text-center">
-            <div class="w-14 h-14 bg-emerald-800 text-emerald-400 rounded-2xl flex items-center justify-center mb-4 mx-auto"><i data-lucide="layout"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-400 opacity-70">Tu escaparate</p>
-            <p class="serif text-2xl italic text-white">Editar Web Directa</p>
-        </div>
+            document.getElementById('view-' + mode).classList.remove('hidden');
+            document.getElementById('btn-' + mode).classList.add('tab-active', 'text-emerald-900');
+            document.getElementById('btn-' + mode).classList.remove('text-slate-400');
+        }
 
-    </main>
+        function generateLink() {
+            const house = document.getElementById('house-select').value;
+            const phone = document.getElementById('guest-phone').value;
+            if(!phone) return alert("Escribe el teléfono del cliente");
+            
+            document.getElementById('link-result').classList.remove('hidden');
+            const message = `Hola! Soy Toni de El Rinconcito de Matarraña. Para agilizar tu entrada a ${house}, puedes realizar el check-in online aquí: https://ruralgesto.com/checkin/test`;
+            window.open(`https://wa.me/34${phone}?text=${encodeURIComponent(message)}`);
+        }
 
-    <script>lucide.createIcons();</script>
+        function processFile(input) {
+            if(input.files && input.files[0]) {
+                document.getElementById('import-preview').classList.remove('hidden');
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,107 +1,95 @@
-<div class="grid grid-cols-3 gap-2 bg-rose-50 p-1.5 rounded-[30px] mb-8 border border-rose-100">
-            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest">Check-ins</button>
-            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-rose-900">Clientes</button>
-            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-rose-900 italic">Config / Import</button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuralGesto | Importador</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .tab-btn.active { background-color: #be123c; color: white; }
+        .drop-active { border-color: #be123c; background-color: #fff1f2; }
+    </style>
+</head>
+<body class="p-4 md:p-8 pb-32">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-8">
+            <div class="flex items-center gap-4">
+                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+                <h2 class="serif text-2xl italic text-rose-950 font-bold">RuralGesto Engine</h2>
+            </div>
+            <div id="badge-count" class="bg-rose-100 px-4 py-2 rounded-2xl border border-rose-200">
+                <p class="text-[8px] font-black text-rose-900 uppercase">0 Registros</p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-[25px] mb-8">
+            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest transition-all">Check-ins</button>
+            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500 transition-all">Clientes</button>
+            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500 transition-all italic">Importar/Limpiar</button>
         </div>
 
         <div id="view-checkins" class="space-y-4">
-            <div id="lista-reservas" class="space-y-3">
-                </div>
+            <div id="lista-reservas" class="space-y-3"></div>
         </div>
 
         <div id="view-clientes" class="hidden">
             <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-slate-50 text-[9px] font-black uppercase text-slate-400">
-                        <tr>
-                            <th class="p-4">Nombre / Email</th>
-                            <th class="p-4">Teléfono</th>
-                            <th class="p-4">Acción</th>
-                        </tr>
+                        <tr><th class="p-4">Cliente</th><th class="p-4">Contacto</th><th class="p-4">Cumpleaños</th><th class="p-4">Acción</th></tr>
                     </thead>
-                    <tbody id="tabla-clientes-body">
-                        </tbody>
+                    <tbody id="tabla-clientes-body"></tbody>
                 </table>
             </div>
         </div>
 
-        <div id="view-import" class="hidden space-y-6">
-            <div id="drop-zone" class="bg-white border-2 border-dashed border-slate-200 rounded-[40px] p-16 text-center relative">
+        <div id="view-import" class="hidden space-y-6 text-center">
+            <div id="drop-zone" class="bg-white border-2 border-dashed border-slate-200 rounded-[40px] p-16 relative">
                 <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls">
-                <div id="status-initial">
+                <div id="status-ui">
                     <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-rose-500 mb-4"></i>
-                    <p class="serif text-xl italic font-bold italic">Importar nuevo Excel</p>
+                    <p class="serif text-xl italic font-bold">Cargar Nuevo Excel</p>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-3">
-                <button id="btn-procesar" onclick="procesarYGuardar()" class="hidden w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest shadow-xl">
-                    Confirmar y añadir a la base de datos
-                </button>
-                
-                <button onclick="borrarTodaLaBaseDeDatos()" class="w-full py-4 border-2 border-rose-100 text-rose-600 rounded-[30px] font-black text-[9px] uppercase tracking-widest hover:bg-rose-50 transition-colors flex items-center justify-center gap-2">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i> Borrar todos los registros actuales
+            <button id="btn-procesar" onclick="procesarExcel()" class="hidden w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest">Confirmar Importación</button>
+            
+            <div class="pt-10 border-t border-slate-100">
+                <button onclick="borrarTodo()" class="text-rose-600 font-black text-[9px] uppercase tracking-widest flex items-center gap-2 mx-auto">
+                    <i data-lucide="alert-triangle" class="w-4 h-4"></i> Borrar Base de Datos Actual
                 </button>
             </div>
         </div>
+    </div>
 
     <script>
-        // ... (Lógica de lectura de Excel que ya teníamos)
+        let datosExcel = [];
 
-        function borrarTodaLaBaseDeDatos() {
-            if(confirm("¿Estás seguro de que quieres borrar las 860 reservas? Esta acción no se puede deshacer.")) {
-                localStorage.removeItem('reservas_ruralgesto');
-                renderizarDatos();
-                alert("Base de datos limpiada correctamente.");
-                switchTab('import');
-            }
-        }
-
-        function borrarRegistro(index) {
-            let data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-            data.splice(index, 1); // Borra el elemento en esa posición
-            localStorage.setItem('reservas_ruralgesto', JSON.stringify(data));
-            renderizarDatos();
-        }
-
-        function renderizarDatos() {
-            const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-            const lista = document.getElementById('lista-reservas');
-            const tablaClientes = document.getElementById('tabla-clientes-body');
-            
-            lista.innerHTML = '';
-            tablaClientes.innerHTML = '';
-
-            if(data.length === 0) {
-                lista.innerHTML = '<p class="text-center text-slate-400 text-[10px] py-20 uppercase font-black italic tracking-widest">Base de datos vacía</p>';
-                return;
-            }
-
-            data.forEach((reserva, index) => {
-                // Render Check-ins con papelera
-                lista.innerHTML += `
-                    <div class="bg-white p-5 rounded-[30px] border border-slate-100 shadow-sm flex justify-between items-center">
-                        <div class="flex gap-4 items-center">
-                            <button onclick="borrarRegistro(${index})" class="p-2 text-slate-300 hover:text-rose-500 transition-colors"><i data-lucide="trash" class="w-4 h-4"></i></button>
-                            <div>
-                                <h4 class="font-bold text-sm text-slate-800">${reserva.cliente}</h4>
-                                <p class="text-[9px] font-black text-rose-600 uppercase italic">${reserva.apartamento}</p>
-                            </div>
-                        </div>
-                        <button onclick="enviarWA('${reserva.movil}', '${reserva.apartamento}', '${reserva.localizador}')" class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
-                    </div>`;
-                
-                // Render Clientes con papelera
-                tablaClientes.innerHTML += `
-                    <tr class="border-b border-slate-50">
-                        <td class="p-4 font-bold text-slate-700">${reserva.cliente}<br><span class="text-[8px] font-normal text-slate-400">${reserva.email}</span></td>
-                        <td class="p-4 font-mono text-slate-500">${reserva.movil}</td>
-                        <td class="p-4"><button onclick="borrarRegistro(${index})" class="text-rose-400"><i data-lucide="x-circle" class="w-4 h-4"></i></button></td>
-                    </tr>`;
+        function switchTab(tab) {
+            document.querySelectorAll('#view-checkins, #view-clientes, #view-import').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('text-slate-500');
             });
-            lucide.createIcons();
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-' + tab);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-slate-500');
+            renderizar();
         }
-        
-        // Cargar al inicio
-        window.onload = renderizarDatos;
-    </script>
+
+        // LECTURA DE EXCEL
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const rawData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                
+                // Mapeo inteligente según tu Excel
+                datosExcel = rawData.map(r

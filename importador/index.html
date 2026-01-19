@@ -2,15 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Importador | RuralGesto</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>Importador Pro | RuralGesto</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.2/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .drop-active { border-color: #be123c; background-color: #fff1f2; }
+        .drop-active { border-color: #2563eb !important; background-color: #eff6ff !important; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -18,82 +18,108 @@
         <header class="flex items-center gap-4 mb-10">
             <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
             <div>
-                <h2 class="serif text-3xl italic text-rose-950 font-bold">Importar Reservas</h2>
-                <p class="text-[9px] font-black uppercase tracking-widest text-rose-600 italic">Sincronización Excel RuralGesto</p>
+                <h2 class="serif text-3xl italic text-blue-950 font-bold">Importador de Excel</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-blue-600">Localizadores Automáticos RuralGesto</p>
             </div>
         </header>
 
-        <div class="bg-white p-10 rounded-[50px] border border-slate-100 shadow-sm space-y-8 text-center">
-            <div id="drop-zone" class="border-2 border-dashed border-slate-200 rounded-[40px] p-16 transition-all cursor-pointer relative hover:bg-slate-50">
-                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls">
+        <div class="bg-white p-10 rounded-[50px] border border-slate-100 shadow-sm space-y-8">
+            <div id="drop-zone" class="border-2 border-dashed border-slate-200 rounded-[40px] p-16 text-center transition-all cursor-pointer relative">
+                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls, .csv">
                 
                 <div id="status-initial">
-                    <div class="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="file-up" class="text-rose-600 w-10 h-10"></i>
+                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="upload-cloud" class="text-blue-600 w-10 h-10"></i>
                     </div>
-                    <p class="serif text-xl italic font-bold text-slate-800">Suelta tu Excel aquí</p>
-                    <p class="text-[10px] font-black uppercase text-slate-400 mt-2 tracking-widest">O pulsa para seleccionar archivo</p>
+                    <p class="serif text-xl italic font-bold text-slate-800">Cargar Check-ins</p>
+                    <p class="text-[10px] font-black uppercase text-slate-400 mt-2">Arrastra el archivo de Booking o Airbnb</p>
+                </div>
+
+                <div id="status-loading" class="hidden">
+                    <div class="animate-spin w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-[10px] font-black uppercase text-blue-600">Procesando datos...</p>
                 </div>
 
                 <div id="status-success" class="hidden">
                     <div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="check-circle-2" class="text-emerald-600 w-10 h-10"></i>
+                        <i data-lucide="check" class="text-emerald-600 w-10 h-10"></i>
                     </div>
-                    <p class="serif text-xl italic font-bold text-emerald-800">¡Archivo cargado!</p>
-                    <p id="row-count" class="text-[10px] font-black uppercase text-emerald-600 mt-2 tracking-widest">0 RESERVAS DETECTADAS</p>
+                    <p class="serif text-xl italic font-bold text-emerald-800">¡Excel Leído!</p>
+                    <p id="row-count" class="text-[10px] font-black uppercase text-emerald-600 mt-2">0 RESERVAS LISTAS</p>
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <button id="btn-confirmar" class="hidden w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest shadow-xl transition-all hover:bg-rose-900">
-                    Procesar e importar ahora
+            <div id="preview-area" class="hidden space-y-4">
+                <div class="bg-slate-50 p-6 rounded-[30px] border border-slate-100">
+                    <h4 class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest">Ejemplo de envío al cliente:</h4>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 text-xs shadow-sm">
+                        <p class="text-slate-500 mb-2">Hola <span class="font-bold text-slate-800">[Nombre Cliente]</span>,</p>
+                        <p class="mb-2">Tu reserva en <span class="text-blue-600 font-bold">[Apartamento]</span> está confirmada.</p>
+                        <p class="bg-yellow-50 p-2 rounded-lg border border-yellow-100 mb-2 font-mono text-center text-sm">
+                            LOCALIZADOR: <span id="sample-loc" class="font-bold text-slate-900 font-black">RG-XXXX</span>
+                        </p>
+                        <p class="text-blue-600 underline">https://ruralgesto.com/checkin/identidad</p>
+                    </div>
+                </div>
+                
+                <button onclick="alert('Datos guardados en la base de datos')" class="w-full py-6 bg-blue-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest shadow-xl">
+                    Confirmar e Importar todo
                 </button>
-                <p class="text-[9px] text-slate-400 font-bold uppercase italic tracking-tighter">Compatible con Booking, Airbnb y plantillas personalizadas</p>
             </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-
         const fileInput = document.getElementById('file-input');
         const dropZone = document.getElementById('drop-zone');
-        const statusInitial = document.getElementById('status-initial');
-        const statusSuccess = document.getElementById('status-success');
-        const btnConfirmar = document.getElementById('btn-confirmar');
-        const rowCountText = document.getElementById('row-count');
 
-        fileInput.addEventListener('change', (e) => {
+        // Función para generar localizador aleatorio si no existe
+        function generarLocalizador() {
+            return "RG-" + Math.floor(1000 + Math.random() * 9000);
+        }
+
+        fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                        const json = XLSX.utils.sheet_to_json(sheet);
-                        
-                        // UI Update
-                        statusInitial.classList.add('hidden');
-                        statusSuccess.classList.remove('hidden');
-                        btnConfirmar.classList.remove('hidden');
-                        rowCountText.innerText = json.length + " RESERVAS ENCONTRADAS";
-                    } catch (err) {
-                        alert("Error al leer el Excel. Asegúrate de que no está protegido con contraseña.");
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            }
+            if (!file) return;
+
+            document.getElementById('status-initial').classList.add('hidden');
+            document.getElementById('status-loading').classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(firstSheet);
+
+                    // Simulamos el procesado de cada fila añadiendo el localizador si falta
+                    json.forEach(reserva => {
+                        if (!reserva.Localizador && !reserva.ID_Reserva) {
+                            reserva.Localizador = generarLocalizador();
+                        }
+                    });
+
+                    // Actualizar UI
+                    document.getElementById('status-loading').classList.add('hidden');
+                    document.getElementById('status-success').classList.remove('hidden');
+                    document.getElementById('preview-area').classList.remove('hidden');
+                    document.getElementById('row-count').innerText = json.length + " RESERVAS DETECTADAS";
+                    document.getElementById('sample-loc').innerText = generarLocalizador();
+                    
+                    console.log("Datos con localizadores:", json);
+                } catch (err) {
+                    alert("Error al leer el archivo. Prueba a guardarlo como .xlsx estándar.");
+                    location.reload();
+                }
+            };
+            reader.readAsArrayBuffer(file);
         });
 
-        // Drag & Drop visual feedback
-        ['dragenter', 'dragover'].forEach(name => {
-            dropZone.addEventListener(name, () => dropZone.classList.add('drop-active'));
-        });
-        ['dragleave', 'drop'].forEach(name => {
-            dropZone.addEventListener(name, () => dropZone.classList.remove('drop-active'));
-        });
+        // Eventos Visuales
+        ['dragenter', 'dragover'].forEach(n => dropZone.addEventListener(n, () => dropZone.classList.add('drop-active')));
+        ['dragleave', 'drop'].forEach(n => dropZone.addEventListener(n, () => dropZone.classList.remove('drop-active')));
     </script>
 </body>
 </html>

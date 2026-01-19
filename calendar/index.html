@@ -10,9 +10,8 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfb; overflow: hidden; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .scroll-infinito { height: calc(100vh - 380px); overflow-y: auto; padding-bottom: 100px; }
+        .scroll-infinito { height: calc(100vh - 250px); overflow-y: auto; padding-bottom: 100px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .card-mes { min-width: 280px; transition: all 0.3s ease; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -21,61 +20,56 @@
         <button onclick="location.href='../hub/index.html'" class="p-3 bg-white rounded-2xl shadow-sm border border-gray-100">
             <i data-lucide="arrow-left" class="w-5 h-5 text-gray-400"></i>
         </button>
-        <h2 class="serif text-2xl italic text-emerald-900 font-bold">RuralGestión</h2>
+        <h2 class="serif text-2xl italic text-emerald-900 font-bold">Calendario</h2>
         <button onclick="abrirModal()" class="bg-emerald-900 text-white px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition flex items-center gap-2">
             <i data-lucide="plus" class="w-4 h-4 text-white"></i> Nueva Reserva
         </button>
     </div>
 
-    <div class="max-w-5xl mx-auto flex gap-6 overflow-x-auto pb-6 mb-8 no-scrollbar">
-        <div class="card-mes bg-white p-5 rounded-[35px] shadow-sm border border-gray-100">
-            <h4 class="text-[9px] font-black uppercase text-emerald-800 mb-3 tracking-tighter">Casa Principal</h4>
-            <div class="grid grid-cols-7 gap-1 text-[8px] font-bold text-center">
-                <div class="text-gray-300">L</div><div class="text-gray-300">M</div><div class="text-gray-300">X</div><div class="text-gray-300">J</div><div class="text-gray-300">V</div><div class="text-gray-300 font-black text-emerald-900 text-[10px]">S</div><div class="text-gray-300 font-black text-emerald-900 text-[10px]">D</div>
-                <div class="p-1 opacity-20">18</div><div class="p-1 bg-emerald-100 rounded-md">19</div><div class="p-1 bg-emerald-100 rounded-md">20</div><div class="p-1">21</div><div class="p-1">22</div><div class="p-1 font-bold">23</div><div class="p-1 font-bold">24</div>
-            </div>
-        </div>
-        <div class="card-mes bg-white p-5 rounded-[35px] shadow-sm border border-gray-100 opacity-60">
-            <h4 class="text-[9px] font-black uppercase text-gray-400 mb-3 tracking-tighter">Cabaña Río</h4>
-            <div class="grid grid-cols-7 gap-1 text-[8px] font-bold text-center opacity-30">
-                <div class="text-gray-300">L</div><div class="text-gray-300">M</div><div class="text-gray-300">X</div><div class="text-gray-300">J</div><div class="text-gray-300">V</div><div class="text-gray-300 font-bold">S</div><div class="text-gray-300 font-bold">D</div>
-                <div class="p-1">18</div><div class="p-1">19</div><div class="p-1">20</div><div class="p-1">21</div><div class="p-1">22</div><div class="p-1">23</div><div class="p-1">24</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="max-w-xl mx-auto">
-        <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-6 ml-2 italic">Timeline de Reservas</h3>
-        <div id="lista-reservas" class="scroll-infinito space-y-4 pr-2">
+    <div class="max-w-2xl mx-auto">
+        <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-6 ml-2 italic">Próximas Estancias Bloqueadas</h3>
+        <div id="lista-reservas" class="scroll-infinito space-y-4 pr-2 no-scrollbar">
             </div>
     </div>
 
     <div id="modal-reserva" class="hidden fixed inset-0 bg-emerald-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl space-y-5">
-            <h3 class="serif text-3xl italic text-emerald-900 text-center">Añadir Reserva</h3>
+        <div class="bg-white w-full max-w-md rounded-[45px] p-8 shadow-2xl space-y-4">
+            <h3 class="serif text-3xl italic text-emerald-900 text-center">Bloquear Fechas</h3>
             
             <div class="space-y-3">
+                <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Alojamiento</label>
                 <select id="propiedad" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
                     <option value="Casa Principal">Casa Principal</option>
                     <option value="Cabaña Río">Cabaña Río</option>
-                    <option value="Apartamento Azul">Apartamento Azul</option>
+                    <option value="Apartamento Centro">Apartamento Centro</option>
                 </select>
-                <input type="text" id="cliente" placeholder="Huésped Principal" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
+
                 <div class="grid grid-cols-2 gap-3">
-                    <input type="date" id="fecha" class="p-4 bg-gray-50 rounded-2xl font-bold text-xs outline-none border border-gray-100">
-                    <input type="number" id="precio" placeholder="Importe (€)" class="p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Entrada</label>
+                        <input type="date" id="fecha-entrada" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-xs outline-none border border-gray-100">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Salida</label>
+                        <input type="date" id="fecha-salida" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-xs outline-none border border-gray-100">
+                    </div>
                 </div>
-                <select id="plataforma" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
-                    <option value="Booking">Booking.com</option>
-                    <option value="Airbnb">Airbnb</option>
-                    <option value="Directa">Venta Directa (WhatsApp)</option>
-                    <option value="Expedia">Expedia</option>
-                </select>
+
+                <input type="text" id="cliente" placeholder="Nombre del Huésped / Nota" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="number" id="precio" placeholder="Total Reserva (€)" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
+                    <select id="plataforma" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none border border-gray-100">
+                        <option value="Booking">Booking</option>
+                        <option value="Airbnb">Airbnb</option>
+                        <option value="Directa">Directa</option>
+                    </select>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2 pt-4">
-                <button onclick="guardarReserva()" class="w-full py-5 bg-emerald-900 text-white rounded-[25px] font-black uppercase text-[10px] tracking-widest shadow-xl">Confirmar Reserva</button>
-                <button onclick="cerrarModal()" class="w-full py-4 text-gray-400 font-bold uppercase text-[9px]">Cerrar sin guardar</button>
+                <button onclick="guardarReserva()" class="w-full py-5 bg-emerald-900 text-white rounded-[25px] font-black uppercase text-[10px] tracking-widest shadow-xl">Confirmar y Bloquear</button>
+                <button onclick="cerrarModal()" class="w-full py-4 text-gray-400 font-bold uppercase text-[9px]">Cancelar</button>
             </div>
         </div>
     </div>
@@ -88,27 +82,44 @@
             const container = document.getElementById('lista-reservas');
             container.innerHTML = '';
             
-            reservas.sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).forEach(res => {
+            if(reservas.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-300 py-10 font-bold">No hay fechas bloqueadas</p>';
+                return;
+            }
+
+            reservas.sort((a,b) => new Date(a.entrada) - new Date(b.entrada)).forEach(res => {
+                const noches = Math.ceil((new Date(res.salida) - new Date(res.entrada)) / (1000 * 60 * 60 * 24));
+                
                 container.innerHTML += `
-                    <div class="bg-white p-6 rounded-[30px] border border-gray-100 shadow-sm flex justify-between items-center group">
+                    <div class="bg-white p-6 rounded-[35px] border border-gray-100 shadow-sm flex justify-between items-center group relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-2 bg-emerald-500"></div>
                         <div class="flex items-center gap-4">
-                            <div class="text-center bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                                <span class="block text-[8px] font-black text-gray-300 uppercase">${new Date(res.fecha).toLocaleString('es', {month:'short'})}</span>
-                                <span class="block text-xl font-black text-emerald-900">${new Date(res.fecha).getDate()}</span>
+                            <div class="text-center bg-emerald-50 px-3 py-4 rounded-2xl">
+                                <span class="block text-xl font-black text-emerald-900">${noches}</span>
+                                <span class="block text-[7px] font-black text-emerald-700 uppercase">Noches</span>
                             </div>
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">${res.cliente}</h4>
-                                <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-tighter">${res.propiedad} • <span class="text-gray-300 font-normal">${res.plataforma}</span></p>
+                                <p class="text-[9px] font-black text-emerald-800 uppercase tracking-tighter">${res.propiedad}</p>
+                                <p class="text-[10px] text-gray-400 font-bold mt-1">
+                                    ${formatDate(res.entrada)} — ${formatDate(res.salida)}
+                                </p>
                             </div>
                         </div>
                         <div class="text-right">
                             <p class="text-lg font-black text-emerald-950">${res.precio}€</p>
-                            <button onclick="borrar(${res.id})" class="opacity-0 group-hover:opacity-100 text-red-200 hover:text-red-500 transition"><i data-lucide="x-circle" class="w-4 h-4"></i></button>
+                            <span class="text-[8px] font-black uppercase text-gray-300">${res.plataforma}</span>
+                            <button onclick="borrar(${res.id})" class="block mt-2 text-red-200 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 `;
             });
             lucide.createIcons();
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
         }
 
         function abrirModal() { document.getElementById('modal-reserva').classList.remove('hidden'); }
@@ -119,11 +130,15 @@
                 id: Date.now(),
                 cliente: document.getElementById('cliente').value,
                 propiedad: document.getElementById('propiedad').value,
-                fecha: document.getElementById('fecha').value,
+                entrada: document.getElementById('fecha-entrada').value,
+                salida: document.getElementById('fecha-salida').value,
                 precio: parseFloat(document.getElementById('precio').value),
                 plataforma: document.getElementById('plataforma').value
             };
-            if(!r.cliente || !r.precio || !r.fecha) return alert("Faltan datos clave");
+
+            if(!r.entrada || !r.salida || !r.cliente) return alert("Por favor, indica fechas y nombre.");
+            if(new Date(r.salida) <= new Date(r.entrada)) return alert("La salida debe ser después de la entrada.");
+
             reservas.push(r);
             localStorage.setItem('rural_reservas', JSON.stringify(reservas));
             cerrarModal();

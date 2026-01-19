@@ -2,181 +2,76 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calendario Maestro | RuralGesto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Reservas | El Rinconcito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .day-box { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; border-radius: 8px; }
-        .status-free { background: #f1f5f9; color: #cbd5e1; }
-        .status-clean { background: #10b981; color: white; }
-        .status-dirty { background: #f97316; color: white; }
+        .timeline-grid { display: grid; grid-template-columns: 150px repeat(7, 1fr); }
     </style>
 </head>
-<body class="p-4 md:p-8 pb-32">
-
-    <div class="max-w-5xl mx-auto">
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
         <header class="flex justify-between items-center mb-10">
-            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
-                <i data-lucide="arrow-left" class="w-5 h-5 text-gray-400"></i>
-            </button>
-            <h2 class="serif text-3xl italic text-emerald-900 font-bold">Agenda de Operaciones</h2>
-            <button onclick="abrirModal()" class="bg-emerald-900 text-white px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg">Nueva Reserva</button>
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+            <div class="text-center">
+                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Agenda de Reservas</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600 italic">El Rinconcito de Matarraña</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="p-4 bg-emerald-900 text-white rounded-3xl shadow-lg"><i data-lucide="plus"></i></button>
+            </div>
         </header>
 
-        <section class="mb-12">
-            <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 italic mb-6">Disponibilidad Visual</h3>
-            <div id="grid-calendarios" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                </div>
-        </section>
+        <div class="bg-white rounded-[50px] border border-gray-100 shadow-sm overflow-hidden">
+            <div class="timeline-grid bg-slate-50 border-b border-gray-100 text-[10px] font-black uppercase text-gray-400">
+                <div class="p-6 border-r border-gray-100">Propiedad</div>
+                <div class="p-6 text-center">Lun 19</div>
+                <div class="p-6 text-center text-emerald-600 bg-emerald-50/50 italic">Hoy</div>
+                <div class="p-6 text-center">Mie 21</div>
+                <div class="p-6 text-center">Jue 22</div>
+                <div class="p-6 text-center">Vie 23</div>
+                <div class="p-6 text-center bg-slate-100/50">Sáb 24</div>
+                <div class="p-6 text-center bg-slate-100/50">Dom 25</div>
+            </div>
 
-        <section class="mb-12">
-            <h3 class="serif text-2xl text-emerald-950 mb-6 font-bold">Próximas Estancias</h3>
-            <div id="lista-reservas" class="space-y-3">
+            <div class="divide-y divide-gray-50">
+                <div class="timeline-grid items-center">
+                    <div class="p-6 border-r border-gray-100 font-bold text-sm italic">Apartamento 1</div>
+                    <div class="col-span-2 p-2">
+                        <div class="bg-blue-500 text-white text-[9px] p-2 rounded-xl font-black uppercase flex items-center gap-2">
+                            <i data-lucide="info" class="w-3 h-3"></i> Booking (García)
+                        </div>
+                    </div>
+                    <div class="col-span-5"></div>
                 </div>
-        </section>
 
-        <section class="bg-slate-900 -mx-4 px-6 py-12 rounded-[60px] text-white">
-            <h3 class="serif text-2xl mb-8 font-bold">Tareas de Limpieza</h3>
-            <div id="lista-limpiezas" class="space-y-3">
+                <div class="timeline-grid items-center">
+                    <div class="p-6 border-r border-gray-100 font-bold text-sm italic">Apartamento 2</div>
+                    <div class="col-span-4"></div>
+                    <div class="col-span-3 p-2">
+                        <div class="bg-emerald-600 text-white text-[9px] p-2 rounded-xl font-black uppercase flex items-center gap-2">
+                            <i data-lucide="globe" class="w-3 h-3"></i> Web (M. López)
+                        </div>
+                    </div>
                 </div>
-        </section>
-    </div>
 
-    <div id="modal-reserva" class="hidden fixed inset-0 bg-emerald-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[45px] p-10 space-y-4 text-black">
-            <h3 class="serif text-3xl italic text-emerald-900 text-center">Registrar Estancia</h3>
-            <div class="space-y-4">
-                <input type="text" id="cliente" placeholder="Huésped" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none">
-                <select id="propiedad" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-sm outline-none">
-                    <option>Casa Principal</option>
-                    <option>Cabaña Río</option>
-                    <option>Apartamento Azul</option>
-                </select>
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="date" id="entrada" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-xs">
-                    <input type="date" id="salida" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-xs">
+                <div class="timeline-grid items-center">
+                    <div class="p-6 border-r border-gray-100 font-bold text-sm italic">Apartamento 3</div>
+                    <div class="col-span-1"></div>
+                    <div class="col-span-2 p-2">
+                        <div class="bg-blue-500 text-white text-[9px] p-2 rounded-xl font-black uppercase flex items-center gap-2">
+                            <i data-lucide="info" class="w-3 h-3"></i> Booking (Pérez)
+                        </div>
+                    </div>
+                    <div class="col-span-4"></div>
                 </div>
             </div>
-            <button onclick="guardarReserva()" class="w-full py-5 bg-emerald-900 text-white rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl">Guardar en Agenda</button>
-            <button onclick="cerrarModal()" class="w-full text-[9px] font-black uppercase text-gray-400">Cancelar</button>
         </div>
     </div>
-
-    <script>
-        // Datos base
-        const propiedades = ["Casa Principal", "Cabaña Río", "Apartamento Azul"];
-        let reservas = JSON.parse(localStorage.getItem('rural_reservas')) || [
-            { id: 1, cliente: "Toni G.", propiedad: "Casa Principal", entrada: "2026-01-20", salida: "2026-01-22", limpio: false },
-            { id: 2, cliente: "Familia R.", propiedad: "Cabaña Río", entrada: "2026-01-18", salida: "2026-01-21", limpio: true }
-        ];
-
-        function render() {
-            renderGrids();
-            renderListas();
-            lucide.createIcons();
-        }
-
-        function renderGrids() {
-            const container = document.getElementById('grid-calendarios');
-            container.innerHTML = '';
-            
-            propiedades.forEach(prop => {
-                let html = `
-                    <div class="bg-white p-6 rounded-[40px] border border-gray-100 shadow-sm">
-                        <h4 class="font-black text-[10px] uppercase text-emerald-800 mb-4 tracking-widest">${prop}</h4>
-                        <div class="grid grid-cols-7 gap-1">
-                `;
-                
-                for(let i=0; i<14; i++) {
-                    let d = new Date();
-                    d.setDate(d.getDate() + i);
-                    let dateStr = d.toISOString().split('T')[0];
-                    let res = reservas.find(r => r.propiedad === prop && dateStr >= r.entrada && dateStr <= r.salida);
-                    
-                    let status = "status-free";
-                    if(res) status = res.limpio ? "status-clean" : "status-dirty";
-
-                    html += `<div class="day-box ${status}">${d.getDate()}</div>`;
-                }
-                html += `</div></div>`;
-                container.innerHTML += html;
-            });
-        }
-
-        function renderListas() {
-            const resC = document.getElementById('lista-reservas');
-            const limpC = document.getElementById('lista-limpiezas');
-            resC.innerHTML = ''; limpC.innerHTML = '';
-
-            reservas.forEach(res => {
-                // Lista de Agenda
-                resC.innerHTML += `
-                    <div class="bg-white p-6 rounded-[35px] border border-gray-50 shadow-sm flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <div class="w-2 h-10 rounded-full ${res.limpio ? 'bg-emerald-500' : 'bg-orange-500'}"></div>
-                            <div>
-                                <h4 class="font-black text-sm text-slate-900">${res.cliente}</h4>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">${res.propiedad}</p>
-                            </div>
-                        </div>
-                        <button onclick="compartirWhatsApp('${res.propiedad}')" class="p-3 bg-emerald-50 text-emerald-700 rounded-2xl">
-                            <i data-lucide="share-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>`;
-
-                // Lista de Limpiezas
-                if(!res.limpio) {
-                    limpC.innerHTML += `
-                        <div class="bg-white/5 p-5 rounded-[30px] border border-white/10 flex items-center justify-between">
-                            <div class="flex items-center gap-4 text-white">
-                                <div class="w-10 h-10 bg-orange-500/20 text-orange-500 rounded-xl flex items-center justify-center">
-                                    <i data-lucide="utensils" class="w-5 h-5"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-xs">${res.propiedad}</p>
-                                    <p class="text-[9px] font-black text-white/40 uppercase">Salida: ${res.salida}</p>
-                                </div>
-                            </div>
-                            <button onclick="marcarLimpio(${res.id})" class="px-4 py-2 bg-white text-emerald-950 rounded-xl font-black text-[9px] uppercase">Hecho</button>
-                        </div>`;
-                }
-            });
-        }
-
-        function marcarLimpio(id) {
-            const res = reservas.find(r => r.id === id);
-            res.limpio = true;
-            localStorage.setItem('rural_reservas', JSON.stringify(reservas));
-            render();
-        }
-
-        function compartirWhatsApp(prop) {
-            const msg = `Hola! Calendario de limpieza para ${prop}: ${window.location.origin}/limpieza.html`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        function abrirModal() { document.getElementById('modal-reserva').classList.remove('hidden'); }
-        function cerrarModal() { document.getElementById('modal-reserva').classList.add('hidden'); }
-        
-        function guardarReserva() {
-            const r = {
-                id: Date.now(),
-                cliente: document.getElementById('cliente').value,
-                propiedad: document.getElementById('propiedad').value,
-                entrada: document.getElementById('entrada').value,
-                salida: document.getElementById('salida').value,
-                limpio: false
-            };
-            reservas.push(r);
-            localStorage.setItem('rural_reservas', JSON.stringify(reservas));
-            cerrarModal(); render();
-        }
-
-        render();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

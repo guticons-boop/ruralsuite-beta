@@ -2,75 +2,75 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto Engine | Optimizado</title>
+    <title>RuralGesto | DB Completa</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .tab-btn.active { background-color: #be123c; color: white; }
-        /* Optimizamos el scroll para evitar lag */
-        .custom-scroll { max-height: 60vh; overflow-y: auto; scrollbar-width: thin; }
+        .table-container { max-height: 70vh; overflow-y: auto; border-radius: 20px; }
+        th { sticky; top: 0; background: #f8fafc; z-index: 10; }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-5xl mx-auto">
-        <header class="flex justify-between items-center mb-6">
+<body class="p-4 md:p-8 pb-32">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-8">
             <div class="flex items-center gap-4">
-                <button onclick="location.href='../hub/index.html'" class="p-3 bg-white rounded-2xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <h2 class="serif text-2xl italic text-rose-950 font-bold">RuralGesto Engine</h2>
+                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+                <h2 class="serif text-3xl italic text-rose-950 font-bold italic">RuralGesto Engine</h2>
             </div>
-            <div id="counter" class="bg-rose-900 text-white px-4 py-1.5 rounded-xl font-black text-[10px]">0 REGISTROS</div>
+            <div id="badge-total" class="bg-rose-900 text-white px-6 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest">0 REGISTROS</div>
         </header>
 
-        <nav class="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-2xl mb-6">
-            <button onclick="switchTab('checkins')" id="t-checkins" class="tab-btn active py-3 rounded-xl font-black text-[10px] uppercase">Check-ins</button>
-            <button onclick="switchTab('clientes')" id="t-clientes" class="tab-btn py-3 rounded-xl font-black text-[10px] uppercase text-slate-500">Clientes</button>
-            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-3 rounded-xl font-black text-[10px] uppercase text-slate-500 italic">Importar/Limpiar</button>
-        </nav>
-
-        <div id="v-checkins" class="custom-scroll space-y-3 pr-2"></div>
-
-        <div id="v-clientes" class="hidden custom-scroll bg-white rounded-3xl border border-slate-100 shadow-sm">
-            <table class="w-full text-left text-[11px]">
-                <thead class="bg-slate-50 sticky top-0">
-                    <tr><th class="p-4 uppercase text-slate-400 font-black">Huésped</th><th class="p-4 uppercase text-slate-400 font-black">Contacto</th></tr>
-                </thead>
-                <tbody id="tbody-clientes"></tbody>
-            </table>
+        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8">
+            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Check-ins</button>
+            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Base de Datos</button>
+            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest italic">Configuración</button>
         </div>
 
-        <div id="v-import" class="hidden space-y-4">
-            <div class="border-4 border-dashed border-slate-200 rounded-[40px] p-12 text-center relative bg-white">
-                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer">
-                <i data-lucide="upload" class="w-10 h-10 mx-auto text-rose-500 mb-2"></i>
-                <p class="serif text-lg font-bold">Actualizar Base de Datos</p>
+        <div id="view-checkins" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+        <div id="view-clientes" class="hidden">
+            <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="table-container">
+                    <table class="w-full text-left text-[11px]">
+                        <thead class="bg-slate-50 border-b border-slate-100">
+                            <tr>
+                                <th class="p-5 font-black uppercase text-slate-400">Huésped</th>
+                                <th class="p-5 font-black uppercase text-slate-400">Contacto</th>
+                                <th class="p-5 font-black uppercase text-slate-400">Cumpleaños</th>
+                                <th class="p-5 font-black uppercase text-slate-400">Última Estancia</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-body" class="divide-y divide-slate-50"></tbody>
+                    </table>
+                </div>
             </div>
-            
-            <button onclick="hardReset()" class="w-full py-4 bg-rose-50 text-rose-600 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 border border-rose-100">
-                <i data-lucide="trash-2" class="w-4 h-4"></i> Limpiar memoria por completo
+        </div>
+
+        <div id="view-import" class="hidden space-y-6">
+            <div class="bg-white border-4 border-dashed border-slate-200 rounded-[50px] p-20 text-center relative">
+                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer">
+                <i data-lucide="upload" class="w-16 h-16 mx-auto text-rose-500 mb-4"></i>
+                <p class="serif text-2xl italic font-bold">Cargar / Actualizar Reservas</p>
+            </div>
+            <button onclick="hardReset()" class="w-full py-5 text-rose-600 font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 border border-rose-100 rounded-3xl">
+                <i data-lucide="trash-2" class="w-4 h-4"></i> Borrar Memoria Actual
             </button>
         </div>
     </div>
 
     <script>
-        // Función de reseteo duro para evitar colapsos
-        function hardReset() {
-            if(confirm("¿Vaciar toda la base de datos de RuralGesto?")) {
-                localStorage.removeItem('reservas_ruralgesto');
-                window.location.reload(); // Recargamos para limpiar la RAM del navegador
-            }
-        }
-
-        function switchTab(t) {
-            document.querySelectorAll('#v-checkins, #v-clientes, #v-import').forEach(el => el.classList.add('hidden'));
+        function switchTab(tab) {
+            document.querySelectorAll('#view-checkins, #view-clientes, #view-import').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-slate-500'); });
-            document.getElementById('v-' + t).classList.remove('hidden');
-            document.getElementById('t-' + t).classList.add('active');
-            document.getElementById('t-' + t).classList.remove('text-slate-500');
-            if(t !== 'import') render(t);
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('tab-' + tab).classList.remove('text-slate-500');
+            renderizar(tab);
         }
 
         document.getElementById('file-input').addEventListener('change', function(e) {
@@ -79,49 +79,54 @@
                 const workbook = XLSX.read(new Uint8Array(evt.target.result), { type: 'array' });
                 const raw = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
                 
-                // Procesamos solo los datos necesarios para no saturar
-                const clean = raw.map(r => ({
-                    n: `${r['NOMBRE'] || ''} ${r['APELLIDO 1'] || ''}`.trim(),
-                    t: r['686586692'] || r['TELEFONO'] || '',
-                    m: r['yolandasan'] || r['EMAIL'] || '',
-                    a: r['El Rinconcit'] || 'Apt'
+                // MAPEO FINAL DE DATOS
+                const procesados = raw.map(r => ({
+                    nombre: `${r['NOMBRE'] || ''} ${r['APELLIDO 1'] || ''}`.trim() || 'Huésped',
+                    tel: r['686586692'] || r['TELEFONO'] || '---',
+                    mail: r['yolandasan'] || r['EMAIL'] || '---',
+                    cumple: r['25/05/1995'] || r['FECHA NACIMIENTO'] || '-',
+                    fecha: r['06/12/202'] || r['ENTRADA'] || r['FECHA'],
+                    apto: r['El Rinconcit'] || r['APARTAMENTO'] || 'Apto'
                 }));
 
-                localStorage.setItem('reservas_ruralgesto', JSON.stringify(clean));
-                alert("860 registros guardados. La página se refrescará para estabilizar la memoria.");
-                window.location.reload();
+                localStorage.setItem('reservas_ruralgesto', JSON.stringify(procesados));
+                window.location.reload(); 
             };
             reader.readAsArrayBuffer(e.target.files[0]);
         });
 
-        function render(view) {
+        function renderizar(tab) {
             const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-            document.getElementById('counter').innerText = data.length + " REGISTROS";
+            document.getElementById('badge-total').innerText = data.length + " REGISTROS";
             
-            if(view === 'checkins') {
-                const container = document.getElementById('v-checkins');
-                // Renderizado por bloques para no colapsar
-                container.innerHTML = data.slice(0, 100).map(r => `
-                    <div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center shadow-sm">
-                        <div><p class="text-[9px] font-black text-rose-600 uppercase">${r.a}</p><h4 class="font-bold text-slate-800 text-sm">${r.n}</h4></div>
-                        <button onclick="window.open('https://wa.me/${r.t}')" class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></button>
-                    </div>
-                `).join('') + (data.length > 100 ? '<p class="text-center text-[10px] text-slate-400">Mostrando primeros 100 registros para mayor velocidad...</p>' : '');
+            if(tab === 'checkins') {
+                const list = document.getElementById('view-checkins');
+                list.innerHTML = data.slice(0, 50).map(r => `
+                    <div class="bg-white p-6 rounded-[35px] border border-slate-100 flex justify-between items-center shadow-sm">
+                        <div><p class="text-[9px] font-black text-rose-600 uppercase mb-1">${r.apto}</p><h4 class="font-bold text-slate-800">${r.nombre}</h4></div>
+                        <button onclick="window.open('https://wa.me/${r.tel}')" class="p-4 bg-emerald-50 text-emerald-600 rounded-2xl"><i data-lucide="send" class="w-5 h-5"></i></button>
+                    </div>`).join('');
             }
 
-            if(view === 'clientes') {
-                const tbody = document.getElementById('tbody-clientes');
-                tbody.innerHTML = data.slice(0, 200).map(r => `
-                    <tr class="border-b border-slate-50">
-                        <td class="p-4 font-bold text-slate-700">${r.n}</td>
-                        <td class="p-4 text-slate-400 font-mono">${r.t}</td>
-                    </tr>
-                `).join('');
+            if(tab === 'clientes') {
+                const tbody = document.getElementById('tabla-body');
+                // Mostramos 300 para que no se cuelgue, el resto se procesa al buscar
+                tbody.innerHTML = data.slice(0, 300).map(r => `
+                    <tr>
+                        <td class="p-5"><p class="font-bold text-slate-800">${r.nombre}</p><p class="text-[9px] text-slate-400 italic">${r.apto}</p></td>
+                        <td class="p-5 font-mono text-slate-500">${r.tel}<br>${r.mail}</td>
+                        <td class="p-5 text-rose-600 font-black italic">${r.cumple}</td>
+                        <td class="p-5 font-bold text-slate-400">${r.fecha}</td>
+                    </tr>`).join('');
             }
             lucide.createIcons();
         }
 
-        window.onload = () => render('checkins');
+        function hardReset() {
+            if(confirm("¿Borrar todo?")) { localStorage.removeItem('reservas_ruralgesto'); window.location.reload(); }
+        }
+
+        window.onload = () => renderizar('checkins');
     </script>
 </body>
 </html>

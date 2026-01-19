@@ -2,121 +2,65 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RuralGestión | Panel Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuralGestión | Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #1a4731; --bg: #fdfdfb; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .hidden { display: none !important; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; }
-        .nav-item:active { transform: scale(0.9); opacity: 0.6; }
-        .nav-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; color: #1a202c; }
-        .view-container { min-height: 100vh; padding: 25px; animation: fadeIn 0.3s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="view-login" class="min-h-screen flex items-center justify-center p-8 bg-white">
+    <div id="vista-web">
+        <nav class="flex justify-between items-center p-6 fixed w-full bg-white/80 backdrop-blur-md z-50">
+            <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
+            <button onclick="document.getElementById('modal-login').classList.remove('hidden')" class="border-2 border-emerald-900 px-6 py-2 rounded-full font-bold text-xs uppercase text-emerald-900">Entrar</button>
+        </nav>
+
+        <section class="pt-32 pb-10 px-6 max-w-6xl mx-auto">
+            <h2 class="serif text-6xl mb-6">Gestión profesional para tu <span class="italic text-emerald-800">casa rural</span></h2>
+            <div class="rounded-[40px] overflow-hidden shadow-xl mb-10 h-64">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-8 bg-white rounded-3xl border border-gray-100">
+                    <h4 class="font-bold text-xs uppercase mb-2">Servicios</h4>
+                    <p class="text-gray-400 text-xs">Administración, Marketing e IA.</p>
+                </div>
+                <div class="p-8 bg-white rounded-3xl border border-gray-100">
+                    <h4 class="font-bold text-xs uppercase mb-2">Planes</h4>
+                    <p class="text-gray-400 text-xs">Desde 19,99€ al mes.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="modal-login" class="hidden fixed inset-0 bg-white/98 z-[100] flex items-center justify-center p-6">
         <div class="w-full max-w-sm text-center">
-            <h1 class="serif text-5xl mb-2 italic">Rural<span class="text-emerald-900 font-normal">Gestión</span></h1>
-            <p class="text-[10px] font-bold text-gray-300 uppercase tracking-[0.4em] mb-12">Portal del Propietario</p>
-            <div class="space-y-4">
-                <input type="text" id="user" placeholder="Usuario" class="w-full p-5 rounded-2xl bg-gray-50 border-none outline-none ring-1 ring-gray-100 focus:ring-emerald-900 font-bold">
-                <input type="password" id="pass" placeholder="Contraseña" class="w-full p-5 rounded-2xl bg-gray-50 border-none outline-none ring-1 ring-gray-100 focus:ring-emerald-900 font-bold">
-                <button onclick="login()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase shadow-xl">Entrar al Panel</button>
-                <p class="text-[9px] text-gray-400 font-bold mt-4 uppercase tracking-tighter italic">Demo: toni / 1234</p>
-            </div>
+            <h2 class="serif text-4xl mb-8">Acceso <span class="italic text-emerald-800">Toni</span></h2>
+            <input type="text" id="user" placeholder="Usuario" class="w-full p-5 rounded-2xl bg-gray-50 mb-4 border-none outline-none ring-1 ring-gray-100 font-bold">
+            <input type="password" id="pass" placeholder="Contraseña" class="w-full p-5 rounded-2xl bg-gray-50 mb-6 border-none outline-none ring-1 ring-gray-100 font-bold">
+            <button onclick="validarYEntrar()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase shadow-lg">Entrar al Panel</button>
+            <button onclick="document.getElementById('modal-login').classList.add('hidden')" class="mt-6 text-gray-400 text-[10px] font-bold uppercase tracking-widest">Cerrar</button>
         </div>
-    </div>
-
-    <div id="view-main" class="view-container hidden">
-        <header class="pt-8 pb-10 flex justify-between items-start">
-            <div>
-                <h2 class="serif text-4xl italic">Rural<span class="text-emerald-800 font-normal">Gestión</span></h2>
-                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">Hola, Toni • Plan Pro</p>
-            </div>
-            <button onclick="location.reload()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"><i data-lucide="power" class="w-4 h-4 text-gray-400"></i></button>
-        </header>
-
-        <div class="w-full h-64 rounded-[35px] overflow-hidden shadow-2xl mb-12">
-            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
-        </div>
-
-        <div class="grid grid-cols-2 gap-y-16 gap-x-8 px-4">
-            <div onclick="showSection('agenda')" class="nav-item">
-                <i data-lucide="calendar" class="w-8 h-8 text-emerald-900"></i>
-                <span class="nav-label">Agenda</span>
-            </div>
-            <div onclick="showSection('marketing')" class="nav-item">
-                <i data-lucide="megaphone" class="w-8 h-8 text-emerald-900"></i>
-                <span class="nav-label">Marketing</span>
-            </div>
-            <div onclick="showSection('admin')" class="nav-item">
-                <i data-lucide="briefcase" class="w-8 h-8 text-emerald-900"></i>
-                <span class="nav-label">Administración</span>
-            </div>
-            <div onclick="showSection('web')" class="nav-item">
-                <i data-lucide="sparkles" class="w-8 h-8 text-emerald-900"></i>
-                <span class="nav-label">Web Builder</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="view-section" class="view-container hidden bg-white">
-        <button onclick="showMain()" class="mb-8 flex items-center gap-2 text-gray-400 font-black text-[10px] uppercase tracking-widest">
-            <i data-lucide="chevron-left" class="w-4 h-4"></i> Volver al Panel
-        </button>
-        
-        <h2 id="section-title" class="serif text-5xl italic mb-2 capitalize text-emerald-900">Sección</h2>
-        <p id="section-desc" class="text-gray-400 text-xs mb-10 leading-relaxed"></p>
-
-        <div class="space-y-4" id="section-content">
-            </div>
     </div>
 
     <script>
         lucide.createIcons();
-
-        function login() {
+        function validarYEntrar() {
             const u = document.getElementById('user').value.toLowerCase();
             const p = document.getElementById('pass').value;
             if(u === "toni" && p === "1234") {
-                document.getElementById('view-login').classList.add('hidden');
-                document.getElementById('view-main').classList.remove('hidden');
-                lucide.createIcons();
-            } else { alert("Acceso denegado"); }
-        }
-
-        function showSection(type) {
-            document.getElementById('view-main').classList.add('hidden');
-            const view = document.getElementById('view-section');
-            const title = document.getElementById('section-title');
-            const desc = document.getElementById('section-desc');
-            const content = document.getElementById('section-content');
-            
-            view.classList.remove('hidden');
-
-            const apps = {
-                agenda: { t: "Agenda", d: "Sincronización con Booking y Airbnb en tiempo real.", c: "<li>✅ Reserva: Casa Piedra (Mañana)</li><li>✅ Salida: Apartamento Sol (12:00)</li>" },
-                marketing: { t: "Marketing", d: "Envía ofertas a tus clientes anteriores automáticamente.", c: "<li>📢 Campaña Verano: Activa</li><li>📩 Emails enviados: 142</li>" },
-                admin: { t: "Administración", d: "Control de facturación y gastos mensuales.", c: "<li>💰 Ingresos mes: 2.450€</li><li>📉 Gastos: 420€</li>" },
-                web: { t: "Web Builder", d: "Tu página web generada por IA lista para publicar.", c: "<li>🌐 Estado: En línea</li><li>⚡ Rendimiento: 98%</li>" }
-            };
-
-            title.innerText = apps[type].t;
-            desc.innerText = apps[type].d;
-            content.innerHTML = `<ul class="space-y-4">${apps[type].c.split('<li>').map(item => item ? `<li class="p-5 bg-gray-50 rounded-2xl text-xs font-bold border border-gray-100">${item.replace('</li>','')}</li>` : '').join('')}</ul>`;
-            lucide.createIcons();
-        }
-
-        function showMain() {
-            document.getElementById('view-section').classList.add('hidden');
-            document.getElementById('view-main').classList.remove('hidden');
+                // REDIRIGIR AL HUB REAL
+                window.location.href = 'hub.html';
+            } else {
+                alert("Prueba con toni / 1234");
+            }
         }
     </script>
 </body>

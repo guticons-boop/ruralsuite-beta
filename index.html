@@ -2,125 +2,102 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Sistema Operativo para Alojamientos Turísticos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RuralGesto | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; }
+        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
+        
+        /* Fondo con la nueva imagen elegida */
         .hero-bg {
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover; background-position: center;
+            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
-        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -2px; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            position: absolute;
+            inset: 0;
+        }
+
+        /* Estilo de los botones del HUB */
+        .hub-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .hub-btn:active { transform: scale(0.95); background: #2563eb; color: white; }
     </style>
 </head>
-<body class="bg-white text-slate-900">
+<body class="flex flex-col min-h-screen text-white">
 
-    <nav class="fixed w-full z-50 px-6 py-6 transition-all bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-2xl italic-black uppercase text-blue-600">RuralGesto</div>
-            <div class="hidden md:flex gap-8 text-[10px] font-black uppercase italic tracking-widest text-slate-400">
-                <a href="#servicios" class="hover:text-blue-600">Servicios</a>
-                <a href="#tecnologia" class="hover:text-blue-600">Tecnología</a>
-                <a href="#precios" class="hover:text-blue-600">Planes Pro</a>
-            </div>
-            <a href="/hub/" class="bg-black text-white px-6 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-blue-600 transition">Panel de Control</a>
-        </div>
-    </nav>
+    <div class="hero-bg">
+        <div class="overlay"></div>
+    </div>
 
-    <section class="hero-bg h-screen flex items-center justify-center text-center px-6 pt-20">
-        <div class="max-w-5xl">
-            <h1 class="text-white text-6xl md:text-9xl font-extrabold tracking-tighter leading-none mb-8 italic">
-                GESTIONA TU <br><span class="text-blue-400">LIBERTAD.</span>
-            </h1>
-            <p class="text-white/80 text-lg md:text-2xl font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
-                Automatiza el cumplimiento legal, la sincronización de reservas y el marketing de tu alojamiento rural con una sola herramienta.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#servicios" class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-black italic uppercase text-sm shadow-2xl">Descubrir Soluciones</a>
-                <a href="/hub/" class="bg-white text-black px-10 py-5 rounded-2xl font-black italic uppercase text-sm shadow-2xl">Empezar Ahora</a>
-            </div>
+    <header class="p-8 relative z-10 flex justify-between items-center">
+        <div>
+            <h1 class="italic-black text-4xl uppercase leading-none">RURAL<br><span class="text-blue-500">GESTO</span></h1>
+            <p class="text-[9px] font-black uppercase tracking-[0.3em] mt-2 opacity-70">Control Total 2026</p>
         </div>
-    </section>
+        <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30">
+            <span class="text-xs">🔔</span>
+        </div>
+    </header>
 
-    <section id="servicios" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-20 items-center">
-                <div>
-                    <span class="text-blue-600 font-black italic uppercase text-xs tracking-[0.3em] mb-4 block text-blue-600">Eficiencia Operativa</span>
-                    <h2 class="text-5xl md:text-7xl italic-black uppercase mb-8 leading-none">Todo bajo <br>control legal.</h2>
-                    <p class="text-slate-500 text-lg mb-8 leading-relaxed font-medium">
-                        RuralGesto no es solo un calendario. Es un ecosistema diseñado para cumplir con la normativa vigente sin perder tiempo. Desde el <strong>escaneo automático de DNI</strong> hasta la comunicación con las autoridades.
-                    </p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center gap-3 font-bold text-sm uppercase italic text-slate-700">
-                            <span class="text-blue-600">✓</span> Conexión directa con Fuerzas de Seguridad
-                        </li>
-                        <li class="flex items-center gap-3 font-bold text-sm uppercase italic text-slate-700">
-                            <span class="text-blue-600">✓</span> Generación automática de libros-registro
-                        </li>
-                        <li class="flex items-center gap-3 font-bold text-sm uppercase italic text-slate-700">
-                            <span class="text-blue-600">✓</span> Firma digital de partes de entrada
-                        </li>
-                    </ul>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-slate-50 p-8 rounded-[40px] border border-slate-100">
-                        <div class="text-3xl mb-4">🔄</div>
-                        <h4 class="font-black italic uppercase text-sm mb-2">Sync Total</h4>
-                        <p class="text-slate-400 text-xs font-medium">Booking, Airbnb y Expedia siempre al día.</p>
-                    </div>
-                    <div class="bg-blue-600 p-8 rounded-[40px] text-white">
-                        <div class="text-3xl mb-4">📈</div>
-                        <h4 class="font-black italic uppercase text-sm mb-2 text-white">Tax Pro</h4>
-                        <p class="text-blue-100 text-xs font-medium">Contabilidad neta restando comisiones.</p>
-                    </div>
-                    <div class="bg-slate-900 p-8 rounded-[40px] text-white col-span-2">
-                        <div class="text-3xl mb-4">🌐</div>
-                        <h4 class="font-black italic uppercase text-sm mb-2">Tu propia Web</h4>
-                        <p class="text-slate-400 text-xs font-medium">Builder integrado para tener tu dominio .com y recibir reservas directas sin comisiones externas.</p>
-                    </div>
-                </div>
+    <main class="flex-grow flex items-end p-6 relative z-10">
+        <div class="grid grid-cols-2 gap-4 w-full mb-8">
+            
+            <div onclick="location.href='calendar/index.html'" class="hub-btn text-black">
+                <span class="text-3xl mb-2">📅</span>
+                <span class="font-black italic uppercase text-[10px] tracking-widest">Calendario</span>
             </div>
-        </div>
-    </section>
 
-    <section class="bg-slate-50 py-32 px-6 rounded-[60px] mx-4">
-        <div class="max-w-5xl mx-auto text-center">
-            <h2 class="text-4xl md:text-6xl italic-black uppercase mb-8">Vende más, <br><span class="text-blue-600 italic">sin esfuerzo.</span></h2>
-            <p class="text-slate-500 text-lg mb-12 max-w-2xl mx-auto font-medium">
-                Nuestra herramienta de Marketing Simple te permite enviar ofertas personalizadas por WhatsApp y Email a antiguos clientes para fomentar que vuelvan.
-            </p>
-            <div class="inline-flex gap-4 p-2 bg-white rounded-3xl shadow-xl border border-slate-100">
-                <div class="px-6 py-4 text-center border-r border-slate-100">
-                    <p class="text-2xl font-black italic">100%</p>
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Automatizado</p>
-                </div>
-                <div class="px-6 py-4 text-center">
-                    <p class="text-2xl font-black italic">0€</p>
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Comisiones</p>
-                </div>
+            <div onclick="location.href='marketing/index.html'" class="hub-btn text-black">
+                <span class="text-3xl mb-2">📢</span>
+                <span class="font-black italic uppercase text-[10px] tracking-widest">Marketing</span>
             </div>
-        </div>
-    </section>
 
-    <footer class="py-20 px-6 mt-20 border-t border-slate-100">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 items-start text-center md:text-left">
-            <div>
-                <div class="text-2xl italic-black uppercase mb-4">RuralGesto</div>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">Gestión de Viviendas Turísticas</p>
+            <div onclick="location.href='tax/index.html'" class="hub-btn text-black">
+                <span class="text-3xl mb-2">💼</span>
+                <span class="font-black italic uppercase text-[10px] tracking-widest">Administración</span>
             </div>
-            <div class="flex flex-col gap-3 text-[10px] font-black uppercase italic text-slate-400 tracking-widest">
-                <a href="#" class="hover:text-blue-600">Política de Privacidad</a>
-                <a href="#" class="hover:text-blue-600">Términos del Servicio</a>
-                <a href="#" class="hover:text-blue-600">Suscripción Pro</a>
+
+            <div onclick="location.href='web/index.html'" class="hub-btn text-black">
+                <span class="text-3xl mb-2">🪄</span>
+                <span class="font-black italic uppercase text-[10px] tracking-widest">Tu Web IA</span>
             </div>
-            <div class="text-[10px] font-black uppercase text-slate-300 tracking-tighter">
-                © 2026 RURALGESTO DIGITAL. <br>DISEÑADO PARA LA EXCELENCIA EN EL HOSPEDAJE.
+
+            <div class="hub-btn text-black bg-white/40 border-dashed border-2">
+                <span class="text-3xl mb-2">🧼</span>
+                <span class="font-black italic uppercase text-[10px] tracking-widest">Limpieza</span>
             </div>
+
+            <div class="hub-btn text-black bg-white/40 border-dashed border-2">
+                <span class="text-3xl mb-2">⚙️</span>
+                <span class="font-black italic uppercase text-[10px] tracking-widest">Ajustes</span>
+            </div>
+
         </div>
+    </main>
+
+    <footer class="p-8 text-center relative z-10">
+        <p class="text-[8px] font-bold uppercase opacity-40 tracking-widest">© 2026 RuralGesto Ecosystem</p>
     </footer>
 
 </body>

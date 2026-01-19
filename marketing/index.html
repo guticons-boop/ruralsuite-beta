@@ -12,10 +12,9 @@
         .card { background: white; border-radius: 35px; padding: 25px; border: 1px solid #eee; }
         .input-mkt { width: 100%; padding: 15px; border-radius: 18px; background: #f3f4f6; border: 1px solid transparent; font-weight: 700; margin-top: 5px; outline: none; }
         .input-mkt:focus { border-color: #2563eb; background: #fff; }
-        #preview-img { width: 100%; height: 200px; object-fit: cover; border-radius: 25px; margin-top: 15px; display: none; }
-        .ai-btn { background: #1a1a1a; color: white; padding: 10px 15px; border-radius: 15px; font-weight: 800; font-size: 10px; display: flex; align-items: center; gap: 5px; }
-        .tab-button { padding: 12px 20px; border-radius: 20px; font-weight: 800; font-size: 10px; text-transform: uppercase; transition: 0.3s; }
-        .tab-active { background: #2563eb; color: white; }
+        .tab-btn { flex: 1; padding: 12px; border-radius: 20px; font-weight: 800; font-size: 10px; text-transform: uppercase; transition: 0.3s; }
+        .active-tab { background: #000; color: #fff; }
+        #preview-img { width: 100%; height: 200px; object-fit: cover; border-radius: 25px; margin-top: 15px; display: none; background: #eee; }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto pb-32">
@@ -25,95 +24,111 @@
         <h1 class="italic-black text-2xl uppercase text-blue-600">Marketing</h1>
     </header>
 
-    <div class="flex justify-center mb-8 bg-gray-100 p-2 rounded-[25px]">
-        <button id="btn-prehechas" onclick="showSection('prehechas')" class="tab-button tab-active">Campañas Rápidas</button>
-        <button id="btn-generador" onclick="showSection('generador')" class="tab-button">Generador IA</button>
+    <div class="flex bg-gray-200 p-1.5 rounded-[25px] mb-8">
+        <button id="tab1" onclick="switchMode('pre')" class="tab-btn active-tab">Rápidas</button>
+        <button id="tab2" onclick="switchMode('ia')" class="tab-btn">Generador IA</button>
     </div>
 
-    <div id="section-prehechas">
-        <div class="card shadow-xl mb-8">
-            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-[0.2em]">Elige tu plantilla</h2>
-            
-            <div class="space-y-4">
-                <div class="bg-blue-50 p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-blue-100 transition" onclick="selectCampaign('navidad')">
-                    <span class="text-2xl">🎄</span>
-                    <div>
-                        <p class="font-black italic uppercase text-sm leading-none">Campaña de Navidad</p>
-                        <p class="text-[9px] font-medium text-gray-500">Ofertas de invierno y fin de año.</p>
-                    </div>
-                </div>
-                <div class="bg-red-50 p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-red-100 transition" onclick="selectCampaign('sanvalentin')">
-                    <span class="text-2xl">💖</span>
-                    <div>
-                        <p class="font-black italic uppercase text-sm leading-none">San Valentín Romántico</p>
-                        <p class="text-[9px] font-medium text-gray-500">Escapadas en pareja con encanto.</p>
-                    </div>
-                </div>
-                <div class="bg-green-50 p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-green-100 transition" onclick="selectCampaign('verano')">
-                    <span class="text-2xl">☀️</span>
-                    <div>
-                        <p class="font-black italic uppercase text-sm leading-none">Ofertas de Verano</p>
-                        <p class="text-[9px] font-medium text-gray-500">Piscina, sol y desconexión.</p>
-                    </div>
-                </div>
-            </div>
-            <p class="text-[9px] font-black text-gray-400 uppercase mt-6 ml-2 italic">Pulsa para previsualizar y enviar.</p>
+    <div id="view-pre" class="space-y-4">
+        <div onclick="usarPlantilla('Navidad', '🎄', 'Casa rural nevada con chimenea acogedora')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+            <span class="text-3xl">🎄</span>
+            <div><p class="font-black italic uppercase text-sm">Campaña Navidad</p><p class="text-[9px] text-gray-400">Ofertas de invierno</p></div>
+        </div>
+        <div onclick="usarPlantilla('Verano', '☀️', 'Piscina cristalina en entorno rural con sol')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+            <span class="text-3xl">☀️</span>
+            <div><p class="font-black italic uppercase text-sm">Especial Verano</p><p class="text-[9px] text-gray-400">Piscina y desconexión</p></div>
+        </div>
+        <div onclick="usarPlantilla('Escapada', '💖', 'Cena romántica a la luz de las velas')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+            <span class="text-3xl">💖</span>
+            <div><p class="font-black italic uppercase text-sm">San Valentín</p><p class="text-[9px] text-gray-400">Parejas y relax</p></div>
         </div>
     </div>
 
-    <div id="section-generador" class="hidden">
-        <div class="card shadow-xl mb-8">
-            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-[0.2em]">Generador de Campañas IA</h2>
+    <div id="view-ia" class="hidden">
+        <div class="card shadow-xl">
+            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-widest">Editor de Campaña</h2>
 
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Imagen para tu campaña</label>
-            <div class="w-full py-6 border-2 border-dashed border-gray-200 rounded-[25px] flex flex-col items-center justify-center mt-1">
-                <div class="flex gap-3 mb-4">
-                    <button onclick="document.getElementById('file-input').click()" class="ai-btn">
-                        <span>🖼️</span> Subir Imagen
-                        <input type="file" id="file-input" class="hidden" accept="image/*" onchange="previewFile()">
-                    </button>
-                    <button onclick="generateImageWithAI()" class="ai-btn">
-                        <span>✨</span> Generar con IA
-                    </button>
+            <div class="mb-6">
+                <div class="flex gap-2 mb-4">
+                    <button onclick="document.getElementById('file-input').click()" class="flex-1 bg-slate-100 p-3 rounded-xl text-[9px] font-black uppercase">📁 Subir Foto</button>
+                    <button onclick="toggleAIPrompt()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl text-[9px] font-black uppercase italic">✨ Crear con IA</button>
                 </div>
-                <p class="text-[9px] font-bold text-gray-400 uppercase">O describe: "Puesta de sol en la sierra, pareja feliz..."</p>
-                <input type="text" id="ai-image-prompt" placeholder="Descripción para la IA (ej: 'pareja en casa rural con jacuzzi')" class="input-mkt w-[90%] mt-3 hidden">
-                <img id="preview-img" src="" alt="Vista previa de imagen AI">
+                <input type="file" id="file-input" class="hidden" onchange="previewImg(event)">
+                <div id="ia-prompt-box" class="hidden mb-4">
+                    <input type="text" id="ai-desc" placeholder="Describe la foto (ej: Desayuno rústico en terraza)" class="input-mkt">
+                    <button onclick="generarImagenIA()" class="w-full bg-black text-white p-3 mt-2 rounded-xl text-[9px] font-black uppercase italic">Generar Imagen Ahora</button>
+                </div>
+                <img id="preview-img" src="">
             </div>
 
-            <div class="mt-6">
-                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Título de la Oferta</label>
-                <input type="text" id="mkt-titulo" placeholder="Ej: Escapada Romántica -20% en febrero" class="input-mkt mb-4">
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Título</label>
+            <input type="text" id="mkt-titulo" class="input-mkt mb-4">
 
-                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Instrucciones para la IA (¿Qué quieres vender?)</label>
-                <textarea id="mkt-ia-prompt" placeholder="Ej: Crea un texto corto para WhatsApp promocionando un 15% de descuento para parejas en febrero en nuestra casa..." class="input-mkt h-24 mb-4"></textarea>
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Instrucciones para Texto IA</label>
+            <textarea id="mkt-instr" placeholder="¿Qué quieres que diga el mensaje?" class="input-mkt h-20 mb-4"></textarea>
+            
+            <button onclick="generarTextoIA()" class="w-full bg-blue-100 text-blue-600 p-4 rounded-2xl font-black italic uppercase text-[10px] mb-6">💬 Redactar con IA</button>
 
-                <button onclick="generarTextoConIA()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-[10px] mb-6 flex items-center justify-center gap-2">
-                    <span>💬</span> Generar Texto con Inteligencia Artificial
-                </button>
-
-                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Resultado Final (Editable)</label>
-                <textarea id="mkt-resultado" class="input-mkt h-32 text-blue-600 italic"></textarea>
-            </div>
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Mensaje Final</label>
+            <textarea id="mkt-final" class="input-mkt h-32 text-blue-700 italic border-blue-100 bg-blue-50/30"></textarea>
 
             <div class="grid grid-cols-2 gap-3 mt-6">
-                <button onclick="enviar('WhatsApp')" class="bg-green-500 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-green-100">Enviar WhatsApp</button>
-                <button onclick="enviar('Email')" class="bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-blue-100">Enviar Email</button>
+                <button onclick="enviar('WhatsApp')" class="bg-green-500 text-white p-4 rounded-2xl font-black italic uppercase text-xs">WhatsApp</button>
+                <button onclick="enviar('Email')" class="bg-slate-900 text-white p-4 rounded-2xl font-black italic uppercase text-xs">Email</button>
             </div>
         </div>
     </div>
 
-
     <script>
-        // Función para alternar entre secciones
-        function showSection(sectionId) {
-            document.getElementById('section-prehechas').classList.toggle('hidden', sectionId !== 'prehechas');
-            document.getElementById('section-generador').classList.toggle('hidden', sectionId !== 'generador');
-            
-            document.getElementById('btn-prehechas').classList.toggle('tab-active', sectionId === 'prehechas');
-            document.getElementById('btn-generador').classList.toggle('tab-active', sectionId === 'generador');
+        function switchMode(mode) {
+            document.getElementById('view-pre').classList.toggle('hidden', mode === 'ia');
+            document.getElementById('view-ia').classList.toggle('hidden', mode === 'pre');
+            document.getElementById('tab1').classList.toggle('active-tab', mode === 'pre');
+            document.getElementById('tab2').classList.toggle('active-tab', mode === 'ia');
         }
 
-        // Simular selección de campaña pre-hecha
-        function selectCampaign(type) {
-            alert(`Cargando plantilla para "${type.toUpperCase()}". En una
+        function toggleAIPrompt() {
+            document.getElementById('ia-prompt-box').classList.toggle('hidden');
+        }
+
+        function previewImg(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.getElementById('preview-img');
+                img.src = event.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function generarImagenIA() {
+            const desc = document.getElementById('ai-desc').value;
+            if(!desc) return alert("Escribe una descripción");
+            const img = document.getElementById('preview-img');
+            img.style.display = 'block';
+            img.src = "https://images.unsplash.com/photo-1510797215324-95aa89f43c33?q=80&w=1000&auto=format&fit=crop"; // Simulación
+            alert("Imagen generada basada en: " + desc);
+        }
+
+        function usarPlantilla(nombre, icono, descIA) {
+            switchMode('ia');
+            document.getElementById('mkt-titulo').value = "Oferta " + nombre;
+            document.getElementById('ai-desc').value = descIA;
+            document.getElementById('mkt-instr').value = "Crea un mensaje para " + nombre + " muy atractivo.";
+            generarImagenIA();
+        }
+
+        function generarTextoIA() {
+            const instr = document.getElementById('mkt-instr').value;
+            if(!instr) return alert("Dime qué quieres que ponga");
+            document.getElementById('mkt-final').value = "¡Hola! 🌿 Tenemos una noticia increíble: " + instr + ". ¡Reserva ahora y vive la experiencia RuralGesto!";
+        }
+
+        function enviar(canal) {
+            alert("Enviando campaña por " + canal);
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Hub | RuralGesto</title>
+    <title>Panel Hub | El Rinconcito de Matarraña</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -14,35 +14,41 @@
 </head>
 <body class="p-6 md:p-12">
 
-    <header class="max-w-5xl mx-auto mb-12">
-        <h1 class="serif text-4xl italic text-emerald-950 font-bold">RuralGesto Hub</h1>
-        <p class="text-gray-400 text-sm font-bold uppercase tracking-widest mt-2">Panel de Control Profesional</p>
+    <header class="max-w-5xl mx-auto mb-12 flex justify-between items-end">
+        <div>
+            <h1 class="serif text-4xl italic text-emerald-950 font-bold">El Rinconcito de Matarraña</h1>
+            <p class="text-emerald-600 text-sm font-bold uppercase tracking-widest mt-2 italic">Panel de Gestión Real</p>
+        </div>
+        <div class="text-right hidden md:block">
+            <p class="text-[10px] font-black uppercase text-gray-400">Tus Propiedades</p>
+            <p class="text-xs font-bold text-slate-800 italic">Apartamento 1, 2 y 3</p>
+        </div>
     </header>
 
     <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <div onclick="location.href='../calendar/index.html'" class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 transition">
-            <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="calendar"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Gestión</p>
-            <p class="serif text-2xl italic text-slate-900">Calendario y Limpieza</p>
+        <div onclick="location.href='../calendar/index.html'" class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 transition group">
+            <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition"><i data-lucide="calendar"></i></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Reservas</p>
+            <p class="serif text-2xl italic text-slate-900">Agenda y Limpieza</p>
         </div>
 
-        <div onclick="location.href='../tax/index.html'" class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 transition">
-            <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="calculator"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Finanzas</p>
+        <div onclick="location.href='../tax/index.html'" class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 transition group">
+            <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition"><i data-lucide="calculator"></i></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Contabilidad</p>
             <p class="serif text-2xl italic text-slate-900">Asistente Fiscal</p>
         </div>
 
-        <div onclick="location.href='../marketing/index.html'" class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 transition">
-            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="megaphone"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Crecimiento</p>
-            <p class="serif text-2xl italic text-slate-900">Marketing Directo</p>
+        <div onclick="location.href='../marketing/index.html'" class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 transition group">
+            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition"><i data-lucide="megaphone"></i></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Venta Directa</p>
+            <p class="serif text-2xl italic text-slate-900">Marketing & IA</p>
         </div>
 
         <div onclick="location.href='../config/canales.html'" class="bg-emerald-900 p-10 rounded-[50px] shadow-xl cursor-pointer hover:bg-emerald-950 transition">
             <div class="w-14 h-14 bg-emerald-800 text-emerald-400 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="share-2"></i></div>
             <p class="text-[10px] font-black uppercase tracking-widest text-emerald-300">Conexiones</p>
-            <p class="serif text-2xl italic text-white">Mis Canales</p>
+            <p class="serif text-2xl italic text-white">Canales y OTAs</p>
         </div>
 
     </main>

@@ -2,32 +2,55 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rural Gesto - Tax</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RG Tax</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>body{font-family:'Inter',sans-serif;}.italic-black{font-style:italic;font-weight:900;}</style>
 </head>
-<body class="p-6">
-    <header class="mb-10 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-xs font-bold text-gray-400 italic">← VOLVER</button>
-        <h1 class="italic-black text-2xl uppercase text-right">Rural Gesto</h1>
+<body class="p-6 bg-white">
+    <header class="mb-8 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase">Finanzas</h1>
     </header>
 
-    <div class="bg-black text-white p-8 rounded-[40px] mb-6">
-        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Previsión IRPF El Rinconcito</p>
-        <h2 class="text-5xl italic-black">1.866,00€</h2>
+    <div class="bg-black text-white p-10 rounded-[40px] mb-6 shadow-2xl">
+        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mb-2 italic text-center">Impuestos a Reservar (20%)</p>
+        <h2 id="t-tax" class="text-5xl italic-black text-center">0.00€</h2>
     </div>
 
     <div class="grid grid-cols-2 gap-4 mb-8">
-        <div class="p-6 bg-gray-50 rounded-[30px] text-center">
-            <p class="text-[10px] font-black text-gray-400 uppercase">Ingresos</p>
-            <p class="text-xl font-black italic text-green-600">9.330€</p>
+        <div class="p-6 bg-gray-50 rounded-[30px] text-center border border-gray-100">
+            <p class="text-[9px] font-black text-gray-400 uppercase italic">Ingresos</p>
+            <p id="t-in" class="text-xl font-black italic text-black">0€</p>
         </div>
-        <div class="p-6 bg-gray-50 rounded-[30px] text-center">
-            <p class="text-[10px] font-black text-gray-400 uppercase">Gastos</p>
-            <p class="text-xl font-black italic text-red-500">1.450€</p>
+        <div class="p-6 bg-gray-50 rounded-[30px] text-center border border-gray-100">
+            <p class="text-[9px] font-black text-gray-400 uppercase italic">Gastos</p>
+            <p id="t-out" class="text-xl font-black italic text-black">0€</p>
         </div>
     </div>
+
+    <div class="space-y-3">
+        <button onclick="add('in')" class="w-full bg-black text-white p-6 rounded-3xl font-black italic uppercase shadow-lg">Registrar Ingreso</button>
+        <button onclick="add('out')" class="w-full bg-white text-black border-2 border-black p-6 rounded-3xl font-black italic uppercase">Añadir Gasto</button>
+        <button onclick="reset()" class="w-full text-[9px] font-black text-gray-200 mt-6 uppercase italic">Limpiar Trimestre</button>
+    </div>
+
+    <script>
+        let d = JSON.parse(localStorage.getItem('rg_tax')) || {in:0, out:0};
+        function up() {
+            document.getElementById('t-in').innerText = d.in.toFixed(2)+'€';
+            document.getElementById('t-out').innerText = d.out.toFixed(2)+'€';
+            let tax = (d.in - d.out) * 0.20;
+            document.getElementById('t-tax').innerText = (tax > 0 ? tax : 0).toFixed(2)+'€';
+            localStorage.setItem('rg_tax', JSON.stringify(d));
+        }
+        function add(t) {
+            let v = prompt("Importe en €:");
+            if(v && !isNaN(v)) { d[t] += parseFloat(v); up(); }
+        }
+        function reset() { if(confirm("¿Borrar datos?")) { d={in:0,out:0}; up(); } }
+        up();
+    </script>
 </body>
 </html>

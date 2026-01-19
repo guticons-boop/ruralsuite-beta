@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente Fiscal Pro | RuralGesto</title>
+    <title>Asistente Fiscal | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -10,189 +10,116 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-active { border-bottom: 4px solid #be123c; color: #be123c; }
+        .tab-active { color: #be123c; border-bottom: 3px solid #be123c; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
     <div class="max-w-5xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div class="flex items-center gap-4">
-                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <h2 class="serif text-3xl italic text-rose-950 font-bold">Asistente Fiscal</h2>
-            </div>
-            
-            <div class="flex gap-2">
-                <select id="filtro-periodo" onchange="renderFiscal()" class="p-3 bg-white border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none">
-                    <option value="2026">Anual 2026</option>
-                    <option value="01">Enero</option>
-                    <option value="02">Febrero</option>
-                    </select>
-                <button onclick="exportarGestor()" class="p-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                    <i data-lucide="send" class="w-3 h-3"></i> Enviar al Gestor
-                </button>
-            </div>
+        <header class="flex justify-between items-center mb-10">
+            <h2 class="serif text-3xl font-bold italic text-rose-950">Asistente Fiscal</h2>
+            <select id="mes-filtro" onchange="renderFiscal()" class="p-3 bg-white border border-slate-100 rounded-2xl font-black text-[10px] uppercase">
+                <option value="all">Todo el Año</option>
+                <option value="1">Enero</option><option value="2">Febrero</option>
+            </select>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1 space-y-6">
-                <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100">
-                    <h3 class="serif text-xl italic font-bold mb-6 text-center">Distribución de Caja</h3>
-                    <canvas id="fiscalChart" width="200" height="200"></canvas>
-                </div>
-
-                <div class="bg-rose-900 p-8 rounded-[40px] text-white shadow-xl">
-                    <p class="text-[10px] font-black uppercase opacity-60">Balance Neto</p>
-                    <h3 id="balance-total" class="serif text-4xl font-bold mt-2">0,00 €</h3>
-                    <div class="mt-6 pt-6 border-t border-rose-800 flex justify-between items-center">
-                        <span class="text-[10px] font-black uppercase">Régimen IVA</span>
-                        <select id="regimen-iva" onchange="renderFiscal()" class="bg-rose-800 p-2 rounded-xl text-[9px] outline-none border-none">
-                            <option value="0">Particular (Sin IVA)</option>
-                            <option value="0.10">Turístico (10%)</option>
-                            <option value="0.21">Servicios (21%)</option>
-                        </select>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-[45px] border border-slate-100 shadow-sm text-center">
+                <h4 class="serif font-bold italic mb-6">Estado de Cuentas</h4>
+                <canvas id="chartFiscal"></canvas>
+                <div class="mt-6">
+                    <select id="iva-particular" onchange="renderFiscal()" class="w-full p-3 bg-slate-50 rounded-xl text-[10px] font-black uppercase">
+                        <option value="0">Particular (Sin IVA)</option>
+                        <option value="0.10">Turístico (10%)</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="lg:col-span-2 space-y-6">
-                <div class="flex border-b border-slate-100">
-                    <button onclick="switchTab('ingresos')" id="t-ingresos" class="flex-1 py-4 font-black text-[10px] uppercase tab-active">Ingresos</button>
-                    <button onclick="switchTab('gastos')" id="t-gastos" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Gastos</button>
-                    <button onclick="switchTab('renta')" id="t-renta" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Modelo Renta</button>
+            <div class="md:col-span-2 space-y-6">
+                <div class="flex border-b border-slate-100 mb-6">
+                    <button onclick="tab('in')" id="t-in" class="flex-1 py-4 font-black text-[10px] uppercase tab-active">Ingresos</button>
+                    <button onclick="tab('ex')" id="t-ex" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Gastos</button>
+                    <button onclick="tab('tax')" id="t-tax" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Declaración</button>
                 </div>
 
-                <div id="form-container" class="bg-white p-6 rounded-[35px] border border-slate-100 flex gap-4 items-center">
-                    <input type="text" id="concepto" placeholder="Concepto..." class="flex-1 p-3 bg-slate-50 rounded-2xl outline-none text-sm">
-                    <input type="number" id="importe" placeholder="€" class="w-24 p-3 bg-slate-50 rounded-2xl outline-none text-sm">
-                    <button onclick="addItem()" id="add-btn" class="p-4 bg-emerald-600 text-white rounded-2xl"><i data-lucide="plus"></i></button>
+                <div id="form-fiscal" class="bg-white p-6 rounded-[35px] border border-slate-100 flex gap-2">
+                    <input type="text" id="conc" placeholder="Concepto..." class="flex-1 p-4 bg-slate-50 rounded-2xl outline-none text-sm">
+                    <input type="number" id="imp" placeholder="€" class="w-24 p-4 bg-slate-50 rounded-2xl outline-none text-sm font-bold">
+                    <button onclick="addMovimiento()" class="p-4 bg-rose-600 text-white rounded-2xl"><i data-lucide="plus"></i></button>
                 </div>
 
-                <div id="lista-items" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                    </div>
+                <div id="lista-mov" class="space-y-2"></div>
 
-                <div id="panel-renta" class="hidden bg-white p-10 rounded-[45px] border border-slate-100 shadow-sm space-y-6">
-                    <h4 class="serif text-2xl italic font-bold">Borrador Declaración de la Renta</h4>
-                    <div class="grid grid-cols-2 gap-8 text-[11px] uppercase font-black tracking-widest">
-                        <div class="text-slate-400">Rendimiento Íntegro:</div><div id="r-bruto" class="text-right">0€</div>
-                        <div class="text-slate-400">Gastos Deducibles:</div><div id="r-gastos" class="text-right text-rose-500">0€</div>
-                        <div class="text-slate-400">IVA Devengado:</div><div id="r-iva" class="text-right text-blue-500">0€</div>
-                        <div class="pt-4 border-t text-rose-950 text-sm">Base Imponible:</div><div id="r-neto" class="pt-4 border-t text-right text-sm">0€</div>
+                <div id="panel-renta" class="hidden bg-slate-900 p-8 rounded-[40px] text-white">
+                    <h5 class="serif text-xl italic mb-4">Borrador IRPF / Renta</h5>
+                    <div class="space-y-3 text-[11px] uppercase opacity-80">
+                        <div class="flex justify-between"><span>Bruto:</span><span id="r-bruto">0€</span></div>
+                        <div class="flex justify-between"><span>Gastos:</span><span id="r-gastos">0€</span></div>
+                        <div class="flex justify-between border-t pt-3 font-black opacity-100"><span>Rendimiento:</span><span id="r-neto">0€</span></div>
                     </div>
-                    <button onclick="descargarBorrador()" class="w-full py-5 bg-blue-50 text-blue-600 rounded-3xl font-black text-[10px] uppercase tracking-widest border border-blue-100">
-                        Descargar Borrador para AEAT
-                    </button>
+                    <button onclick="alert('Enviando informe al gestor...')" class="w-full py-4 bg-white/10 rounded-2xl mt-6 font-black text-[10px]">ENVIAR AL GESTOR</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let currentTab = 'ingresos';
-        let fiscalData = JSON.parse(localStorage.getItem('fiscal_v2') || '{"ingresos":[], "gastos":[]}');
-        let myChart;
+        let f_tab = 'in';
+        let f_data = JSON.parse(localStorage.getItem('rg_fiscal') || '{"in":[], "ex":[]}');
+        let chart;
 
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('nav button, .flex button').forEach(b => b.classList.remove('tab-active', 'text-slate-400'));
-            document.getElementById('t-' + tab).classList.add('tab-active');
-            
-            const form = document.getElementById('form-container');
-            const panel = document.getElementById('panel-renta');
-            const lista = document.getElementById('lista-items');
-
-            if(tab === 'renta') {
-                form.classList.add('hidden');
-                lista.classList.add('hidden');
-                panel.classList.remove('hidden');
-            } else {
-                form.classList.remove('hidden');
-                lista.classList.remove('hidden');
-                panel.classList.add('hidden');
-                document.getElementById('add-btn').className = tab === 'ingresos' ? 'p-4 bg-emerald-600 text-white rounded-2xl' : 'p-4 bg-rose-600 text-white rounded-2xl';
-            }
+        function tab(t) {
+            f_tab = t;
+            document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active', 'text-slate-400'));
+            document.getElementById('t-'+t).classList.add('tab-active');
+            document.getElementById('form-fiscal').classList.toggle('hidden', t === 'tax');
+            document.getElementById('lista-mov').classList.toggle('hidden', t === 'tax');
+            document.getElementById('panel-renta').classList.toggle('hidden', t !== 'tax');
             renderFiscal();
         }
 
-        function addItem() {
-            const concepto = document.getElementById('concepto').value;
-            const importe = parseFloat(document.getElementById('importe').value);
-            if(!concepto || !importe) return;
-
-            fiscalData[currentTab].push({
-                id: Date.now(),
-                concepto,
-                importe,
-                mes: new Date().getMonth() + 1,
-                año: 2026
-            });
-
-            localStorage.setItem('fiscal_v2', JSON.stringify(fiscalData));
-            document.getElementById('concepto').value = '';
-            document.getElementById('importe').value = '';
+        function addMovimiento() {
+            const c = document.getElementById('conc').value;
+            const i = parseFloat(document.getElementById('imp').value);
+            if(!c || !i) return;
+            f_data[f_tab].push({c, i, m: new Date().getMonth() + 1});
+            localStorage.setItem('rg_fiscal', JSON.stringify(f_data));
             renderFiscal();
         }
 
         function renderFiscal() {
-            const lista = document.getElementById('lista-items');
-            const filtro = document.getElementById('filtro-periodo').value;
-            const ivaRate = parseFloat(document.getElementById('regimen-iva').value);
+            let tin = 0; let tex = 0;
+            const list = document.getElementById('lista-mov');
+            list.innerHTML = '';
             
-            lista.innerHTML = '';
-            let totalIn = 0; let totalEx = 0;
+            f_data.in.forEach(x => { tin += x.i; if(f_tab === 'in') list.innerHTML += itemHtml(x, 'emerald'); });
+            f_data.ex.forEach(x => { tex += x.i; if(f_tab === 'ex') list.innerHTML += itemHtml(x, 'rose'); });
 
-            // Filtrar y sumar
-            fiscalData.ingresos.forEach(i => { totalIn += i.importe; });
-            fiscalData.gastos.forEach(g => { totalEx += g.importe; });
+            const iva = tin * parseFloat(document.getElementById('iva-particular').value);
+            document.getElementById('r-bruto').innerText = tin.toFixed(2) + "€";
+            document.getElementById('r-gastos').innerText = tex.toFixed(2) + "€";
+            document.getElementById('r-neto').innerText = (tin - tex - iva).toFixed(2) + "€";
 
-            // Mostrar lista según pestaña
-            fiscalData[currentTab]?.forEach(item => {
-                const color = currentTab === 'ingresos' ? 'text-emerald-600' : 'text-rose-600';
-                lista.innerHTML += `
-                    <div class="bg-white p-5 rounded-3xl border border-slate-50 flex justify-between items-center animate-fade-in shadow-sm">
-                        <div><p class="text-[10px] font-black uppercase text-slate-300 italic">2026</p><h4 class="font-bold text-slate-800">${item.concepto}</h4></div>
-                        <span class="font-black ${color}">${item.importe.toFixed(2)}€</span>
-                    </div>`;
-            });
-
-            // Actualizar Totales y Renta
-            const ivaCalculado = totalIn * ivaRate;
-            document.getElementById('balance-total').innerText = (totalIn - totalEx).toFixed(2) + " €";
-            document.getElementById('r-bruto').innerText = totalIn.toFixed(2) + " €";
-            document.getElementById('r-gastos').innerText = totalEx.toFixed(2) + " €";
-            document.getElementById('r-iva').innerText = ivaCalculado.toFixed(2) + " €";
-            document.getElementById('r-neto').innerText = (totalIn - totalEx - ivaCalculado).toFixed(2) + " €";
-
-            updateChart(totalIn, totalEx, ivaCalculado);
+            updateChart(tin, tex, iva);
             lucide.createIcons();
         }
 
-        function updateChart(ingresos, gastos, iva) {
-            const ctx = document.getElementById('fiscalChart').getContext('2d');
-            if (myChart) myChart.destroy();
-            
-            myChart = new Chart(ctx, {
+        function itemHtml(x, col) {
+            return `<div class="bg-white p-4 rounded-2xl border border-slate-50 flex justify-between font-bold text-[11px]"><span>${x.c}</span><span class="text-${col}-600">${x.i}€</span></div>`;
+        }
+
+        function updateChart(i, e, v) {
+            const ctx = document.getElementById('chartFiscal');
+            if(chart) chart.destroy();
+            chart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    labels: ['Ingresos', 'Gastos', 'IVA'],
-                    datasets: [{
-                        data: [ingresos, gastos, iva],
-                        backgroundColor: ['#10b981', '#f43f5e', '#3b82f6'],
-                        borderWidth: 0,
-                        hoverOffset: 10
-                    }]
-                },
-                options: {
-                    cutout: '70%',
-                    plugins: { legend: { display: false } }
-                }
+                data: { datasets: [{ data: [i, e, v], backgroundColor: ['#10b981', '#f43f5e', '#3b82f6'] }] },
+                options: { cutout: '80%' }
             });
         }
 
-        function exportarGestor() {
-            alert("Generando PDF y enviando a tu gestor... \n\nDatos de 2026 procesados correctamente.");
-        }
-
-        window.onload = () => { switchTab('ingresos'); };
+        window.onload = () => tab('in');
+        lucide.createIcons();
     </script>
 </body>
 </html>

@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Hub | El Rinconcito de Matarraña</title>
+    <title>RuralGesto | El Rinconcito de Matarraña</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #0f172a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .card-hub { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .card-hub:hover { transform: translateY(-10px); }
+        .card-hub { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #f1f5f9; }
+        .card-hub:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); border-color: #e2e8f0; }
     </style>
 </head>
 <body class="p-6 md:p-12 pb-24">
@@ -19,53 +19,67 @@
     <header class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
         <div>
             <h1 class="serif text-4xl italic text-emerald-950 font-bold">El Rinconcito de Matarraña</h1>
-            <p class="text-emerald-600 text-[10px] font-black uppercase tracking-[0.3em] mt-3 italic">RuralGesto: Gestión Profesional</p>
+            <p class="text-emerald-600 text-[10px] font-black uppercase tracking-[0.3em] mt-3 italic">RuralGesto: Panel de Control Pro</p>
         </div>
-        <div class="hidden md:block text-right text-slate-400">
-            <p class="text-[9px] font-black uppercase">Propiedades Activas</p>
-            <p class="text-xs font-bold italic text-slate-600 italic">La Tirolina · La Ermita · Los Almendros</p>
+        <div class="hidden md:block text-right">
+            <p class="text-[9px] font-black uppercase text-slate-400">Estado de Propiedades</p>
+            <p class="text-xs font-bold italic text-slate-600 italic">Tirolina · Ermita · Almendros</p>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <div onclick="location.href='../calendar/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-emerald-50 group">
+        <div onclick="location.href='../calendar/index.html'" class="card-hub bg-white p-8 rounded-[50px] cursor-pointer hover:bg-emerald-50 group">
             <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-700 group-hover:text-white transition-colors duration-500"><i data-lucide="calendar"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Agenda</p>
-            <p class="serif text-2xl italic text-slate-900">Reservas y Check-ins</p>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Gestión</p>
+            <p class="serif text-2xl italic text-slate-900">Agenda de Reservas</p>
         </div>
 
-        <div onclick="location.href='../limpieza/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-amber-50 group">
+        <div onclick="location.href='../importador/index.html'" class="card-hub bg-white p-8 rounded-[50px] cursor-pointer hover:bg-emerald-50 group border-2 border-emerald-100">
+            <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-800 group-hover:text-white transition-colors duration-500"><i data-lucide="file-down"></i></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600 font-bold">Check-in Scan</p>
+            <p class="serif text-2xl italic text-slate-900">Importar Viajeros</p>
+        </div>
+
+        <div onclick="location.href='../limpieza/index.html'" class="card-hub bg-white p-8 rounded-[50px] cursor-pointer hover:bg-amber-50 group">
             <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-500"><i data-lucide="sparkles"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Operaciones</p>
-            <p class="serif text-2xl italic text-slate-900">Limpieza y Averías</p>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Servicios</p>
+            <p class="serif text-2xl italic text-slate-900">Limpieza & Averías</p>
         </div>
 
-        <div onclick="location.href='../tax/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-rose-50 group">
+        <div onclick="location.href='../tax/index.html'" class="card-hub bg-white p-8 rounded-[50px] cursor-pointer hover:bg-rose-50 group">
             <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-500"><i data-lucide="calculator"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Contabilidad</p>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Finanzas</p>
             <p class="serif text-2xl italic text-slate-900">Asistente Fiscal</p>
         </div>
 
-        <div onclick="location.href='../marketing/index.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-blue-50 group">
+        <div onclick="location.href='../marketing/index.html'" class="card-hub bg-white p-8 rounded-[50px] cursor-pointer hover:bg-blue-50 group">
             <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500"><i data-lucide="megaphone"></i></div>
             <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Crecimiento</p>
             <p class="serif text-2xl italic text-slate-900">Marketing & IA</p>
         </div>
 
-        <div onclick="location.href='../config/canales.html'" class="card-hub bg-white p-8 rounded-[50px] shadow-sm border border-gray-100 cursor-pointer hover:bg-purple-50 group">
+        <div onclick="location.href='../config/canales.html'" class="card-hub bg-white p-8 rounded-[50px] cursor-pointer hover:bg-purple-50 group">
             <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-500"><i data-lucide="share-2"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Sincronización</p>
-            <p class="serif text-2xl italic text-slate-900">Canales y OTAs</p>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Conectividad</p>
+            <p class="serif text-2xl italic text-slate-900">Channel Manager</p>
         </div>
 
-        <div onclick="location.href='../web-builder/index.html'" class="card-hub bg-emerald-900 p-8 rounded-[50px] shadow-xl border border-emerald-800 cursor-pointer hover:bg-emerald-950 group">
-            <div class="w-14 h-14 bg-emerald-800 text-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500"><i data-lucide="layout"></i></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-400 opacity-70">Venta Directa</p>
-            <p class="serif text-2xl italic text-white">Edita Tu Web</p>
+        <div onclick="location.href='../web-builder/index.html'" class="card-hub bg-emerald-900 p-10 rounded-[60px] cursor-pointer hover:bg-emerald-950 lg:col-span-3 text-center shadow-xl shadow-emerald-900/20 border-none">
+            <div class="w-16 h-16 bg-emerald-800 text-emerald-400 rounded-3xl flex items-center justify-center mb-4 mx-auto border border-emerald-700"><i data-lucide="layout"></i></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-400 opacity-80 mb-1">Tu Portal de Venta Directa</p>
+            <p class="serif text-3xl italic text-white">Editar Web El Rinconcito</p>
         </div>
 
     </main>
+
+    <footer class="max-w-6xl mx-auto mt-12 pt-8 border-t border-slate-100 flex flex-wrap justify-between items-center gap-6">
+        <div class="flex gap-4">
+            <button onclick="location.href='../config/planes.html'" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-emerald-900 transition">Planes y Suscripción</button>
+            <button class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-emerald-900 transition">Soporte</button>
+        </div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-slate-300 italic">© 2026 RuralGesto - Gestión Rural Inteligente</p>
+    </footer>
 
     <script>lucide.createIcons();</script>
 </body>

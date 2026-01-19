@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RG Calendario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <style>body{font-family:'Inter',sans-serif;}.italic-black{font-style:italic;font-weight:900;}.day-box{aspect-ratio: 1/1; transition: 0.2s;}</style>
+</head>
+<body class="p-6 bg-white">
+    <header class="mb-10 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase">Ocupación</h1>
+    </header>
 
+    <div class="space-y-10" id="calendars-container">
+        </div>
+
+    <script>
+        const aparts = ["Los Almendros", "La Ermita", "La Tirolina"];
+        function createCal(id, name) {
+            let html = `<div class="mb-8"><h4 class="italic-black uppercase mb-4 text-gray-400 text-xs tracking-widest">${name}</h4><div class="grid grid-cols-7 gap-2">`;
+            for(let i=1; i<=31; i++) {
+                const key = `cal-${id}-${i}`;
+                const isOccupied = localStorage.getItem(key) === 'true';
+                html += `<div onclick="toggleDay('${key}')" class="${isOccupied ? 'bg-black text-white' : 'bg-gray-50 text-gray-400'} rounded-xl flex items-center justify-center font-black italic text-[10px] day-box cursor-pointer">
+                    ${i}
+                </div>`;
+            }
+            html += `</div></div>`;
+            return html;
+        }
+
+        function toggleDay(key) {
+            const current = localStorage.getItem(key);
+            localStorage.setItem(key, current === 'true' ? 'false' : 'true');
+            render();
+        }
+
+        function render() {
+            let container = document.getElementById('calendars-container');
+            container.innerHTML = "";
+            aparts.forEach(a => {
+                let id = a.toLowerCase().split(' ')[1] || a.toLowerCase();
+                container.innerHTML += createCal(id, a);
+            });
+        }
+        render();
+    </script>
+</body>
+</html>

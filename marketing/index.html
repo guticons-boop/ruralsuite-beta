@@ -3,55 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing & IA | El Rinconcito de Matarraña</title>
+    <title>Marketing & IA | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .campana-card { cursor: pointer; transition: all 0.3s ease; border: 3px solid transparent; overflow: hidden; position: relative; }
-        .campana-card.active { border-color: #10b981; transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .btn-toggle.active { background-color: #065f46 !important; color: white !important; border-color: #065f46 !important; }
+        .ai-gradient { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-10">
-            <button onclick="window.location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
-                <i data-lucide="arrow-left" class="text-gray-400"></i>
+    <div class="max-w-4xl mx-auto">
+        <header class="flex items-center gap-4 mb-10">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
+                <i data-lucide="arrow-left"></i>
             </button>
-            <div class="text-center">
-                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Marketing El Rinconcito</h2>
-                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600">Generador de Venta Directa</p>
+            <div>
+                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Marketing & IA</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-blue-600">Potencia El Rinconcito</p>
             </div>
-            <div class="w-12"></div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <div class="lg:col-span-7 space-y-8">
+        <div class="ai-gradient p-8 md:p-12 rounded-[50px] text-white shadow-2xl mb-10 relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="serif text-2xl italic">Redactor Inteligente</h3>
+                </div>
                 
-                <section class="bg-white p-8 rounded-[50px] shadow-sm border border-gray-100">
-                    <h3 class="serif text-xl mb-6 flex items-center gap-2">
-                        <i data-lucide="sparkles" class="text-purple-500 w-5 h-5"></i> Crea tu imagen de campaña
-                    </h3>
-                    <div class="flex gap-2 mb-6">
-                        <input type="text" id="ai-prompt" placeholder="Ej: Cena para dos en el Matarraña con velas..." class="flex-1 p-5 bg-gray-50 rounded-3xl outline-none font-bold text-sm focus:ring-2 focus:ring-emerald-200">
-                        <button onclick="generarImagen()" class="bg-emerald-900 text-white px-8 rounded-3xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition">Generar</button>
-                    </div>
-                    <div id="ai-container" class="w-full aspect-video bg-slate-100 rounded-[40px] flex items-center justify-center border-2 border-dashed border-gray-200 overflow-hidden relative">
-                        <p id="ai-status" class="text-gray-400 font-bold text-[10px] uppercase italic text-center px-10">Describe tu oferta y la IA de El Rinconcito creará la imagen</p>
-                    </div>
-                </section>
+                <p class="text-xs text-slate-300 mb-6 font-medium italic">¿Qué quieres promocionar hoy? Describe la idea y la IA creará el post por ti.</p>
+                
+                <textarea id="ai-prompt" class="w-full bg-white/10 border border-white/20 rounded-[30px] p-6 text-sm outline-none placeholder:text-white/30 italic mb-4 focus:bg-white/20 transition-all" rows="4" placeholder="Ej: Escribe un post para Instagram sobre un fin de semana romántico en La Ermita con chimenea y vino local..."></textarea>
+                
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="generateText('Instagram')" class="px-6 py-3 bg-white text-slate-900 rounded-2xl font-black text-[9px] uppercase tracking-widest hover:bg-blue-400 hover:text-white transition">Para Instagram</button>
+                    <button onclick="generateText('WhatsApp')" class="px-6 py-3 bg-emerald-500 text-white rounded-2xl font-black text-[9px] uppercase tracking-widest hover:bg-emerald-600 transition">Para WhatsApp</button>
+                </div>
+            </div>
+            <i data-lucide="cpu" class="absolute -right-10 -bottom-10 w-64 h-64 opacity-10"></i>
+        </div>
 
-                <section>
-                    <h3 class="serif text-xl mb-6">Plantillas Estratégicas</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div onclick="cambiarCampana('Navidad')" id="card-Navidad" class="campana-card active bg-white rounded-[35px] shadow-sm">
-                            <img src="https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=500&q=80" class="w-full h-28 object-cover">
-                            <div class="p-4 text-center font-black text-[10px] uppercase tracking-tighter">Campaña Navidad</div>
+        <div id="ai-result" class="hidden mb-10 p-8 bg-white border border-blue-100 rounded-[40px] shadow-sm">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-[9px] font-black uppercase text-blue-600 tracking-tighter italic">Resultado sugerido por IA</span>
+                <button onclick="copyResult()" class="text-slate-400 hover:text-blue-600"><i data-lucide="copy" class="w-4 h-4"></i></button>
+            </div>
+            <p id="result-text" class="text-sm leading-relaxed text-slate-600 italic font-medium"></p>
+        </div>
+
+        <div class="bg-white p-8 rounded-[50px] border border-gray-100 shadow-sm">
+            <h3 class="serif text-xl italic mb-6">Clientes para Fidelizar</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-3xl transition">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center font-bold text-slate-400 italic">MG</div>
+                        <div>
+                            <p class="text-sm font-bold italic">María García</p>
+                            <p class="text-[9px] text-slate-400 font-black uppercase">Última estancia: La Tirolina</p>
                         </div>
-                        <div onclick="cambiarCampana('San Valentín')" id="card-San-Valentin" class="campana-card bg-white rounded-[35px] shadow-sm">
-                            <img src="
+                    </div>
+                    <button onclick="window.open('

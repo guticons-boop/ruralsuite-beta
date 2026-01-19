@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuralSuite Business Beta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .app-card { transition: transform 0.2s; border: 1px solid #f0f0f0; }
+        .app-card:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <div id="hub" class="max-w-md mx-auto p-6">
+        <header class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">RuralSuite</h1>
+                <p class="text-blue-500 text-sm font-semibold">Business Beta • Acceso Total</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">👤</div>
+        </header>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div onclick="openApp('Check-in')" class="app-card p-6 rounded-2xl bg-white shadow-sm flex flex-col items-center cursor-pointer">
+                <span class="text-4xl mb-2">🆔</span>
+                <span class="font-medium text-sm text-center">Check-in Scan</span>
+            </div>
+            
+            <div onclick="openApp('Calendario')" class="app-card p-6 rounded-2xl bg-white shadow-sm flex flex-col items-center cursor-pointer">
+                <span class="text-4xl mb-2">📅</span>
+                <span class="font-medium text-sm text-center">Rural Calendar</span>
+            </div>
+
+            <div onclick="openApp('Contabilidad')" class="app-card p-6 rounded-2xl bg-white shadow-sm flex flex-col items-center cursor-pointer">
+                <span class="text-4xl mb-2">📊</span>
+                <span class="font-medium text-sm text-center">Accounting Pro</span>
+            </div>
+
+            <div onclick="openApp('Fiscalidad')" class="app-card p-6 rounded-2xl bg-white shadow-sm flex flex-col items-center cursor-pointer">
+                <span class="text-4xl mb-2">⚖️</span>
+                <span class="font-medium text-sm text-center">Tax Assistant</span>
+            </div>
+        </div>
+
+        <div class="mt-8 p-4 bg-green-50 rounded-xl border border-green-100">
+            <p class="text-xs text-green-700 font-bold">PROPIEDAD VERIFICADA</p>
+            <p class="text-sm text-green-800 italic">Licencia: VUT-00000-XX</p>
+        </div>
+    </div>
+
+    <div id="app-modal" class="fixed inset-0 bg-white hidden p-6">
+        <button onclick="closeApp()" class="mb-4 text-blue-600 font-bold">← Volver al Hub</button>
+        <h2 id="app-title" class="text-2xl font-bold mb-4"></h2>
+        <div id="app-content" class="text-gray-500">
+            Esta aplicación está activa en modo Beta. Funcionalidades de escaneo y sincronización iCal habilitadas.
+        </div>
+    </div>
+
+    <script>
+        function openApp(name) {
+            document.getElementById('hub').classList.add('hidden');
+            document.getElementById('app-modal').classList.remove('hidden');
+            document.getElementById('app-title').innerText = name;
+        }
+        function closeApp() {
+            document.getElementById('hub').classList.remove('hidden');
+            document.getElementById('app-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -2,151 +2,77 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calendario Pro | RuralGesto</title>
+    <title>Agenda | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; }
-        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .day-cell { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; border: 1px solid #f3f4f6; transition: 0.1s; position: relative; }
-        
-        /* Estilos de Selección */
-        .selected-start { background: #2563eb !important; color: white !important; border-radius: 12px 0 0 12px; }
-        .selected-end { background: #2563eb !important; color: white !important; border-radius: 0 12px 12px 0; }
-        .in-range { background: #dbeafe !important; color: #2563eb !important; border-radius: 0; }
-        .occupied { background: #fee2e2 !important; color: #ef4444 !important; text-decoration: line-through; cursor: not-allowed; }
-
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; padding: 20px; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfb; }</style>
 </head>
-<body class="pb-32">
+<body class="p-6">
+    <div class="max-w-xl mx-auto">
+        <button onclick="location.href='../hub/index.html'" class="mb-10 flex items-center gap-2 text-gray-400 font-bold text-[10px] uppercase tracking-widest hover:text-emerald-900">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i> Volver al Panel
+        </button>
 
-    <header class="sticky top-0 bg-white/90 backdrop-blur-md p-6 z-50 border-b border-slate-100">
-        <div class="flex justify-between items-center mb-6">
-            <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-100 px-4 py-2 rounded-full">← Volver</button>
-            <h1 class="italic-black text-xl uppercase text-blue-600 italic">Disponibilidad</h1>
-        </div>
-        
-        <div class="flex gap-2 overflow-x-auto">
-            <button onclick="changeApt('apt1', this)" class="bg-black text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase italic min-w-fit">Apartamento 1</button>
-            <button onclick="changeApt('apt2', this)" class="bg-gray-100 text-gray-400 px-5 py-2 rounded-xl text-[10px] font-black uppercase italic min-w-fit">Suite Jardín</button>
-        </div>
-    </header>
+        <h2 class="serif text-5xl italic text-emerald-900 mb-2 text-center">Agenda de</h2>
+        <p class="text-center font-black uppercase text-[10px] tracking-[0.3em] text-gray-300 mb-10">Reservas y Limpieza</p>
 
-    <div id="calendar-container" class="p-6 space-y-12"></div>
-
-    <div id="reserva-modal" class="modal">
-        <div class="bg-white w-full max-w-sm p-8 rounded-[40px] shadow-2xl">
-            <h3 class="italic-black text-2xl uppercase mb-2 text-blue-600 italic">Nueva Reserva</h3>
-            <p id="info-fechas" class="text-[10px] font-black text-gray-400 uppercase mb-6 tracking-widest"></p>
+        <div class="bg-white p-6 rounded-[40px] shadow-sm border border-gray-100 mb-8">
+            <div class="flex justify-between items-center mb-6 px-2">
+                <h3 class="font-bold text-emerald-900">Enero 2026</h3>
+                <div class="flex gap-2">
+                    <button class="p-2 bg-gray-50 rounded-full"><i data-lucide="chevron-left" class="w-4 h-4 text-gray-400"></i></button>
+                    <button class="p-2 bg-gray-50 rounded-full"><i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i></button>
+                </div>
+            </div>
             
-            <input type="text" id="res-nombre" placeholder="Nombre del Huésped" class="w-full p-4 rounded-xl bg-gray-50 mb-3 font-bold outline-none border-2 border-transparent focus:border-blue-600">
-            <input type="number" id="res-pago" placeholder="Precio Total (€)" class="w-full p-4 rounded-xl bg-gray-50 mb-6 font-bold outline-none border-2 border-transparent focus:border-blue-600">
+            <div class="grid grid-cols-7 gap-2 text-center">
+                <div class="text-[9px] font-bold text-gray-300 uppercase">L</div>
+                <div class="text-[9px] font-bold text-gray-300 uppercase">M</div>
+                <div class="text-[9px] font-bold text-gray-300 uppercase">X</div>
+                <div class="text-[9px] font-bold text-gray-300 uppercase">J</div>
+                <div class="text-[9px] font-bold text-gray-300 uppercase">V</div>
+                <div class="text-[9px] font-bold text-gray-300 uppercase">S</div>
+                <div class="text-[9px] font-bold text-gray-300 uppercase">D</div>
+                <div class="p-3 text-xs font-bold text-gray-400">17</div>
+                <div class="p-3 text-xs font-bold text-gray-400">18</div>
+                <div class="p-3 text-xs font-bold bg-emerald-900 text-white rounded-2xl shadow-lg ring-4 ring-emerald-50">19</div>
+                <div class="p-3 text-xs font-bold text-emerald-900">20</div>
+                <div class="p-3 text-xs font-bold text-emerald-900">21</div>
+                <div class="p-3 text-xs font-bold text-emerald-900">22</div>
+                <div class="p-3 text-xs font-bold text-emerald-900">23</div>
+            </div>
+        </div>
 
-            <div class="flex gap-2">
-                <button onclick="resetSelection()" class="flex-1 p-4 bg-gray-100 rounded-2xl font-black italic uppercase text-xs text-gray-400">Cancelar</button>
-                <button onclick="confirmarRango()" class="flex-1 p-4 bg-blue-600 text-white rounded-2xl font-black italic uppercase text-xs">Bloquear Fechas</button>
+        <div class="space-y-4">
+            <h4 class="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-4">Próximas Entradas</h4>
+            
+            <div class="bg-white p-6 rounded-3xl border border-gray-50 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="home" class="w-5 h-5 text-emerald-900"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black uppercase italic">Familia García</p>
+                        <p class="text-[10px] text-gray-400">Entrada: 16:00h • 3 noches</p>
+                    </div>
+                </div>
+                <span class="px-3 py-1 bg-amber-100 text-amber-700 text-[9px] font-black uppercase rounded-full">Pendiente Limpieza</span>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-gray-50 flex items-center justify-between shadow-sm opacity-50">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="check" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black uppercase italic text-gray-400">Juan Pérez</p>
+                        <p class="text-[10px] text-gray-400">Salida: Hoy 11:00h</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <script>
-        let currentApt = 'apt1';
-        let checkIn = null;
-        let checkOut = null;
-
-        function render() {
-            const container = document.getElementById('calendar-container');
-            container.innerHTML = "";
-            const year = 2026;
-
-            for (let m = 0; m < 6; m++) {
-                const date = new Date(year, m, 1);
-                const monthName = date.toLocaleString('es', { month: 'long' }).toUpperCase();
-                
-                let html = `<div class="month-block">
-                    <h2 class="italic-black text-2xl uppercase italic mb-4">${monthName} <span class="text-gray-200">${year}</span></h2>
-                    <div class="grid grid-cols-7 gap-1">`;
-                
-                const days = new Date(year, m + 1, 0).getDate();
-                for (let d = 1; d <= days; d++) {
-                    const currentDay = new Date(year, m, d).getTime();
-                    const dayKey = `rg_${currentApt}_${year}_${m}_${d}`;
-                    const isBooked = localStorage.getItem(dayKey);
-                    
-                    let css = isBooked ? 'occupied' : '';
-                    if (checkIn && currentDay === checkIn) css = 'selected-start';
-                    if (checkOut && currentDay === checkOut) css = 'selected-end';
-                    if (checkIn && checkOut && currentDay > checkIn && currentDay < checkOut) css = 'in-range';
-
-                    html += `<div onclick="handleTouch(${currentDay}, '${dayKey}')" class="day-cell ${css}">${d}</div>`;
-                }
-                html += `</div></div>`;
-                container.innerHTML += html;
-            }
-        }
-
-        function handleTouch(timestamp, key) {
-            if (localStorage.getItem(key)) {
-                alert("Este día ya está reservado.");
-                return;
-            }
-
-            if (!checkIn || (checkIn && checkOut)) {
-                // Primer toque o reinicio
-                checkIn = timestamp;
-                checkOut = null;
-            } else if (timestamp > checkIn) {
-                // Segundo toque (Salida)
-                checkOut = timestamp;
-                openBooking();
-            } else {
-                // Si toca un día anterior al check-in, lo convertimos en el nuevo check-in
-                checkIn = timestamp;
-            }
-            render();
-        }
-
-        function openBooking() {
-            const f1 = new Date(checkIn).toLocaleDateString();
-            const f2 = new Date(checkOut).toLocaleDateString();
-            document.getElementById('info-fechas').innerText = `${f1} AL ${f2}`;
-            document.getElementById('reserva-modal').style.display = 'flex';
-        }
-
-        function resetSelection() {
-            checkIn = null;
-            checkOut = null;
-            document.getElementById('reserva-modal').style.display = 'none';
-            render();
-        }
-
-        function confirmarRango() {
-            const nombre = document.getElementById('res-nombre').value;
-            if(!nombre) return alert("Escribe el nombre del huésped");
-
-            let temp = new Date(checkIn);
-            while (temp.getTime() <= checkOut) {
-                const key = `rg_${currentApt}_${temp.getFullYear()}_${temp.getMonth()}_${temp.getDate()}`;
-                localStorage.setItem(key, 'true');
-                temp.setDate(temp.getDate() + 1);
-            }
-
-            alert("Reserva confirmada con éxito.");
-            resetSelection();
-        }
-
-        function changeApt(id, btn) {
-            currentApt = id;
-            document.querySelectorAll('header button').forEach(b => {
-                if(b.innerText !== "← VOLVER") b.className = "bg-gray-100 text-gray-400 px-5 py-2 rounded-xl text-[10px] font-black uppercase italic min-w-fit";
-            });
-            btn.className = "bg-black text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase italic min-w-fit";
-            render();
-        }
-
-        render();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

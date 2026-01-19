@@ -3,107 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tax Analytics | RuralGesto</title>
+    <title>Tax Central | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f9fa; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7f6; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
         .card { background: white; border-radius: 30px; padding: 25px; border: 1px solid #eee; }
-        .btn-export { padding: 10px 15px; border-radius: 12px; font-size: 9px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+        .tab-btn { flex: 1; padding: 12px 5px; border-radius: 18px; font-weight: 800; font-size: 9px; text-transform: uppercase; transition: 0.3s; color: #9ca3af; }
+        .active-tab { background: #fff; color: #2563eb; shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .input-tax { width: 100%; padding: 14px; border-radius: 15px; background: #f9fafb; border: 1px solid #eee; font-weight: 700; margin-top: 5px; outline: none; font-size: 13px; }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto pb-32">
 
-    <header class="mb-8 flex justify-between items-center">
+    <header class="mb-6 flex justify-between items-center">
         <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase text-blue-600 italic">Finanzas</h1>
+        <h1 class="italic-black text-2xl uppercase text-blue-600 italic">Tax Central</h1>
     </header>
 
-    <div class="card shadow-xl mb-6">
-        <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-widest">Rendimiento por Propiedad</h2>
-        <canvas id="incomeChart" width="400" height="300"></canvas>
+    <div class="flex bg-gray-200/50 p-1.5 rounded-[22px] mb-8">
+        <button id="t-diario" onclick="showTab('diario')" class="tab-btn active-tab">Diario</button>
+        <button id="t-analitica" onclick="showTab('analitica')" class="tab-btn">Finanzas</button>
+        <button id="t-renta" onclick="showTab('renta')" class="tab-btn">Renta (IA)</button>
     </div>
 
-    <div class="flex gap-3 mb-8">
-        <button onclick="exportExcel()" class="btn-export bg-green-100 text-green-700 flex-1 justify-center">
-            <span>📊</span> Exportar Excel
-        </button>
-        <button onclick="window.print()" class="btn-export bg-red-100 text-red-700 flex-1 justify-center">
-            <span>📄</span> Generar PDF
-        </button>
+    <div id="view-diario" class="space-y-6">
+        <div class="card shadow-xl border-l-8 border-l-blue-500">
+            <h2 class="italic-black text-xs uppercase mb-4 text-blue-600">Registrar Ingreso/Gasto</h2>
+            <select id="tipo-mov" class="input-tax mb-4">
+                <option value="ingreso">➕ Ingreso (Reserva)</option>
+                <option value="gasto">➖ Gasto (Suministros/Limpieza)</option>
+            </select>
+            <input type="text" placeholder="Concepto (ej: Reserva Familia García)" class="input-tax mb-4">
+            <input type="number" placeholder="Importe (€)" class="input-tax mb-6">
+            <button class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs">Guardar Movimiento</button>
+        </div>
     </div>
 
-    <div class="card shadow-sm">
-        <h3 class="italic-black text-xs uppercase mb-4 text-gray-400 italic">Últimos Movimientos</h3>
-        <div id="movimientos-list" class="space-y-3">
+    <div id="view-analitica" class="hidden space-y-6">
+        <div class="card shadow-xl">
+            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400">Rendimiento Anual</h2>
+            <canvas id="mainChart" height="250"></canvas>
+            <div class="flex gap-2 mt-6">
+                <button onclick="exportData('pdf')" class="flex-1 bg-red-50 text-red-600 p-3 rounded-xl font-black text-[10px] uppercase">PDF</button>
+                <button onclick="exportData('excel')" class="flex-1 bg-green-50 text-green-600 p-3 rounded-xl font-black text-[10px] uppercase">Excel</button>
             </div>
+        </div>
+    </div>
+
+    <div id="view-renta" class="hidden space-y-6">
+        <div class="bg-slate-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-[10px] font-black uppercase text-blue-400 mb-2 italic">Modelo 100 - Estimación</p>
+                <h2 class="text-3xl italic-black uppercase leading-tight">Pre-Declaración <br>Renta 2025</h2>
+            </div>
+            <div class="absolute -right-4 -bottom-4 opacity-20 text-8xl">⚖️</div>
+        </div>
+
+        <div class="card">
+            <h3 class="italic-black text-[10px] uppercase mb-4 text-gray-400 italic">Resumen para Hacienda</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <span class="text-xs font-bold text-gray-500">Ingresos Brutos:</span>
+                    <span class="text-xs font-black">24.500,00€</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <span class="text-xs font-bold text-gray-500">Gastos Deducibles:</span>
+                    <span class="text-xs font-black text-red-500">-4.200,00€</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 bg-blue-50 p-2 rounded-lg">
+                    <span class="text-xs font-black text-blue-700">Rendimiento Neto:</span>
+                    <span class="text-xs font-black text-blue-700">20.300,00€</span>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <p class="text-[9px] font-black text-gray-400 uppercase mb-4 italic">Completa para optimizar:</p>
+                <label class="text-[9px] font-bold ml-2">IBI Anual Propiedad (€)</label>
+                <input type="number" placeholder="Ej: 450" class="input-tax mb-4">
+                
+                <label class="text-[9px] font-bold ml-2">Intereses Hipoteca (si aplica)</label>
+                <input type="number" placeholder="Ej: 1200" class="input-tax mb-6">
+
+                <button class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black italic uppercase text-xs">
+                    ✨ Generar Borrador para Gestoría
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Datos simulados (En la app real vendrían del localStorage que llenas en el calendario)
-        const dataStats = {
-            labels: ['Apt 1', 'Suite Jardín', 'Casa Piedra'],
-            ingresos: [2450, 1800, 3200]
-        };
+        function showTab(tab) {
+            document.getElementById('view-diario').classList.toggle('hidden', tab !== 'diario');
+            document.getElementById('view-analitica').classList.toggle('hidden', tab !== 'analitica');
+            document.getElementById('view-renta').classList.toggle('hidden', tab !== 'renta');
+            
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+            document.getElementById('t-' + tab).classList.add('active-tab');
 
-        // Inicializar Gráfico
+            if(tab === 'analitica') initChart();
+        }
+
         function initChart() {
-            const ctx = document.getElementById('incomeChart').getContext('2d');
+            const ctx = document.getElementById('mainChart').getContext('2d');
             new Chart(ctx, {
-                type: 'doughnut',
+                type: 'bar',
                 data: {
-                    labels: dataStats.labels,
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr'],
                     datasets: [{
-                        data: dataStats.ingresos,
-                        backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
-                        borderWidth: 0,
-                        hoverOffset: 10
+                        label: 'Ingresos Netos',
+                        data: [4200, 3800, 5100, 4900],
+                        backgroundColor: '#2563eb',
+                        borderRadius: 10
                     }]
                 },
-                options: {
-                    plugins: {
-                        legend: { position: 'bottom', labels: { font: { weight: '900', size: 10 } } }
-                    },
-                    cutout: '70%'
+                options: { 
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, grid: { display: false } } }
                 }
             });
         }
 
-        // Exportar a Excel (CSV)
-        function exportExcel() {
-            let csvContent = "data:text/csv;charset=utf-8,Propiedad,Ingreso Neto,Fecha\n";
-            dataStats.labels.forEach((label, i) => {
-                csvContent += `${label},${dataStats.ingresos[i]},2026-01-19\n`;
-            });
-            
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "RuralGesto_Tax_2026.csv");
-            document.body.appendChild(link);
-            link.click();
-        }
-
-        // Cargar lista visual
-        function renderList() {
-            const list = document.getElementById('movimientos-list');
-            dataStats.labels.forEach((label, i) => {
-                list.innerHTML += `
-                    <div class="flex justify-between items-center border-b border-gray-50 pb-2">
-                        <div>
-                            <p class="font-black italic uppercase text-[10px]">${label}</p>
-                            <p class="text-[8px] text-gray-400 uppercase font-bold">Reserva Finalizada</p>
-                        </div>
-                        <span class="font-black text-blue-600 text-sm">+${dataStats.ingresos[i]}€</span>
-                    </div>
-                `;
-            });
-        }
-
-        initChart();
-        renderList();
-    </script>
-</body>
-</html>
+        function exportData(type) {
+            alert("

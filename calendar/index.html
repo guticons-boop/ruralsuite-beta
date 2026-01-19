@@ -1,92 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Pro | RuralGesto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .timeline-grid { 
-            display: grid; 
-            grid-template-columns: 160px repeat(7, 1fr); 
-            border-bottom: 1px solid #f1f5f9; 
-        }
-        .reserva-tag { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 8px 12px; border-radius: 12px; }
+        .day { aspect-ratio: 1/1; display: flex; items-center; justify-content: center; border-radius: 12px; font-size: 10px; font-weight: bold; cursor: pointer; border: 1px solid #f1f1f1; }
+        .booked { background: #1a1a1a; color: white; border: none; }
     </style>
 </head>
-<body class="p-4 md:p-8 pb-32">
-
-    <div class="max-w-6xl mx-auto">
-        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10">
-            <div class="flex items-center gap-4">
-                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <div>
-                    <h2 class="serif text-3xl italic text-emerald-900 font-bold">Agenda de Reservas</h2>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600">Planificación El Rinconcito</p>
-                </div>
-            </div>
-
-            <div class="flex flex-wrap gap-3">
-                <button onclick="location.href='../importador/index.html'" class="flex items-center gap-3 px-6 py-4 bg-white border border-emerald-100 text-emerald-800 rounded-[25px] font-black text-[9px] uppercase tracking-widest shadow-sm hover:bg-emerald-50 transition">
-                    <i data-lucide="scan-face" class="w-4 h-4"></i> Check-in / Escáner
-                </button>
-                
-                <button onclick="alert('Abriendo formulario de reserva...')" class="flex items-center gap-3 px-8 py-4 bg-emerald-900 text-white rounded-[25px] font-black text-[9px] uppercase tracking-widest shadow-xl hover:bg-black transition">
-                    <i data-lucide="calendar-plus" class="w-4 h-4"></i> Nueva Reserva
-                </button>
-            </div>
+<body class="p-6 md:p-12 pb-32">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
+            <h2 class="serif text-3xl italic text-rose-950">Enero 2026</h2>
+            <div class="flex gap-2"><i data-lucide="chevron-left"></i><i data-lucide="chevron-right"></i></div>
         </header>
 
-        <div class="bg-white rounded-[50px] shadow-sm border border-gray-100 overflow-hidden">
-            <div class="timeline-grid bg-slate-50 text-[9px] font-black uppercase text-slate-400">
-                <div class="p-6 border-r italic text-emerald-900">Propiedad</div>
-                <div class="p-6 text-center">Lun 19</div>
-                <div class="p-6 text-center bg-emerald-100 text-emerald-800 italic border-x border-emerald-200">Hoy</div>
-                <div class="p-6 text-center">Mie 21</div>
-                <div class="p-6 text-center">Jue 22</div>
-                <div class="p-6 text-center">Vie 23</div>
-                <div class="p-6 text-center bg-slate-100">Sáb 24</div>
-                <div class="p-6 text-center bg-slate-100">Dom 25</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm">
+                <p class="text-[9px] font-black uppercase text-rose-900 mb-4 tracking-widest">La Tirolina</p>
+                <div class="grid grid-cols-7 gap-1" id="cal-1">
+                    </div>
             </div>
-
-            <div class="timeline-grid items-center min-h-[100px] border-b border-gray-50">
-                <div class="p-6 border-r font-extrabold text-sm italic">La Tirolina</div>
-                <div class="col-span-2 p-3">
-                    <div class="reserva-tag bg-blue-600 text-white shadow-md">Booking: Familia García</div>
-                </div>
-                <div class="col-span-5"></div>
+            <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm">
+                <p class="text-[9px] font-black uppercase text-rose-900 mb-4 tracking-widest">La Ermita</p>
+                <div class="grid grid-cols-7 gap-1" id="cal-2"></div>
             </div>
-
-            <div class="timeline-grid items-center min-h-[100px] border-b border-gray-50">
-                <div class="p-6 border-r font-extrabold text-sm italic">La Ermita</div>
-                <div class="col-span-3"></div>
-                <div class="col-span-3 p-3">
-                    <div class="reserva-tag bg-emerald-600 text-white shadow-md">Web: Marta López</div>
-                </div>
-                <div class="col-span-1"></div>
+            <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm">
+                <p class="text-[9px] font-black uppercase text-rose-900 mb-4 tracking-widest">Los Almendros</p>
+                <div class="grid grid-cols-7 gap-1" id="cal-3"></div>
             </div>
-
-            <div class="timeline-grid items-center min-h-[100px]">
-                <div class="p-6 border-r font-extrabold text-sm italic text-amber-700">Los Almendros</div>
-                <div class="col-span-1"></div>
-                <div class="col-span-2 p-3">
-                    <div class="reserva-tag bg-rose-500 text-white shadow-md">Airbnb: John Smith</div>
-                </div>
-                <div class="col-span-4"></div>
-            </div>
-        </div>
-
-        <div class="mt-8 flex gap-6 px-6">
-            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-600 rounded-full"></span><span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Booking</span></div>
-            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-emerald-600 rounded-full"></span><span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Web Directa</span></div>
-            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-rose-500 rounded-full"></span><span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Airbnb</span></div>
         </div>
     </div>
-
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+        function draw(id, bookedDays) {
+            const el = document.getElementById(id);
+            for(let i=1; i<=31; i++) {
+                const isBooked = bookedDays.includes(i);
+                el.innerHTML += `<div class="day ${isBooked ? 'booked' : ''}">${i}</div>`;
+            }
+        }
+        draw('cal-1', [12,13,14,20,21]);
+        draw('cal-2', [5,6,7,18,19]);
+        draw('cal-3', [25,26,27]);
+    </script>
 </body>
 </html>

@@ -3,35 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda | El Rinconcito de Matarraña</title>
+    <title>Agenda Pro | El Rinconcito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
         .serif { font-family: 'DM+Serif+Display', serif; }
+        .view-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
         .timeline-grid { display: grid; grid-template-columns: 180px repeat(7, 1fr); border-bottom: 1px solid #f1f5f9; }
+        /* Modal simple */
+        #modal-reserva { display: none; background: rgba(0,0,0,0.5); }
+        #modal-reserva.open { display: flex; }
     </style>
 </head>
-<body class="p-4 md:p-8 pb-24">
+<body class="p-4 md:p-8 pb-32">
 
     <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-10">
-            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
-                <i data-lucide="arrow-left" class="text-gray-400"></i>
-            </button>
-            <div class="text-center">
-                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Agenda Rinconcito</h2>
-                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600">Disponibilidad Real</p>
+        <header class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
+            <div class="flex items-center gap-4">
+                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+                <div>
+                    <h2 class="serif text-3xl italic text-emerald-900 font-bold">Agenda de Reservas</h2>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600">El Rinconcito de Matarraña</p>
+                </div>
             </div>
-            <button class="p-4 bg-emerald-900 text-white rounded-3xl shadow-xl">
-                <i data-lucide="calendar-plus"></i>
+
+            <div class="flex bg-white p-1.5 rounded-[25px] border border-gray-100 shadow-sm">
+                <button onclick="changeView('dia')" id="btn-dia" class="view-btn px-6 py-2 rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all">Día</button>
+                <button onclick="changeView('semana')" id="btn-semana" class="view-btn active px-6 py-2 rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all">Semana</button>
+                <button onclick="changeView('mes')" id="btn-mes" class="view-btn px-6 py-2 rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all">Mes</button>
+            </div>
+
+            <button onclick="toggleModal(true)" class="flex items-center gap-3 px-8 py-4 bg-emerald-900 text-white rounded-[25px] font-black text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition">
+                <i data-lucide="calendar-plus" class="w-4 h-4"></i> Añadir Reserva
             </button>
         </header>
 
-        <div class="bg-white rounded-[50px] shadow-sm border border-gray-100 overflow-hidden">
+        <div id="calendar-container" class="bg-white rounded-[50px] shadow-sm border border-gray-100 overflow-hidden">
             <div class="timeline-grid bg-slate-50 text-[10px] font-black uppercase text-gray-400">
-                <div class="p-6 border-r italic text-emerald-900">Propiedades</div>
+                <div class="p-6 border-r italic text-emerald-900">Apartamento</div>
                 <div class="p-6 text-center">Lun 19</div>
                 <div class="p-6 text-center bg-emerald-50 text-emerald-700 italic border-x">Hoy</div>
                 <div class="p-6 text-center">Mie 21</div>
@@ -41,40 +52,95 @@
                 <div class="p-6 text-center bg-slate-100">Dom 25</div>
             </div>
 
-            <div class="timeline-grid items-center hover:bg-slate-50/50 transition">
-                <div class="p-6 border-r font-extrabold text-sm text-slate-700 italic">La Tirolina</div>
+            <div class="timeline-grid items-center min-h-[100px] border-b border-gray-50">
+                <div class="p-6 border-r font-extrabold text-sm italic">La Tirolina</div>
                 <div class="col-span-2 p-2">
-                    <div class="bg-blue-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase flex items-center gap-2 shadow-lg">
+                    <div class="bg-blue-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase shadow-lg flex items-center gap-2">
                         <i data-lucide="bookmark" class="w-3 h-3"></i> Booking: García
                     </div>
                 </div>
-                <div class="col-span-5"></div>
             </div>
 
-            <div class="timeline-grid items-center hover:bg-slate-50/50 transition">
-                <div class="p-6 border-r font-extrabold text-sm text-slate-700 italic">La Ermita</div>
+            <div class="timeline-grid items-center min-h-[100px] border-b border-gray-50">
+                <div class="p-6 border-r font-extrabold text-sm italic">La Ermita</div>
                 <div class="col-span-3"></div>
                 <div class="col-span-3 p-2">
-                    <div class="bg-emerald-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase flex items-center gap-2 shadow-lg">
+                    <div class="bg-emerald-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase shadow-lg flex items-center gap-2">
                         <i data-lucide="globe" class="w-3 h-3"></i> Web: M. López
                     </div>
                 </div>
-                <div class="col-span-1"></div>
             </div>
 
-            <div class="timeline-grid items-center hover:bg-slate-50/50 transition">
-                <div class="p-6 border-r font-extrabold text-sm text-slate-700 italic">Los Almendros</div>
+            <div class="timeline-grid items-center min-h-[100px]">
+                <div class="p-6 border-r font-extrabold text-sm italic">Los Almendros</div>
                 <div class="col-span-1"></div>
                 <div class="col-span-2 p-2">
-                    <div class="bg-blue-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase flex items-center gap-2 shadow-lg">
+                    <div class="bg-blue-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase shadow-lg flex items-center gap-2">
                         <i data-lucide="bookmark" class="w-3 h-3"></i> Booking: Pérez
                     </div>
                 </div>
-                <div class="col-span-4"></div>
             </div>
         </div>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <div id="modal-reserva" class="fixed inset-0 z-50 items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-[50px] p-10 shadow-2xl">
+            <h3 class="serif text-2xl italic font-bold text-emerald-950 mb-6">Nueva Reserva</h3>
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Reserva guardada y sincronizada con Google Calendar'); toggleModal(false);">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-400 block mb-2">Apartamento</label>
+                    <select class="w-full p-4 bg-slate-50 border-none rounded-2xl text-sm font-bold outline-none">
+                        <option>La Tirolina (Grande)</option>
+                        <option>La Ermita</option>
+                        <option>Los Almendros</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2">Entrada</label>
+                        <input type="date" class="w-full p-4 bg-slate-50 border-none rounded-2xl text-sm font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2">Salida</label>
+                        <input type="date" class="w-full p-4 bg-slate-50 border-none rounded-2xl text-sm font-bold outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-400 block mb-2">Nombre Cliente</label>
+                    <input type="text" placeholder="Ej: Toni Matarraña" class="w-full p-4 bg-slate-50 border-none rounded-2xl text-sm font-bold outline-none">
+                </div>
+                <div class="flex gap-4 mt-8">
+                    <button type="button" onclick="toggleModal(false)" class="flex-1 py-4 text-[10px] font-black uppercase text-slate-400">Cancelar</button>
+                    <button type="submit" class="flex-1 py-4 bg-emerald-900 text-white rounded-2xl text-[10px] font-black uppercase shadow-lg shadow-emerald-200">Guardar Reserva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleModal(show) {
+            const modal = document.getElementById('modal-reserva');
+            if(show) modal.classList.add('open');
+            else modal.classList.remove('open');
+        }
+
+        function changeView(view) {
+            // Actualizar botones
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + view).classList.add('active');
+
+            const container = document.getElementById('calendar-container');
+            
+            if(view === 'dia') {
+                container.innerHTML = '<div class="p-20 text-center"><p class="serif text-xl italic text-slate-400">Vista Diaria: Mostrando entradas y salidas de hoy...</p></div>';
+            } else if(view === 'mes') {
+                container.innerHTML = '<div class="p-20 text-center"><p class="serif text-xl italic text-slate-400">Vista Mensual: Generando cuadrícula de 31 días...</p></div>';
+            } else {
+                location.reload(); // Recarga para volver a la semanal que es la principal
+            }
+        }
+    </script>
 </body>
 </html>

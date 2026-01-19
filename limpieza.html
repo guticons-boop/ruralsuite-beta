@@ -2,101 +2,100 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Equipo de Limpieza | RuralGestión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpieza | El Rinconcito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
-        .status-pill { transition: all 0.3s ease; }
-        .done { background-color: #ecfdf5; border-color: #10b981; color: #065f46; }
-        .pending { background-color: #fff7ed; border-color: #f97316; color: #9a3412; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .status-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-8 pb-24">
 
-    <div class="max-w-md mx-auto">
-        <header class="mb-8 flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Limpieza</h1>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="fecha-hoy"></p>
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-10">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
+                <i data-lucide="arrow-left" class="text-gray-400"></i>
+            </button>
+            <div class="text-center">
+                <h2 class="serif text-3xl italic text-emerald-900 font-bold">Estado de Limpieza</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600 italic">Check-in Control</p>
             </div>
-            <div class="w-12 h-12 bg-emerald-900 rounded-2xl flex items-center justify-center text-white shadow-lg">
-                <i data-lucide="sparkles" class="w-6 h-6"></i>
-            </div>
+            <div class="w-12"></div>
         </header>
 
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
-                <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Pendientes</p>
-                <p class="text-2xl font-black text-orange-600" id="count-pending">--</p>
+        <div class="grid gap-6">
+            <div id="clean-tirolina" class="status-card bg-white p-8 rounded-[45px] shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 bg-slate-100 rounded-[25px] flex items-center justify-center text-slate-400" id="icon-tirolina">
+                        <i data-lucide="shrub"></i>
+                    </div>
+                    <div>
+                        <h3 class="serif text-2xl italic font-bold text-slate-900">La Tirolina</h3>
+                        <p id="text-tirolina" class="text-[10px] font-black uppercase text-amber-500 tracking-widest">Pendiente de limpieza</p>
+                    </div>
+                </div>
+                <button onclick="toggleClean('tirolina')" class="w-full md:w-auto px-10 py-5 bg-slate-900 text-white rounded-[25px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-600 transition shadow-lg">
+                    Marcar como listo
+                </button>
             </div>
-            <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
-                <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Listos</p>
-                <p class="text-2xl font-black text-emerald-600" id="count-done">--</p>
+
+            <div id="clean-ermita" class="status-card bg-white p-8 rounded-[45px] shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-[25px] flex items-center justify-center text-emerald-600" id="icon-ermita">
+                        <i data-lucide="check-circle"></i>
+                    </div>
+                    <div>
+                        <h3 class="serif text-2xl italic font-bold text-slate-900">La Ermita</h3>
+                        <p id="text-ermita" class="text-[10px] font-black uppercase text-emerald-600 tracking-widest">Listo para check-in</p>
+                    </div>
+                </div>
+                <button onclick="toggleClean('ermita')" class="w-full md:w-auto px-10 py-5 bg-emerald-600 text-white rounded-[25px] font-black text-[10px] uppercase tracking-[0.2em] shadow-emerald-200 shadow-xl">
+                    Limpieza OK
+                </button>
+            </div>
+
+            <div id="clean-almendros" class="status-card bg-white p-8 rounded-[45px] shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 bg-slate-100 rounded-[25px] flex items-center justify-center text-slate-400" id="icon-almendros">
+                        <i data-lucide="shrub"></i>
+                    </div>
+                    <div>
+                        <h3 class="serif text-2xl italic font-bold text-slate-900">Los Almendros</h3>
+                        <p id="text-almendros" class="text-[10px] font-black uppercase text-amber-500 tracking-widest">Salida hoy - Pendiente</p>
+                    </div>
+                </div>
+                <button onclick="toggleClean('almendros')" class="w-full md:w-auto px-10 py-5 bg-slate-900 text-white rounded-[25px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-600 transition shadow-lg">
+                    Marcar como listo
+                </button>
             </div>
         </div>
-
-        <div class="space-y-4" id="lista-limpieza">
-            </div>
-
-        <button onclick="avisarToni()" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-[25px] font-black uppercase text-[10px] tracking-widest shadow-xl flex items-center justify-center gap-3">
-            <i data-lucide="bell" class="w-4 h-4"></i> Avisar que he terminado hoy
-        </button>
     </div>
 
     <script>
         lucide.createIcons();
-        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
-
-        // Datos simulados (En el futuro esto vendrá de tu base de datos)
-        let apartamentos = [
-            { id: 1, nombre: "Casa Principal", salida: "Hoy 11:00", estado: "pending" },
-            { id: 2, nombre: "Cabaña Río", salida: "Mañana", estado: "done" },
-            { id: 3, nombre: "Apartamento Azul", salida: "Hoy 10:30", estado: "pending" }
-        ];
-
-        function render() {
-            const container = document.getElementById('lista-limpieza');
-            container.innerHTML = '';
+        function toggleClean(id) {
+            const card = document.getElementById('clean-' + id);
+            const text = document.getElementById('text-' + id);
+            const icon = document.getElementById('icon-' + id);
             
-            let p = 0; let d = 0;
-
-            apartamentos.forEach(apt => {
-                if(apt.estado === 'pending') p++; else d++;
-                
-                container.innerHTML += `
-                    <div class="bg-white p-6 rounded-[35px] border-2 ${apt.estado === 'done' ? 'border-emerald-100' : 'border-transparent'} shadow-sm flex items-center justify-between">
-                        <div>
-                            <h4 class="font-black text-slate-800 uppercase text-sm">${apt.nombre}</h4>
-                            <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase italic">Salida: ${apt.salida}</p>
-                        </div>
-                        <button onclick="toggleEstado(${apt.id})" class="p-4 rounded-2xl ${apt.estado === 'done' ? 'bg-emerald-500 text-white' : 'bg-orange-100 text-orange-600'} transition-all active:scale-90">
-                            <i data-lucide="${apt.estado === 'done' ? 'check' : 'circle'}" class="w-6 h-6"></i>
-                        </button>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('count-pending').innerText = p;
-            document.getElementById('count-done').innerText = d;
+            card.classList.toggle('bg-emerald-50');
+            if(card.classList.contains('bg-emerald-50')) {
+                text.innerText = "Listo para check-in";
+                text.className = "text-[10px] font-black uppercase text-emerald-600 tracking-widest";
+                icon.className = "w-16 h-16 bg-emerald-100 rounded-[25px] flex items-center justify-center text-emerald-600";
+                icon.innerHTML = '<i data-lucide="check-circle"></i>';
+            } else {
+                text.innerText = "Pendiente de limpieza";
+                text.className = "text-[10px] font-black uppercase text-amber-500 tracking-widest";
+                icon.className = "w-16 h-16 bg-slate-100 rounded-[25px] flex items-center justify-center text-slate-400";
+                icon.innerHTML = '<i data-lucide="shrub"></i>';
+            }
             lucide.createIcons();
         }
-
-        function toggleEstado(id) {
-            const apt = apartamentos.find(a => a.id === id);
-            apt.estado = apt.estado === 'done' ? 'pending' : 'done';
-            render();
-        }
-
-        function avisarToni() {
-            const listo = apartamentos.filter(a => a.estado === 'done').map(a => a.nombre).join(', ');
-            const url = `https://wa.me/34600000000?text=${encodeURIComponent("Hola Toni, ya he terminado de limpiar: " + listo)}`;
-            window.open(url);
-        }
-
-        render();
     </script>
 </body>
 </html>

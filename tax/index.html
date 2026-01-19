@@ -3,85 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tax Assistant Pro | RuralGesto</title>
+    <title>Contabilidad | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f4f4f7; color: #1a1a1a; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #1a1a1a; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
-        .input-tax { width: 100%; padding: 14px; border-radius: 14px; background: #f9f9f9; border: 1px solid #eee; font-weight: 700; margin-top: 4px; outline: none; }
-        .tab-btn { padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 12px; transition: 0.3s; }
-        .tab-active { background: black; color: white; }
+        .card { background: white; border-radius: 35px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 1px solid #eee; }
+        .input-tax { width: 100%; padding: 14px; border-radius: 16px; background: #f9f9f9; border: 1px solid #eee; font-weight: 700; margin-top: 4px; outline: none; font-size: 14px; }
+        .input-tax:focus { border-color: #3b82f6; background: #fff; }
+        .tab-btn { padding: 12px; border-radius: 18px; font-weight: 800; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
+        .tab-active { background: #000; color: white; shadow: 0 10px 20px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="p-6 max-w-lg mx-auto pb-20">
+<body class="p-6 max-w-lg mx-auto pb-32">
 
     <header class="mb-8 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase tracking-widest border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase text-blue-600">Tax Assistant</h1>
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase text-blue-600">Tax Pro</h1>
     </header>
 
-    <div class="bg-black text-white p-8 rounded-[40px] mb-8 shadow-2xl">
-        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Previsión Renta Anual</p>
-        <h2 id="final-tax" class="text-5xl italic-black">0,00€</h2>
-        <div class="flex items-center mt-4 text-[10px] font-bold text-green-400 italic uppercase">
-            <span class="mr-2">●</span> Módulo de Renta Activo
+    <div class="bg-black text-white p-8 rounded-[40px] mb-8 shadow-2xl relative overflow-hidden">
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 italic">Rendimiento Neto Anual</p>
+        <h2 id="balance-total" class="text-5xl italic-black">0.00€</h2>
+        <div class="flex gap-4 mt-6">
+            <div class="text-[10px] font-bold text-green-400 uppercase">Ingresos: <span id="res-ing">0€</span></div>
+            <div class="text-[10px] font-bold text-red-400 uppercase">Gastos: <span id="res-gas">0€</span></div>
         </div>
     </div>
 
-    <div class="flex space-x-2 mb-6 bg-gray-200 p-1.5 rounded-2xl">
-        <button onclick="switchTab('ingreso')" id="btn-ing" class="flex-1 tab-btn tab-active italic uppercase">+ Reserva</button>
-        <button onclick="switchTab('gasto')" id="btn-gas" class="flex-1 tab-btn italic uppercase">- Gasto</button>
+    <div class="flex space-x-2 mb-8 bg-gray-200/50 p-1.5 rounded-[25px]">
+        <button onclick="switchTab('ingreso')" id="btn-ing" class="flex-1 tab-btn tab-active italic underline">Nueva Reserva</button>
+        <button onclick="switchTab('gasto')" id="btn-gas" class="flex-1 tab-btn italic">Nuevo Gasto</button>
     </div>
 
-    <div id="form-ingreso" class="card mb-8">
-        <h3 class="italic-black text-sm uppercase mb-6 border-b pb-4">Nueva Reserva</h3>
-        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Monto Pagado por Cliente</label>
-        <input type="number" id="monto-bruto" placeholder="Ej: 300" class="input-tax mb-4">
+    <div id="form-ingreso" class="card">
+        <h3 class="italic-black text-xs uppercase mb-6 text-blue-600 italic tracking-widest">Detalle de la Reserva</h3>
         
-        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Canal de Venta</label>
-        <select id="canal" class="input-tax mb-4" onchange="checkComision()">
-            <option value="0">Directa (Web/WhatsApp) - 0%</option>
-            <option value="15">Booking.com - 15%</option>
-            <option value="18">Airbnb - 18%</option>
-            <option value="custom">Otra Comisión (Manual)</option>
-        </select>
-        
-        <div id="manual-com" class="hidden">
-            <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Comisión %</label>
-            <input type="number" id="com-val" placeholder="%" class="input-tax mb-4">
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Nombre del Cliente</label>
+        <input type="text" id="ing-cliente" placeholder="Ej: Juan Pérez" class="input-tax mb-4">
+
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div>
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Fecha Entrada</label>
+                <input type="date" id="ing-fecha" class="input-tax">
+            </div>
+            <div>
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Fecha Salida</label>
+                <input type="date" id="ing-fecha-fin" class="input-tax">
+            </div>
         </div>
 
-        <button onclick="registrarReserva()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black italic uppercase mt-2 shadow-xl shadow-blue-100 text-sm">Añadir a Contabilidad</button>
-    </div>
-
-    <div id="form-gasto" class="card mb-8 hidden">
-        <h3 class="italic-black text-sm uppercase mb-6 border-b pb-4 text-red-500">Registrar Gasto</h3>
-        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Importe del Gasto</label>
-        <input type="number" id="gasto-val" placeholder="Ej: 45.50" class="input-tax mb-4">
-        
-        <label class="text-[10px] font-black text-gray-400 uppercase ml-1">Categoría Hacienda</label>
-        <select id="gasto-cat" class="input-tax mb-4">
-            <option value="suministros">Luz, Agua, Gas</option>
-            <option value="limpieza">Limpieza y Lavandería</option>
-            <option value="reparaciones">Mantenimiento</option>
-            <option value="marketing">Publicidad / Booking</option>
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Plataforma de Reserva</label>
+        <select id="ing-canal" class="input-tax mb-4">
+            <option value="0">Reserva Directa (Web / WhatsApp)</option>
+            <option value="15">Booking.com (15% Comisión)</option>
+            <option value="18">Airbnb (18% Comisión)</option>
+            <option value="20">Expedia (20% Comisión)</option>
         </select>
 
-        <button onclick="registrarGasto()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic uppercase mt-2 shadow-xl text-sm">Guardar Factura</button>
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Monto Total Pagado por Cliente</label>
+        <input type="number" id="ing-bruto" placeholder="0.00€" class="input-tax mb-6 text-xl">
+
+        <button onclick="addIngreso()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black italic uppercase shadow-xl shadow-blue-100">Guardar Ingreso</button>
     </div>
 
-    <div class="card bg-blue-50 border-blue-100 flex items-center justify-between p-6">
-        <div>
-            <h4 class="italic-black text-blue-900 text-lg uppercase leading-none">Generar Renta</h4>
-            <p class="text-[10px] font-bold text-blue-400 uppercase mt-1 italic">Datos listos para Hacienda</p>
-        </div>
-        <button onclick="mostrarRenta()" class="bg-blue-600 text-white p-4 rounded-2xl text-xl">📄</button>
+    <div id="form-gasto" class="card hidden">
+        <h3 class="italic-black text-xs uppercase mb-6 text-red-500 italic tracking-widest">Detalle del Gasto</h3>
+        
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Fecha del Gasto</label>
+        <input type="date" id="gas-fecha" class="input-tax mb-4">
+
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Concepto (¿En qué se ha gastado?)</label>
+        <input type="text" id="gas-concepto" placeholder="Ej: Suavizante, Palomitas, Reparación..." class="input-tax mb-4">
+
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Importe Factura</label>
+        <input type="number" id="gas-importe" placeholder="0.00€" class="input-tax mb-6 text-xl">
+
+        <button onclick="addGasto()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic uppercase shadow-xl">Guardar Gasto</button>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('rg_tax_pro')) || { ingresos: 0, gastos: 0, neto: 0 };
+        let taxData = JSON.parse(localStorage.getItem('rg_tax_v2')) || { ingresos: [], gastos: [], totalIng: 0, totalGas: 0 };
 
         function switchTab(t) {
             document.getElementById('form-ingreso').classList.toggle('hidden', t !== 'ingreso');
@@ -90,45 +93,52 @@
             document.getElementById('btn-gas').classList.toggle('tab-active', t === 'gasto');
         }
 
-        function checkComision() {
-            document.getElementById('manual-com').classList.toggle('hidden', document.getElementById('canal').value !== 'custom');
+        function addIngreso() {
+            const bruto = parseFloat(document.getElementById('ing-bruto').value);
+            const comisionPct = parseFloat(document.getElementById('ing-canal').value);
+            const neto = bruto - (bruto * (comisionPct / 100));
+
+            const item = {
+                cliente: document.getElementById('ing-cliente').value,
+                fecha: document.getElementById('ing-fecha').value,
+                neto: neto
+            };
+
+            if(!item.cliente || !bruto) return alert("Completa los datos");
+
+            taxData.ingresos.push(item);
+            taxData.totalIng += neto;
+            save();
         }
 
-        function registrarReserva() {
-            let bruto = parseFloat(document.getElementById('monto-bruto').value);
-            let canal = document.getElementById('canal').value;
-            let pct = canal === 'custom' ? parseFloat(document.getElementById('com-val').value) : parseFloat(canal);
-            
-            if(bruto) {
-                let comision = bruto * (pct / 100);
-                let neto = bruto - comision;
-                db.ingresos += neto;
-                update();
-                alert("Reserva registrada. Neto: " + neto.toFixed(2) + "€");
-            }
+        function addGasto() {
+            const importe = parseFloat(document.getElementById('gas-importe').value);
+            const item = {
+                concepto: document.getElementById('gas-concepto').value,
+                fecha: document.getElementById('gas-fecha').value,
+                importe: importe
+            };
+
+            if(!item.concepto || !importe) return alert("Completa los datos");
+
+            taxData.gastos.push(item);
+            taxData.totalGas += importe;
+            save();
         }
 
-        function registrarGasto() {
-            let val = parseFloat(document.getElementById('gasto-val').value);
-            if(val) {
-                db.gastos += val;
-                update();
-                alert("Gasto deducible guardado.");
-            }
+        function save() {
+            localStorage.setItem('rg_tax_v2', JSON.stringify(taxData));
+            updateUI();
+            alert("Operación registrada correctamente");
         }
 
-        function update() {
-            db.neto = db.ingresos - db.gastos;
-            let irpf = db.neto > 0 ? db.neto * 0.20 : 0;
-            document.getElementById('final-tax').innerText = irpf.toFixed(2) + "€";
-            localStorage.setItem('rg_tax_pro', JSON.stringify(db));
+        function updateUI() {
+            document.getElementById('balance-total').innerText = (taxData.totalIng - taxData.totalGas).toFixed(2) + "€";
+            document.getElementById('res-ing').innerText = taxData.totalIng.toFixed(2) + "€";
+            document.getElementById('res-gas').innerText = taxData.totalGas.toFixed(2) + "€";
         }
 
-        function mostrarRenta() {
-            alert(`RESUMEN RENTA 2026\n-------------------\nIngresos Netos: ${db.ingresos.toFixed(2)}€\nGastos Deducibles: ${db.gastos.toFixed(2)}€\nBase Imponible: ${db.neto.toFixed(2)}€\n\nEste documento está listo para tu declaración.`);
-        }
-
-        update();
+        updateUI();
     </script>
 </body>
 </html>

@@ -3,74 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rural Gesto - Panel</title>
-    <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/512/home.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>RuralGestión | Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #fff; }
-        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .app-btn { border-radius: 28px; padding: 20px; border: 1.5px solid #f2f2f2; display: flex; align-items: center; transition: 0.2s; text-decoration: none; color: black; }
-        .app-btn:active { transform: scale(0.95); background: #f9f9f9; }
-        .input-login { width: 100%; border: 1.5px solid #f2f2f2; border-radius: 20px; padding: 18px; margin-bottom: 12px; font-weight: bold; font-size: 16px; outline: none; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfb; padding: 25px; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .nav-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 10px; color: #1e293b; }
     </style>
 </head>
 <body>
-    <div id="login-screen" class="fixed inset-0 bg-white z-50 flex flex-col justify-center p-10">
-        <h1 class="text-4xl italic-black uppercase mb-2">RG PRO.</h1>
-        <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-10 italic">El Rinconcito Matarraña</p>
-        <input type="text" id="u" placeholder="Usuario" class="input-login" autocapitalize="none">
-        <input type="password" id="p" placeholder="Contraseña" class="input-login">
-        <button onclick="check()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic text-lg mt-4 shadow-xl">ENTRAR</button>
-        <p id="err" class="text-red-500 text-[10px] font-black uppercase mt-4 text-center hidden">Credenciales Incorrectos</p>
+    <header class="pt-10 pb-10 flex justify-between items-start">
+        <h1 class="serif text-4xl italic">Rural<span class="text-emerald-800 font-normal">Gestión</span></h1>
+        <button onclick="location.href='index.html'" class="text-gray-300"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+    </header>
+
+    <div class="w-full h-64 rounded-[35px] overflow-hidden shadow-2xl mb-12">
+        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
     </div>
 
-    <div id="main" class="p-6 hidden">
-        <header class="mb-10 flex justify-between items-start">
-            <div>
-                <h1 class="text-3xl italic-black uppercase">Rural Gesto</h1>
-                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1 italic">Panel Administrador</p>
-            </div>
-            <button onclick="localStorage.removeItem('rg_auth'); location.reload();" class="text-[10px] font-black text-gray-300 italic uppercase">Salir</button>
-        </header>
-
-        <div class="grid grid-cols-1 gap-4">
-            <a href="/checkin/" class="app-btn border-black">
-                <span class="text-2xl mr-4">🆔</span>
-                <div><h3 class="italic-black text-lg text-black">Check-in Pro</h3><p class="text-[9px] text-gray-400 font-bold uppercase italic">Registro Viajeros</p></div>
-            </a>
-            <a href="/calendar/" class="app-btn">
-                <span class="text-2xl mr-4">📅</span>
-                <div><h3 class="italic-black text-lg text-black">Calendario</h3><p class="text-[9px] text-gray-400 font-bold uppercase italic">Ocupación Real</p></div>
-            </a>
-            <a href="/marketing/" class="app-btn">
-                <span class="text-2xl mr-4">✉️</span>
-                <div><h3 class="italic-black text-lg text-black">Marketing CRM</h3><p class="text-[9px] text-blue-500 font-bold uppercase italic">Fidelización</p></div>
-            </a>
-            <a href="/tax/" class="app-btn">
-                <span class="text-2xl mr-4">📊</span>
-                <div><h3 class="italic-black text-lg text-black">Tax Assistant</h3><p class="text-[9px] text-gray-400 font-bold uppercase italic">Contabilidad</p></div>
-            </a>
+    <div class="grid grid-cols-2 gap-y-16 gap-x-8 px-4">
+        <div onclick="alert('Abriendo Agenda...')" class="nav-item">
+            <i data-lucide="calendar" class="w-8 h-8 text-emerald-900"></i>
+            <span class="nav-label">Agenda</span>
+        </div>
+        <div onclick="alert('Abriendo Marketing...')" class="nav-item">
+            <i data-lucide="megaphone" class="w-8 h-8 text-emerald-900"></i>
+            <span class="nav-label">Marketing</span>
+        </div>
+        <div onclick="location.href='tax/index.html'" class="nav-item">
+            <i data-lucide="briefcase" class="w-8 h-8 text-emerald-900"></i>
+            <span class="nav-label">Administración</span>
+        </div>
+        <div onclick="alert('Abriendo Web IA...')" class="nav-item">
+            <i data-lucide="sparkles" class="w-8 h-8 text-emerald-900"></i>
+            <span class="nav-label">Web Builder</span>
         </div>
     </div>
-
-    <script>
-        function check() {
-            if(document.getElementById('u').value.trim().toLowerCase() === 'elrinconcito' && 
-               document.getElementById('p').value.trim() === '12345') {
-                localStorage.setItem('rg_auth', 'true');
-                show();
-            } else {
-                document.getElementById('err').classList.remove('hidden');
-                setTimeout(()=> document.getElementById('err').classList.add('hidden'), 2000);
-            }
-        }
-        function show() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main').classList.remove('hidden');
-        }
-        if(localStorage.getItem('rg_auth') === 'true') show();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

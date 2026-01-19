@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Check-in Pro - RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #000; }
+        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
+        .card-checkin { border-radius: 35px; border: 1.5px solid #f2f2f2; padding: 25px; background: #fff; }
+        .btn-wa { background: #25D366; color: white; border-radius: 20px; padding: 18px; font-weight: 800; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-md mx-auto">
+        <header class="mb-10 flex justify-between items-center">
+            <button onclick="window.location.href='/hub/'" class="text-xs font-bold text-gray-400 uppercase italic">← Volver</button>
+            <h1 class="italic-black text-2xl">Check-in Pro</h1>
+        </header>
+
+        <div class="card-checkin bg-blue-50 border-none mb-6">
+            <p class="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-2">Registro No Presencial</p>
+            <h3 class="italic-black text-xl text-blue-900 mb-4">Enviar Check-in Online</h3>
+            <p class="text-xs text-blue-700 mb-6 leading-relaxed">Envía este enlace por WhatsApp para que el huésped rellene sus datos y firme desde su móvil antes de llegar.</p>
+            
+            <button onclick="enviarWA()" class="btn-wa shadow-lg shadow-green-100">
+                <span>Enviar por WhatsApp</span>
+            </button>
+        </div>
+
+        <div class="card-checkin border-2 border-dashed border-gray-100 text-center py-12">
+            <p class="text-4xl mb-4">📸</p>
+            <p class="text-xs font-black text-gray-300 uppercase italic tracking-widest">Escáner de DNI Habilitado</p>
+            <button onclick="alert('Iniciando cámara para OCR...')" class="mt-4 text-blue-600 font-bold text-sm">Abrir cámara</button>
+        </div>
+
+        <div class="mt-10">
+            <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 italic">Últimos Registros</h4>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-4 border-b border-gray-50">
+                    <span class="text-sm font-bold italic">Simulando datos...</span>
+                    <span class="text-[10px] bg-gray-100 px-2 py-1 rounded-full">PENDIENTE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function enviarWA() {
+            const mensaje = encodeURIComponent("¡Hola! Para agilizar tu entrada, por favor completa el registro legal en este enlace: https://ruralgesto.es/registro-huesped");
+            window.open(`https://wa.me/?text=${mensaje}`);
+        }
+    </script>
+</body>
+</html>

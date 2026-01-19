@@ -1,55 +1,108 @@
-<div class="grid md:grid-cols-3 gap-8">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes de Suscripción | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-16">
+            <h1 class="serif text-5xl italic text-emerald-950 mb-4">Elige tu plan RuralGesto</h1>
+            <p class="text-gray-400 font-bold uppercase tracking-widest text-xs">Sin permanencia, crece cuando lo necesites</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <div class="bg-white p-10 rounded-[40px] border border-slate-200 flex flex-col">
+            <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm flex flex-col">
                 <div class="mb-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Esencial</h3>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Esencial</h3>
                     <div class="flex items-baseline gap-1">
                         <span class="text-4xl font-black text-emerald-950">19€</span>
-                        <span class="text-slate-400 text-sm">/mes</span>
+                        <span class="text-gray-400 text-sm">/mes</span>
                     </div>
                 </div>
-                <ul class="space-y-4 mb-10 flex-grow text-sm font-semibold text-slate-600">
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> 1 Alojamiento</li>
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Check-in OCR</li>
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Calendario Básico</li>
+                <ul class="space-y-4 mb-10 flex-grow">
+                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
+                        <i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> 1 Alojamiento
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
+                        <i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Check-in con OCR
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
+                        <i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Calendario base
+                    </li>
                 </ul>
-                <button class="w-full py-4 bg-slate-100 rounded-2xl font-black uppercase text-[10px] tracking-widest">Empezar</button>
+                <button class="w-full py-5 bg-gray-100 text-gray-900 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-gray-200 transition">Seleccionar</button>
             </div>
 
-            <div class="bg-emerald-950 p-10 rounded-[40px] shadow-2xl flex flex-col transform md:scale-110 relative border-4 border-emerald-400">
-                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-400 text-emerald-950 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Más Popular</div>
+            <div class="bg-emerald-950 p-10 rounded-[50px] shadow-2xl flex flex-col transform md:scale-105 relative border-4 border-emerald-400">
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-400 text-emerald-950 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">El más popular</div>
                 <div class="mb-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-2">Profesional</h3>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-2">Profesional</h3>
                     <div class="flex items-baseline gap-1">
                         <span class="text-4xl font-black text-white">49€</span>
                         <span class="text-emerald-300/50 text-sm">/mes</span>
                     </div>
                 </div>
-                <ul class="space-y-4 mb-10 flex-grow text-sm font-semibold text-emerald-50">
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Hasta 10 Alojamientos</li>
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Marketing Automático</li>
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Gestión de Limpieza</li>
-                    <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Web de Reservas Directas</li>
+                <ul class="space-y-4 mb-10 flex-grow text-white">
+                    <li class="flex items-center gap-3 text-sm font-semibold">
+                        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Hasta 10 alojamientos
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold">
+                        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Gestión de limpiezas
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold">
+                        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Web de reservas directas
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold text-emerald-300">
+                        <i data-lucide="check" class="w-4 h-4"></i> Marketing por WhatsApp
+                    </li>
                 </ul>
-                <button class="w-full py-4 bg-emerald-400 text-emerald-950 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition">Seleccionar</button>
+                <button class="w-full py-5 bg-emerald-400 text-emerald-950 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition">Empezar ahora</button>
             </div>
 
-            <div class="bg-white p-10 rounded-[40px] border border-slate-200 flex flex-col">
+            <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm flex flex-col">
                 <div class="mb-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Empresas</h3>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Grandes Carteras</h3>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black text-emerald-950">A medida</span>
+                        <span class="text-3xl font-black text-emerald-950">A medida</span>
                     </div>
                 </div>
-                <ul class="space-y-4 mb-10 flex-grow text-sm font-semibold text-slate-600">
-                    <li class="flex items-center gap-3"><i data-lucide="plus" class="w-4 h-4 text-emerald-500"></i> Alojamientos Ilimitados</li>
-                    <li class="flex items-center gap-3"><i data-lucide="users" class="w-4 h-4 text-emerald-500"></i> Multiusuario (Empleados)</li>
-                    <li class="flex items-center gap-3"><i data-lucide="headset" class="w-4 h-4 text-emerald-500"></i> Soporte VIP 24/7</li>
-                    <li class="flex items-center gap-3"><i data-lucide="code-2" class="w-4 h-4 text-emerald-500"></i> API e Integraciones Pro</li>
+                <ul class="space-y-4 mb-10 flex-grow">
+                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
+                        <i data-lucide="plus" class="w-4 h-4 text-emerald-500"></i> +10 Alojamientos
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
+                        <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i> Multiusuario (Equipo)
+                    </li>
+                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
+                        <i data-lucide="headset" class="w-4 h-4 text-emerald-500"></i> Soporte VIP 24/7
+                    </li>
                 </ul>
-                <button onclick="window.location.href='mailto:info@ruralgesto.com'" class="w-full py-4 border-2 border-emerald-900 text-emerald-900 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-emerald-900 hover:text-white transition">
-                    Consultar Precio
-                </button>
+                <button onclick="window.location.href='mailto:info@ruralgesto.com'" class="w-full py-5 border-2 border-emerald-950 text-emerald-950 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-emerald-950 hover:text-white transition">Consultar</button>
             </div>
 
         </div>
+
+        <div class="text-center mt-12">
+            <button onclick="location.href='index.html'" class="text-[10px] font-black uppercase text-gray-400 tracking-widest hover:text-emerald-700 transition flex items-center justify-center gap-2 mx-auto">
+                <i data-lucide="arrow-left" class="w-3 h-3"></i> Volver al inicio
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Esta línea es fundamental para que aparezcan los iconos
+        lucide.createIcons();
+    </script>
+</body>
+</html>

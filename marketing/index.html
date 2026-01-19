@@ -2,203 +2,137 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Pro | RuralGesto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Marketing Seguro | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #be123c; color: white; }
-        .campaign-card.selected { border-color: #be123c; background-color: #fff1f2; }
-        .custom-scroll { max-height: 400px; overflow-y: auto; }
+        .tab-btn.active { background-color: #2563eb; color: white; }
+        .preview-img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px; display: none; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
-    <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-8">
-            <div class="flex items-center gap-4">
-                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <div>
-                    <h2 class="serif text-3xl italic text-rose-950 font-bold">Marketing & Comunicación</h2>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-rose-600">Motor de Fidelización RuralGesto</p>
-                </div>
+    <div class="max-w-4xl mx-auto">
+        <header class="flex items-center gap-4 mb-8">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+            <div>
+                <h2 class="serif text-2xl italic text-blue-950 font-bold">Marketing & Comunicación</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-blue-600 italic">Difusión Segura RuralGesto</p>
             </div>
-            <div id="db-status" class="bg-slate-900 text-white px-6 py-2 rounded-2xl font-black text-[10px] uppercase italic tracking-widest">Sincronizando...</div>
         </header>
 
-        <div class="grid grid-cols-4 gap-2 bg-slate-100 p-1 rounded-[25px] mb-10">
-            <button onclick="switchTab('campañas')" id="t-campañas" class="tab-btn active py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest">Campañas</button>
-            <button onclick="switchTab('personalizar')" id="t-personalizar" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500">Diseño IA</button>
-            <button onclick="switchTab('audiencia')" id="t-audiencia" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500">Audiencia</button>
-            <button onclick="switchTab('envio')" id="t-envio" class="tab-btn py-4 rounded-[20px] font-black text-[9px] uppercase tracking-widest text-slate-500 italic">Envio Masivo</button>
+        <div class="grid grid-cols-3 gap-2 bg-blue-50 p-1.5 rounded-[30px] mb-8 border border-blue-100">
+            <button onclick="switchTab('pre')" id="tab-pre" class="tab-btn active py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest transition-all">Predefinidas</button>
+            <button onclick="switchTab('custom')" id="tab-custom" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-blue-900 transition-all">Crear Campaña</button>
+            <button onclick="switchTab('ia')" id="tab-ia" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-blue-900 transition-all italic">IA Visual</button>
         </div>
 
-        <div id="v-campañas" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div onclick="setCampaign('CUMPLE', '¡Feliz Cumpleaños! Tienes un 10% de dto.')" class="campaign-card bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm cursor-pointer hover:scale-105 transition-all">
-                <i data-lucide="cake" class="text-rose-500 mb-4"></i>
-                <h3 class="serif text-xl italic font-bold">Aniversarios</h3>
-                <p class="text-[10px] text-slate-400 mt-2 uppercase font-black">Fidelización Automática</p>
-            </div>
-            <div onclick="setCampaign('REPETIDOR', 'Gracias por volver. Tenemos un detalle para ti.')" class="campaign-card bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm cursor-pointer hover:scale-105 transition-all">
-                <i data-lucide="refresh-cw" class="text-amber-500 mb-4"></i>
-                <h3 class="serif text-xl italic font-bold">Huésped VIP</h3>
-                <p class="text-[10px] text-slate-400 mt-2 uppercase font-black">Descuento Segunda Visita</p>
-            </div>
-            <div onclick="setCampaign('LASTMINUTE', 'Últimas plazas para este fin de semana.')" class="campaign-card bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm cursor-pointer hover:scale-105 transition-all">
-                <i data-lucide="zap" class="text-blue-500 mb-4"></i>
-                <h3 class="serif text-xl italic font-bold">Last Minute</h3>
-                <p class="text-[10px] text-slate-400 mt-2 uppercase font-black">Cierre de Fechas Libres</p>
-            </div>
-        </div>
-
-        <div id="v-personalizar" class="hidden grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white p-10 rounded-[45px] border border-slate-100 shadow-sm space-y-6">
-                <h4 class="serif text-2xl italic font-bold">Generador Creativo</h4>
-                <textarea id="custom-msg" placeholder="Escribe tu mensaje personalizado aquí..." class="w-full h-32 p-6 bg-slate-50 rounded-3xl text-sm outline-none border-none resize-none" oninput="updatePreview()"></textarea>
-                <button onclick="generateAIImage()" class="w-full py-4 bg-rose-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
-                    <i data-lucide="wand-2"></i> Generar Imagen con IA
-                </button>
-            </div>
-            <div class="bg-slate-900 rounded-[45px] p-2 flex items-center justify-center min-h-[300px] relative overflow-hidden">
-                <div id="ai-preview" class="text-white text-center p-8 z-10">
-                    <p id="preview-text" class="serif text-2xl italic font-bold opacity-50 italic">Tu anuncio aparecerá aquí...</p>
+        <div id="view-pre" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
+                    <h4 class="serif text-lg italic font-bold mb-2">Fidelización: 10% Dto</h4>
+                    <p class="text-[9px] text-slate-400 mb-6 uppercase font-bold tracking-wider">Para clientes que ya han venido</p>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-blue-600 text-white rounded-xl text-[8px] font-black uppercase">Vía WhatsApp</button>
+                        <button class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl text-[8px] font-black uppercase">Vía Email</button>
+                    </div>
                 </div>
-                <img id="ai-img" class="absolute inset-0 w-full h-full object-cover opacity-60 hidden">
-            </div>
-        </div>
-
-        <div id="v-audiencia" class="hidden space-y-4">
-            <div class="flex gap-4 mb-4">
-                <input type="text" id="search-client" placeholder="Buscar por nombre o mes de cumpleaños..." class="flex-1 p-4 bg-white border border-slate-100 rounded-2xl text-xs" oninput="renderAudiencia()">
-                <select id="filter-type" class="p-4 bg-white border border-slate-100 rounded-2xl text-xs font-bold" onchange="renderAudiencia()">
-                    <option value="all">Todos los clientes</option>
-                    <option value="cumple">Cumpleaños este mes</option>
-                </select>
-            </div>
-            <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
-                <div class="custom-scroll">
-                    <table class="w-full text-left text-[11px]">
-                        <thead class="bg-slate-50 sticky top-0">
-                            <tr><th class="p-5">Huésped</th><th class="p-5">Contacto</th><th class="p-5">Última Estancia</th><th class="p-5">Acciones</th></tr>
-                        </thead>
-                        <tbody id="audiencia-body"></tbody>
-                    </table>
+                <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
+                    <h4 class="serif text-lg italic font-bold mb-2">Oferta Last Minute</h4>
+                    <p class="text-[9px] text-slate-400 mb-6 uppercase font-bold tracking-wider">Huecos libres fin de semana</p>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-blue-600 text-white rounded-xl text-[8px] font-black uppercase">Vía WhatsApp</button>
+                        <button class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl text-[8px] font-black uppercase">Vía Email</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="v-envio" class="hidden text-center space-y-8 py-10">
-            <div class="max-w-md mx-auto space-y-6">
-                <div class="bg-rose-50 p-10 rounded-full w-32 h-32 flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="send" class="w-12 h-12 text-rose-600"></i>
+        <div id="view-custom" class="hidden space-y-6">
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm">
+                <div class="space-y-4">
+                    <input type="text" id="title" placeholder="Título de la promoción..." class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold border-none outline-none">
+                    
+                    <div id="img-preview-box" class="relative">
+                        <img id="preview-img" class="preview-img mb-4" src="">
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <label class="cursor-pointer p-4 bg-blue-50 rounded-2xl text-center border border-blue-100">
+                            <input type="file" class="hidden" onchange="previewFile(event)"><i data-lucide="upload" class="mx-auto text-blue-600 w-4 h-4 mb-1"></i>
+                            <span class="text-[7px] font-black uppercase text-blue-800">Fototeca</span>
+                        </label>
+                        <button onclick="alert('Cargando fotos de la guía...')" class="p-4 bg-emerald-50 rounded-2xl text-center border border-emerald-100">
+                            <i data-lucide="book-open" class="mx-auto text-emerald-600 w-4 h-4 mb-1"></i>
+                            <span class="text-[7px] font-black uppercase text-emerald-800">De la Guía</span>
+                        </button>
+                        <button onclick="switchTab('ia')" class="p-4 bg-purple-50 rounded-2xl text-center border border-purple-100">
+                            <i data-lucide="wand-2" class="mx-auto text-purple-600 w-4 h-4 mb-1"></i>
+                            <span class="text-[7px] font-black uppercase text-purple-800">IA Visual</span>
+                        </button>
+                    </div>
+
+                    <textarea placeholder="Mensaje personalizado..." rows="4" class="w-full p-4 bg-slate-50 rounded-2xl text-xs border-none outline-none"></textarea>
+
+                    <hr class="border-slate-100 my-4">
+
+                    <div class="space-y-3">
+                        <p class="text-[8px] font-black uppercase text-slate-400 ml-2 tracking-widest">Método de Envío (Privacidad Garantizada)</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="alert('Selecciona cliente de la lista para WhatsApp individual')" class="flex items-center justify-center gap-2 py-4 bg-white border border-slate-200 rounded-2xl text-[9px] font-black uppercase">
+                                <i data-lucide="user" class="w-3 h-3"></i> Individual
+                            </button>
+                            <button onclick="alert('Se preparará la lista para Difusión de WhatsApp (uno a uno)')" class="flex items-center justify-center gap-2 py-4 bg-blue-900 text-white rounded-2xl text-[9px] font-black uppercase italic shadow-lg shadow-blue-100">
+                                <i data-lucide="users" class="w-3 h-3"></i> Difusión Masiva
+                            </button>
+                        </div>
+                        <button class="w-full py-4 bg-slate-100 text-slate-900 rounded-2xl text-[9px] font-black uppercase flex items-center justify-center gap-2">
+                            <i data-lucide="mail"></i> Mailing Masivo (Email)
+                        </button>
+                    </div>
                 </div>
-                <h3 class="serif text-3xl italic font-bold">Lanzamiento Masivo</h3>
-                <p class="text-xs text-slate-400 uppercase font-black tracking-widest leading-relaxed">Se prepararán mensajes para toda la audiencia seleccionada.</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="bulkSend('WA')" class="p-6 bg-emerald-600 text-white rounded-[30px] font-black text-[9px] uppercase flex flex-col items-center gap-3">
-                        <i data-lucide="message-circle"></i> WhatsApp Masivo
-                    </button>
-                    <button onclick="bulkSend('MAIL')" class="p-6 bg-slate-900 text-white rounded-[30px] font-black text-[9px] uppercase flex flex-col items-center gap-3">
-                        <i data-lucide="mail"></i> Email Masivo
-                    </button>
-                </div>
+            </div>
+        </div>
+
+        <div id="view-ia" class="hidden space-y-6">
+            <div class="bg-slate-900 p-10 rounded-[50px] text-white text-center">
+                <i data-lucide="sparkles" class="w-10 h-10 mx-auto mb-6 text-blue-400"></i>
+                <h3 class="serif text-xl italic mb-4">Generador de Fotos IA</h3>
+                <input type="text" placeholder="Describe tu idea..." class="w-full p-5 bg-white/10 rounded-2xl text-xs mb-4 outline-none border border-white/20">
+                <button onclick="simulateIA()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-[9px] uppercase">Generar Imagen</button>
             </div>
         </div>
     </div>
 
     <script>
-        let currentMsg = "";
-        let db = [];
-
-        function switchTab(t) {
-            document.querySelectorAll('#v-campañas, #v-personalizar, #v-audiencia, #v-envio').forEach(v => v.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-slate-500'); });
-            document.getElementById('v-' + t).classList.remove('hidden');
-            document.getElementById('t-' + t).classList.add('active');
-            document.getElementById('t-' + t).classList.remove('text-slate-500');
-            if(t === 'audiencia') renderAudiencia();
-            lucide.createIcons();
+        lucide.createIcons();
+        function switchTab(tab) {
+            document.querySelectorAll('#view-pre, #view-custom, #view-ia').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-white'));
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('active');
         }
 
-        function setCampaign(tipo, msg) {
-            currentMsg = msg;
-            document.getElementById('custom-msg').value = msg;
-            alert("Campaña '" + tipo + "' seleccionada. Personalízala en la siguiente pestaña.");
-            switchTab('personalizar');
-        }
-
-        function updatePreview() {
-            const txt = document.getElementById('custom-msg').value;
-            document.getElementById('preview-text').innerText = txt || "Tu anuncio aparecerá aquí...";
-            currentMsg = txt;
-        }
-
-        async function generateAIImage() {
-            const btn = event.currentTarget;
-            btn.innerText = "Generando...";
-            // Simulamos la llamada a la API de generación (Nano Banana / Veo)
-            setTimeout(() => {
-                const img = document.getElementById('ai-img');
-                img.src = "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1000";
-                img.classList.remove('hidden');
-                document.getElementById('preview-text').classList.add('bg-black/40', 'p-4', 'rounded-xl');
-                btn.innerHTML = '<i data-lucide="check"></i> Imagen Generada';
-                lucide.createIcons();
-            }, 1500);
-        }
-
-        function renderAudiencia() {
-            db = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-            const query = document.getElementById('search-client').value.toLowerCase();
-            const filter = document.getElementById('filter-type').value;
-            const tbody = document.getElementById('audiencia-body');
-            tbody.innerHTML = '';
-
-            const filtered = db.filter(r => {
-                const matchName = r.nombre.toLowerCase().includes(query);
-                if(filter === 'cumple') {
-                    const mesActual = new Date().getMonth() + 1;
-                    return matchName && r.cumple.includes('/0' + mesActual);
-                }
-                return matchName;
-            });
-
-            filtered.forEach(r => {
-                tbody.innerHTML += `
-                    <tr class="border-b border-slate-50">
-                        <td class="p-5 font-bold">${r.nombre}</td>
-                        <td class="p-5 text-slate-400 font-mono">${r.tel}</td>
-                        <td class="p-5 font-bold text-rose-900/40 uppercase text-[9px]">${r.fecha}</td>
-                        <td class="p-5 flex gap-2">
-                            <button onclick="sendSolo('WA', '${r.tel}', '${r.nombre}')" class="p-2 text-emerald-600 bg-emerald-50 rounded-lg"><i data-lucide="message-circle" class="w-4 h-4"></i></button>
-                            <button onclick="sendSolo('MAIL', '${r.mail}', '${r.nombre}')" class="p-2 text-blue-600 bg-blue-50 rounded-lg"><i data-lucide="mail" class="w-4 h-4"></i></button>
-                        </td>
-                    </tr>`;
-            });
-            lucide.createIcons();
-        }
-
-        function sendSolo(type, dest, nombre) {
-            if(!currentMsg) return alert("Primero escribe un mensaje o selecciona campaña");
-            const finalMsg = currentMsg.replace('${nombre}', nombre);
-            if(type === 'WA') window.open(`https://wa.me/${dest}?text=${encodeURIComponent(finalMsg)}`);
-            if(type === 'MAIL') window.location.href = `mailto:${dest}?subject=Oferta Especial&body=${encodeURIComponent(finalMsg)}`;
-        }
-
-        function bulkSend(type) {
-            const count = db.length;
-            if(confirm(`Se van a abrir ${count} ventanas de envío. ¿Continuar?`)) {
-                db.slice(0, 10).forEach(r => sendSolo(type, type === 'WA' ? r.tel : r.mail, r.nombre));
-                alert("Se han procesado los primeros 10 envíos. (Límite de seguridad del navegador)");
+        function previewFile(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.getElementById('preview-img');
+                img.src = reader.result;
+                img.style.display = 'block';
             }
+            reader.readAsDataURL(event.target.files[0]);
         }
 
-        window.onload = () => {
-            const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-            document.getElementById('db-status').innerText = data.length + " CLIENTES EN DB";
-            lucide.createIcons();
-        };
+        function simulateIA() {
+            alert('IA generando imagen para El Rinconcito...');
+            setTimeout(() => {
+                const img = document.getElementById('preview-img');
+                img.src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800";
+                img.style.display = 'block';
+                switchTab('custom');
+            }, 2000);
+        }
     </script>
 </body>
 </html>

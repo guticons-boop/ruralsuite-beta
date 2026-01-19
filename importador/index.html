@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | DB Completa</title>
+    <title>RuralGesto | Gestión de Datos</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -11,8 +11,8 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .tab-btn.active { background-color: #be123c; color: white; }
-        .table-container { max-height: 70vh; overflow-y: auto; border-radius: 20px; }
-        th { sticky; top: 0; background: #f8fafc; z-index: 10; }
+        .table-container { max-height: 65vh; overflow-y: auto; scrollbar-width: thin; }
+        thead th { sticky; top: 0; background: #f8fafc; z-index: 20; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
@@ -25,40 +25,44 @@
             <div id="badge-total" class="bg-rose-900 text-white px-6 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest">0 REGISTROS</div>
         </header>
 
-        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8">
+        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8 border border-slate-200">
             <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Check-ins</button>
             <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Base de Datos</button>
             <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest italic">Configuración</button>
         </div>
 
-        <div id="view-checkins" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        <div id="view-checkins" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            </div>
 
         <div id="view-clientes" class="hidden">
             <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
                 <div class="table-container">
-                    <table class="w-full text-left text-[11px]">
-                        <thead class="bg-slate-50 border-b border-slate-100">
-                            <tr>
+                    <table class="w-full text-left text-[11px] border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-100">
                                 <th class="p-5 font-black uppercase text-slate-400">Huésped</th>
-                                <th class="p-5 font-black uppercase text-slate-400">Contacto</th>
+                                <th class="p-5 font-black uppercase text-slate-400">Teléfono</th>
+                                <th class="p-5 font-black uppercase text-slate-400">Mail</th>
                                 <th class="p-5 font-black uppercase text-slate-400">Cumpleaños</th>
                                 <th class="p-5 font-black uppercase text-slate-400">Última Estancia</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-body" class="divide-y divide-slate-50"></tbody>
+                        <tbody id="tabla-body" class="divide-y divide-slate-50">
+                            </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
         <div id="view-import" class="hidden space-y-6">
-            <div class="bg-white border-4 border-dashed border-slate-200 rounded-[50px] p-20 text-center relative">
-                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer">
-                <i data-lucide="upload" class="w-16 h-16 mx-auto text-rose-500 mb-4"></i>
-                <p class="serif text-2xl italic font-bold">Cargar / Actualizar Reservas</p>
+            <div class="bg-white border-4 border-dashed border-slate-200 rounded-[50px] p-20 text-center relative hover:border-rose-400 transition-all">
+                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls">
+                <i data-lucide="file-up" class="w-16 h-16 mx-auto text-rose-500 mb-4"></i>
+                <p class="serif text-2xl italic font-bold">Cargar archivo Excel</p>
+                <p class="text-xs text-slate-400 mt-2">Arrastra aquí el archivo para actualizar los 860 registros.</p>
             </div>
-            <button onclick="hardReset()" class="w-full py-5 text-rose-600 font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 border border-rose-100 rounded-3xl">
-                <i data-lucide="trash-2" class="w-4 h-4"></i> Borrar Memoria Actual
+            <button onclick="resetMemoria()" class="w-full py-5 text-rose-600 font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 border border-rose-100 rounded-3xl bg-rose-50/30">
+                <i data-lucide="trash-2" class="w-4 h-4"></i> Limpiar memoria y registros
             </button>
         </div>
     </div>
@@ -79,18 +83,18 @@
                 const workbook = XLSX.read(new Uint8Array(evt.target.result), { type: 'array' });
                 const raw = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
                 
-                // MAPEO FINAL DE DATOS
                 const procesados = raw.map(r => ({
                     nombre: `${r['NOMBRE'] || ''} ${r['APELLIDO 1'] || ''}`.trim() || 'Huésped',
-                    tel: r['686586692'] || r['TELEFONO'] || '---',
-                    mail: r['yolandasan'] || r['EMAIL'] || '---',
-                    cumple: r['25/05/1995'] || r['FECHA NACIMIENTO'] || '-',
-                    fecha: r['06/12/202'] || r['ENTRADA'] || r['FECHA'],
-                    apto: r['El Rinconcit'] || r['APARTAMENTO'] || 'Apto'
+                    tel: r['TELEFONO'] || r['686586692'] || '---',
+                    mail: r['EMAIL'] || r['yolandasan'] || '---',
+                    cumple: r['FECHA NACIMIENTO'] || r['25/05/1995'] || '-',
+                    estancia: r['ENTRADA'] || r['06/12/2024'] || '-',
+                    apto: r['APARTAMENTO'] || r['El Rinconcit'] || 'RuralGesto'
                 }));
 
                 localStorage.setItem('reservas_ruralgesto', JSON.stringify(procesados));
-                window.location.reload(); 
+                alert("¡Base de datos actualizada con " + procesados.length + " registros!");
+                window.location.reload();
             };
             reader.readAsArrayBuffer(e.target.files[0]);
         });
@@ -110,20 +114,24 @@
 
             if(tab === 'clientes') {
                 const tbody = document.getElementById('tabla-body');
-                // Mostramos 300 para que no se cuelgue, el resto se procesa al buscar
-                tbody.innerHTML = data.slice(0, 300).map(r => `
-                    <tr>
+                // Mostramos 400 registros para mantener la fluidez, se cargan más al hacer scroll
+                tbody.innerHTML = data.slice(0, 400).map(r => `
+                    <tr class="hover:bg-slate-50 transition-colors">
                         <td class="p-5"><p class="font-bold text-slate-800">${r.nombre}</p><p class="text-[9px] text-slate-400 italic">${r.apto}</p></td>
-                        <td class="p-5 font-mono text-slate-500">${r.tel}<br>${r.mail}</td>
+                        <td class="p-5 font-mono text-slate-500">${r.tel}</td>
+                        <td class="p-5 text-slate-500">${r.mail}</td>
                         <td class="p-5 text-rose-600 font-black italic">${r.cumple}</td>
-                        <td class="p-5 font-bold text-slate-400">${r.fecha}</td>
+                        <td class="p-5 font-bold text-slate-600">${r.estancia}</td>
                     </tr>`).join('');
             }
             lucide.createIcons();
         }
 
-        function hardReset() {
-            if(confirm("¿Borrar todo?")) { localStorage.removeItem('reservas_ruralgesto'); window.location.reload(); }
+        function resetMemoria() {
+            if(confirm("¿Estás seguro de que quieres borrar todos los datos?")) {
+                localStorage.removeItem('reservas_ruralgesto');
+                window.location.reload();
+            }
         }
 
         window.onload = () => renderizar('checkins');

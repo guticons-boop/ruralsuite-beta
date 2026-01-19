@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Contabilidad | RuralGesto</title>
+    <title>Tax Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #1a1a1a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f9fa; color: #1a1a1a; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
         .card { background: white; border-radius: 35px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 1px solid #eee; }
         .input-tax { width: 100%; padding: 14px; border-radius: 16px; background: #f9f9f9; border: 1px solid #eee; font-weight: 700; margin-top: 4px; outline: none; font-size: 14px; }
-        .input-tax:focus { border-color: #3b82f6; background: #fff; }
-        .tab-btn { padding: 12px; border-radius: 18px; font-weight: 800; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
-        .tab-active { background: #000; color: white; shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .input-tax:focus { border-color: #2563eb; background: #fff; }
+        .tab-btn { padding: 10px; border-radius: 15px; font-weight: 800; font-size: 10px; transition: 0.3s; text-transform: uppercase; border: 1px solid transparent; }
+        .tab-active { background: #000; color: white; border-color: #000; }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto pb-32">
@@ -23,119 +23,123 @@
         <h1 class="italic-black text-2xl uppercase text-blue-600">Tax Pro</h1>
     </header>
 
-    <div class="bg-black text-white p-8 rounded-[40px] mb-8 shadow-2xl relative overflow-hidden">
-        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 italic">Rendimiento Neto Anual</p>
+    <div class="bg-slate-900 text-white p-8 rounded-[40px] mb-8 shadow-2xl relative overflow-hidden">
+        <p class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-2 italic">Rendimiento Neto Real</p>
         <h2 id="balance-total" class="text-5xl italic-black">0.00€</h2>
-        <div class="flex gap-4 mt-6">
-            <div class="text-[10px] font-bold text-green-400 uppercase">Ingresos: <span id="res-ing">0€</span></div>
-            <div class="text-[10px] font-bold text-red-400 uppercase">Gastos: <span id="res-gas">0€</span></div>
-        </div>
     </div>
 
-    <div class="flex space-x-2 mb-8 bg-gray-200/50 p-1.5 rounded-[25px]">
-        <button onclick="switchTab('ingreso')" id="btn-ing" class="flex-1 tab-btn tab-active italic underline">Nueva Reserva</button>
-        <button onclick="switchTab('gasto')" id="btn-gas" class="flex-1 tab-btn italic">Nuevo Gasto</button>
+    <div class="flex space-x-1 mb-8 bg-gray-200/50 p-1.5 rounded-[22px]">
+        <button onclick="switchTab('ingreso')" id="btn-ing" class="flex-1 tab-btn tab-active">Reservas</button>
+        <button onclick="switchTab('gasto')" id="btn-gas" class="flex-1 tab-btn">Gastos</button>
+        <button onclick="switchTab('config')" id="btn-config" class="flex-1 tab-btn italic">⚙️ Ajustes</button>
     </div>
 
     <div id="form-ingreso" class="card">
-        <h3 class="italic-black text-xs uppercase mb-6 text-blue-600 italic tracking-widest">Detalle de la Reserva</h3>
+        <h3 class="italic-black text-xs uppercase mb-6 text-blue-600 italic tracking-widest">Nueva Reserva</h3>
+        <input type="text" id="ing-cliente" placeholder="Cliente" class="input-tax mb-4">
         
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Nombre del Cliente</label>
-        <input type="text" id="ing-cliente" placeholder="Ej: Juan Pérez" class="input-tax mb-4">
-
-        <div class="grid grid-cols-2 gap-3 mb-4">
-            <div>
-                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Fecha Entrada</label>
-                <input type="date" id="ing-fecha" class="input-tax">
-            </div>
-            <div>
-                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Fecha Salida</label>
-                <input type="date" id="ing-fecha-fin" class="input-tax">
-            </div>
-        </div>
-
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Plataforma de Reserva</label>
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Plataforma</label>
         <select id="ing-canal" class="input-tax mb-4">
-            <option value="0">Reserva Directa (Web / WhatsApp)</option>
-            <option value="15">Booking.com (15% Comisión)</option>
-            <option value="18">Airbnb (18% Comisión)</option>
-            <option value="20">Expedia (20% Comisión)</option>
+            <option value="directa">Directa (Web)</option>
+            <option value="booking">Booking.com</option>
+            <option value="airbnb">Airbnb</option>
         </select>
 
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Monto Total Pagado por Cliente</label>
+        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Monto Total Pagado</label>
         <input type="number" id="ing-bruto" placeholder="0.00€" class="input-tax mb-6 text-xl">
 
-        <button onclick="addIngreso()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black italic uppercase shadow-xl shadow-blue-100">Guardar Ingreso</button>
+        <button onclick="addIngreso()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black italic uppercase shadow-xl">Guardar Ingreso</button>
+    </div>
+
+    <div id="form-config" class="card hidden">
+        <h3 class="italic-black text-xs uppercase mb-6 text-purple-600 italic tracking-widest">Configurar Comisiones (%)</h3>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Comisión Booking</label>
+                <input type="number" id="cfg-booking" value="15" class="input-tax">
+            </div>
+            <div>
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Comisión Airbnb</label>
+                <input type="number" id="cfg-airbnb" value="18" class="input-tax">
+            </div>
+            <div>
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Comisión Pago Tarjeta / TPV</label>
+                <input type="number" id="cfg-tarjeta" value="1.5" class="input-tax">
+            </div>
+            <button onclick="saveConfig()" class="w-full bg-black text-white p-4 rounded-2xl font-black italic uppercase text-xs mt-4">Guardar Ajustes</button>
+        </div>
     </div>
 
     <div id="form-gasto" class="card hidden">
-        <h3 class="italic-black text-xs uppercase mb-6 text-red-500 italic tracking-widest">Detalle del Gasto</h3>
-        
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Fecha del Gasto</label>
-        <input type="date" id="gas-fecha" class="input-tax mb-4">
-
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Concepto (¿En qué se ha gastado?)</label>
-        <input type="text" id="gas-concepto" placeholder="Ej: Suavizante, Palomitas, Reparación..." class="input-tax mb-4">
-
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Importe Factura</label>
+        <h3 class="italic-black text-xs uppercase mb-6 text-red-500 italic tracking-widest">Nuevo Gasto</h3>
+        <input type="text" id="gas-concepto" placeholder="Ej: Suavizante" class="input-tax mb-4">
         <input type="number" id="gas-importe" placeholder="0.00€" class="input-tax mb-6 text-xl">
-
-        <button onclick="addGasto()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic uppercase shadow-xl">Guardar Gasto</button>
+        <button onclick="addGasto()" class="w-full bg-red-600 text-white p-5 rounded-2xl font-black italic uppercase shadow-xl">Guardar Gasto</button>
     </div>
 
     <script>
-        let taxData = JSON.parse(localStorage.getItem('rg_tax_v2')) || { ingresos: [], gastos: [], totalIng: 0, totalGas: 0 };
+        let taxData = JSON.parse(localStorage.getItem('rg_tax_v3')) || { 
+            ingresos: [], 
+            gastos: [], 
+            config: { booking: 15, airbnb: 18, tarjeta: 1.5 } 
+        };
 
         function switchTab(t) {
             document.getElementById('form-ingreso').classList.toggle('hidden', t !== 'ingreso');
             document.getElementById('form-gasto').classList.toggle('hidden', t !== 'gasto');
+            document.getElementById('form-config').classList.toggle('hidden', t !== 'config');
+            
             document.getElementById('btn-ing').classList.toggle('tab-active', t === 'ingreso');
             document.getElementById('btn-gas').classList.toggle('tab-active', t === 'gasto');
+            document.getElementById('btn-config').classList.toggle('tab-active', t === 'config');
+        }
+
+        function saveConfig() {
+            taxData.config.booking = parseFloat(document.getElementById('cfg-booking').value);
+            taxData.config.airbnb = parseFloat(document.getElementById('cfg-airbnb').value);
+            taxData.config.tarjeta = parseFloat(document.getElementById('cfg-tarjeta').value);
+            localStorage.setItem('rg_tax_v3', JSON.stringify(taxData));
+            alert("Configuración actualizada.");
         }
 
         function addIngreso() {
             const bruto = parseFloat(document.getElementById('ing-bruto').value);
-            const comisionPct = parseFloat(document.getElementById('ing-canal').value);
-            const neto = bruto - (bruto * (comisionPct / 100));
+            const canal = document.getElementById('ing-canal').value;
+            
+            let comisionCanal = 0;
+            if(canal === 'booking') comisionCanal = taxData.config.booking;
+            if(canal === 'airbnb') comisionCanal = taxData.config.airbnb;
 
-            const item = {
-                cliente: document.getElementById('ing-cliente').value,
-                fecha: document.getElementById('ing-fecha').value,
-                neto: neto
-            };
+            // Restamos comisión de canal + comisión de tarjeta fija
+            const totalComision = comisionCanal + taxData.config.tarjeta;
+            const neto = bruto - (bruto * (totalComision / 100));
 
-            if(!item.cliente || !bruto) return alert("Completa los datos");
-
-            taxData.ingresos.push(item);
-            taxData.totalIng += neto;
+            taxData.ingresos.push({ cliente: document.getElementById('ing-cliente').value, neto: neto });
             save();
         }
 
         function addGasto() {
             const importe = parseFloat(document.getElementById('gas-importe').value);
-            const item = {
-                concepto: document.getElementById('gas-concepto').value,
-                fecha: document.getElementById('gas-fecha').value,
-                importe: importe
-            };
-
-            if(!item.concepto || !importe) return alert("Completa los datos");
-
-            taxData.gastos.push(item);
-            taxData.totalGas += importe;
+            taxData.gastos.push({ importe: importe });
             save();
         }
 
         function save() {
-            localStorage.setItem('rg_tax_v2', JSON.stringify(taxData));
+            localStorage.setItem('rg_tax_v3', JSON.stringify(taxData));
             updateUI();
-            alert("Operación registrada correctamente");
+            alert("Registrado correctamente");
         }
 
         function updateUI() {
-            document.getElementById('balance-total').innerText = (taxData.totalIng - taxData.totalGas).toFixed(2) + "€";
-            document.getElementById('res-ing').innerText = taxData.totalIng.toFixed(2) + "€";
-            document.getElementById('res-gas').innerText = taxData.totalGas.toFixed(2) + "€";
+            const totalIn = taxData.ingresos.reduce((acc, i) => acc + i.neto, 0);
+            const totalOut = taxData.gastos.reduce((acc, g) => acc + g.importe, 0);
+            document.getElementById('balance-total').innerText = (totalIn - totalOut).toFixed(2) + "€";
+            
+            // Cargar valores de config en los inputs
+            document.getElementById('cfg-booking').value = taxData.config.booking;
+            document.getElementById('cfg-airbnb').value = taxData.config.airbnb;
+            document.getElementById('cfg-tarjeta').value = taxData.config.tarjeta;
         }
 
         updateUI();

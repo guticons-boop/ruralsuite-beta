@@ -12,8 +12,10 @@
         .card { background: white; border-radius: 35px; padding: 25px; border: 1px solid #eee; }
         .input-mkt { width: 100%; padding: 15px; border-radius: 18px; background: #f3f4f6; border: 1px solid transparent; font-weight: 700; margin-top: 5px; outline: none; }
         .input-mkt:focus { border-color: #2563eb; background: #fff; }
-        #preview-img { width: 100%; height: 200px; object-fit: cover; border-radius: 25px; margin-top: 15px; display: none; } /* Oculto por defecto */
+        #preview-img { width: 100%; height: 200px; object-fit: cover; border-radius: 25px; margin-top: 15px; display: none; }
         .ai-btn { background: #1a1a1a; color: white; padding: 10px 15px; border-radius: 15px; font-weight: 800; font-size: 10px; display: flex; align-items: center; gap: 5px; }
+        .tab-button { padding: 12px 20px; border-radius: 20px; font-weight: 800; font-size: 10px; text-transform: uppercase; transition: 0.3s; }
+        .tab-active { background: #2563eb; color: white; }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto pb-32">
@@ -23,114 +25,95 @@
         <h1 class="italic-black text-2xl uppercase text-blue-600">Marketing</h1>
     </header>
 
-    <div class="card shadow-xl mb-8">
-        <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-[0.2em]">Creador de Campañas IA</h2>
+    <div class="flex justify-center mb-8 bg-gray-100 p-2 rounded-[25px]">
+        <button id="btn-prehechas" onclick="showSection('prehechas')" class="tab-button tab-active">Campañas Rápidas</button>
+        <button id="btn-generador" onclick="showSection('generador')" class="tab-button">Generador IA</button>
+    </div>
 
-        <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Imagen para tu campaña</label>
-        <div class="w-full py-6 border-2 border-dashed border-gray-200 rounded-[25px] flex flex-col items-center justify-center mt-1">
-            <div class="flex gap-3 mb-4">
-                <button onclick="document.getElementById('file-input').click()" class="ai-btn">
-                    <span>🖼️</span> Subir Imagen
-                    <input type="file" id="file-input" class="hidden" accept="image/*" onchange="previewFile()">
-                </button>
-                <button onclick="generateImageWithAI()" class="ai-btn">
-                    <span>✨</span> Generar con IA
-                </button>
+    <div id="section-prehechas">
+        <div class="card shadow-xl mb-8">
+            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-[0.2em]">Elige tu plantilla</h2>
+            
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-blue-100 transition" onclick="selectCampaign('navidad')">
+                    <span class="text-2xl">🎄</span>
+                    <div>
+                        <p class="font-black italic uppercase text-sm leading-none">Campaña de Navidad</p>
+                        <p class="text-[9px] font-medium text-gray-500">Ofertas de invierno y fin de año.</p>
+                    </div>
+                </div>
+                <div class="bg-red-50 p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-red-100 transition" onclick="selectCampaign('sanvalentin')">
+                    <span class="text-2xl">💖</span>
+                    <div>
+                        <p class="font-black italic uppercase text-sm leading-none">San Valentín Romántico</p>
+                        <p class="text-[9px] font-medium text-gray-500">Escapadas en pareja con encanto.</p>
+                    </div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-green-100 transition" onclick="selectCampaign('verano')">
+                    <span class="text-2xl">☀️</span>
+                    <div>
+                        <p class="font-black italic uppercase text-sm leading-none">Ofertas de Verano</p>
+                        <p class="text-[9px] font-medium text-gray-500">Piscina, sol y desconexión.</p>
+                    </div>
+                </div>
             </div>
-            <p class="text-[9px] font-bold text-gray-400 uppercase">O describe: "Puesta de sol en la sierra, pareja feliz..."</p>
-            <input type="text" id="ai-image-prompt" placeholder="Descripción para la IA (ej: 'pareja en casa rural con jacuzzi')" class="input-mkt w-[90%] mt-3 hidden">
-            <img id="preview-img" src="" alt="Vista previa de imagen AI">
-        </div>
-
-        <div class="mt-6">
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Título de la Oferta</label>
-            <input type="text" id="mkt-titulo" placeholder="Ej: Escapada Romántica -20% en febrero" class="input-mkt mb-4">
-
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Instrucciones para la IA (¿Qué quieres vender?)</label>
-            <textarea id="mkt-ia-prompt" placeholder="Ej: Crea un texto corto para WhatsApp promocionando un 15% de descuento para parejas en febrero en nuestra casa..." class="input-mkt h-24 mb-4"></textarea>
-
-            <button onclick="generarTextoConIA()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-[10px] mb-6 flex items-center justify-center gap-2">
-                <span>💬</span> Generar Texto con Inteligencia Artificial
-            </button>
-
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Resultado Final (Editable)</label>
-            <textarea id="mkt-resultado" class="input-mkt h-32 text-blue-600 italic"></textarea>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mt-6">
-            <button onclick="enviar('WhatsApp')" class="bg-green-500 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-green-100">Enviar WhatsApp</button>
-            <button onclick="enviar('Email')" class="bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-blue-100">Enviar Email</button>
+            <p class="text-[9px] font-black text-gray-400 uppercase mt-6 ml-2 italic">Pulsa para previsualizar y enviar.</p>
         </div>
     </div>
 
+    <div id="section-generador" class="hidden">
+        <div class="card shadow-xl mb-8">
+            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-[0.2em]">Generador de Campañas IA</h2>
+
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Imagen para tu campaña</label>
+            <div class="w-full py-6 border-2 border-dashed border-gray-200 rounded-[25px] flex flex-col items-center justify-center mt-1">
+                <div class="flex gap-3 mb-4">
+                    <button onclick="document.getElementById('file-input').click()" class="ai-btn">
+                        <span>🖼️</span> Subir Imagen
+                        <input type="file" id="file-input" class="hidden" accept="image/*" onchange="previewFile()">
+                    </button>
+                    <button onclick="generateImageWithAI()" class="ai-btn">
+                        <span>✨</span> Generar con IA
+                    </button>
+                </div>
+                <p class="text-[9px] font-bold text-gray-400 uppercase">O describe: "Puesta de sol en la sierra, pareja feliz..."</p>
+                <input type="text" id="ai-image-prompt" placeholder="Descripción para la IA (ej: 'pareja en casa rural con jacuzzi')" class="input-mkt w-[90%] mt-3 hidden">
+                <img id="preview-img" src="" alt="Vista previa de imagen AI">
+            </div>
+
+            <div class="mt-6">
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Título de la Oferta</label>
+                <input type="text" id="mkt-titulo" placeholder="Ej: Escapada Romántica -20% en febrero" class="input-mkt mb-4">
+
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Instrucciones para la IA (¿Qué quieres vender?)</label>
+                <textarea id="mkt-ia-prompt" placeholder="Ej: Crea un texto corto para WhatsApp promocionando un 15% de descuento para parejas en febrero en nuestra casa..." class="input-mkt h-24 mb-4"></textarea>
+
+                <button onclick="generarTextoConIA()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-[10px] mb-6 flex items-center justify-center gap-2">
+                    <span>💬</span> Generar Texto con Inteligencia Artificial
+                </button>
+
+                <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Resultado Final (Editable)</label>
+                <textarea id="mkt-resultado" class="input-mkt h-32 text-blue-600 italic"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mt-6">
+                <button onclick="enviar('WhatsApp')" class="bg-green-500 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-green-100">Enviar WhatsApp</button>
+                <button onclick="enviar('Email')" class="bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-blue-100">Enviar Email</button>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        // Previsualizar la imagen subida
-        function previewFile() {
-            const preview = document.getElementById('preview-img');
-            const file = document.getElementById('file-input').files[0];
-            const reader = new FileReader();
-
-            reader.onloadend = function () {
-                preview.src = reader.result;
-                preview.style.display = 'block';
-                document.getElementById('ai-image-prompt').classList.add('hidden'); // Oculta el input de AI si se sube imagen
-            }
-            if (file) { reader.readAsDataURL(file); } else { preview.style.display = 'none'; }
-        }
-
-        // Simular generación de imagen con IA
-        function generateImageWithAI() {
-            const promptInput = document.getElementById('ai-image-prompt');
-            promptInput.classList.remove('hidden'); // Muestra el input de AI
-            const prompt = promptInput.value;
-            const preview = document.getElementById('preview-img');
-
-            if (!prompt) {
-                alert("Por favor, describe la imagen que quieres generar.");
-                return;
-            }
-
-            preview.style.display = 'block';
-            preview.src = 'https://via.placeholder.com/400x200?text=Generando+imagen+IA...'; // Placeholder de carga
-
-            // Simulamos una llamada a un modelo de generación de imágenes
-            // En una app real, aquí harías una petición a un API de generación de imágenes
-            setTimeout(() => {
-                const imageUrls = [
-                    'https://images.unsplash.com/photo-1570129477026-66f851167b6a?auto=format&fit=crop&q=80&w=600', // Casa rural acogedora
-                    'https://images.unsplash.com/photo-1549514785-5b8d2e8e9e1c?auto=format&fit=crop&q=80&w=600', // Pareja en entorno romántico
-                    'https://images.unsplash.com/photo-1502672260266-de66fc525f48?auto=format&fit=crop&q=80&w=600', // Detalle de desayuno en la cama
-                ];
-                preview.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-                alert("Imagen generada con IA.");
-            }, 2000);
-        }
-
-        // Simulador de IA para texto (Para el prototipo)
-        function generarTextoConIA() {
-            const prompt = document.getElementById('mkt-ia-prompt').value;
-            const res = document.getElementById('mkt-resultado');
+        // Función para alternar entre secciones
+        function showSection(sectionId) {
+            document.getElementById('section-prehechas').classList.toggle('hidden', sectionId !== 'prehechas');
+            document.getElementById('section-generador').classList.toggle('hidden', sectionId !== 'generador');
             
-            if(!prompt) return alert("Dime qué quieres que escriba la IA.");
-
-            res.value = "Generando...";
-            
-            setTimeout(() => {
-                const textosSimulados = [
-                    "¡Hola! 🌿 ¿Buscas desconexión? En RuralGesto tenemos una oferta especial para ti. Usa el código VERANO26 y consigue un 15% de descuento en tu próxima estancia. ¡Te esperamos para crear momentos inolvidables!",
-                    "¡Escapada romántica a la vista! 💖 Sorprende a tu pareja con una estancia mágica en nuestra casa rural. Promoción exclusiva: botella de cava y late check-out. ¡Reserva ya!",
-                    "¿Piscina y relax? ☀️ ¡Claro que sí! Aprovecha nuestra oferta de primavera con un 10% de descuento en todas las reservas de abril. ¡Las plazas son limitadas!"
-                ];
-                res.value = textosSimulados[Math.floor(Math.random() * textosSimulados.length)];
-            }, 1500);
+            document.getElementById('btn-prehechas').classList.toggle('tab-active', sectionId === 'prehechas');
+            document.getElementById('btn-generador').classList.toggle('tab-active', sectionId === 'generador');
         }
 
-        function enviar(canal) {
-            const texto = document.getElementById('mkt-resultado').value;
-            const imagen = document.getElementById('preview-img').src;
-            if(!texto || !imagen || imagen.includes('placeholder')) return alert("Primero genera o escribe un mensaje y asegura que hay una imagen.");
-            alert(`Campaña multimedia lista para enviar por ${canal}. En la versión final, esto abriría tu lista de clientes y adjuntaría la imagen y el texto.`);
-        }
-    </script>
-</body>
-</html>
+        // Simular selección de campaña pre-hecha
+        function selectCampaign(type) {
+            alert(`Cargando plantilla para "${type.toUpperCase()}". En una

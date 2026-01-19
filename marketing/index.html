@@ -3,94 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Directo | RuralGesto</title>
+    <title>Marketing Hub | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #0f172a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .card-promo { transition: all 0.3s ease; border-radius: 40px; }
-        .card-promo:hover { transform: scale(1.02); border-color: #10b981; }
+        .campaign-card { transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; }
+        .campaign-card:hover { border-color: #10b981; transform: translateY(-5px); }
+        .campaign-card.active { border-color: #10b981; background-color: #f0fdf4; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
 
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
         <header class="flex justify-between items-center mb-10">
             <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
                 <i data-lucide="arrow-left" class="w-5 h-5 text-gray-400"></i>
             </button>
-            <h2 class="serif text-3xl italic text-emerald-900 font-bold">Marketing Directo</h2>
+            <h2 class="serif text-3xl italic text-emerald-900 font-bold">Marketing & IA</h2>
             <div class="w-12"></div>
         </header>
 
-        <section class="mb-12">
-            <div class="bg-white p-8 rounded-[50px] border border-gray-100 shadow-sm">
-                <p class="text-[10px] font-black uppercase tracking-widest text-emerald-800 mb-4 italic">Fideliza a tus huéspedes</p>
-                <h3 class="serif text-2xl mb-6">Enviar oferta por WhatsApp</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
                 
-                <div class="space-y-4">
-                    <input type="text" id="nombreCliente" placeholder="Nombre del cliente" class="w-full p-5 bg-gray-50 rounded-3xl border-none outline-none font-bold text-sm">
-                    <input type="tel" id="telCliente" placeholder="Teléfono (ej: 34600000000)" class="w-full p-5 bg-gray-50 rounded-3xl border-none outline-none font-bold text-sm">
+                <section class="bg-white p-8 rounded-[50px] border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="serif text-xl italic font-bold">Generador de Creatividades IA</h3>
+                    </div>
+                    <div class="flex gap-4 mb-6">
+                        <input type="text" id="ai-prompt" placeholder="Ej: Paisaje nevado con cabaña acogedora para Navidad..." class="flex-1 p-4 bg-gray-50 rounded-2xl border-none font-bold text-sm outline-none">
+                        <button onclick="generarImagenIA()" class="px-6 py-4 bg-purple-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg">Generar</button>
+                    </div>
+                    <div id="ai-placeholder" class="w-full aspect-video bg-gray-100 rounded-[35px] flex items-center justify-center border-2 border-dashed border-gray-200 overflow-hidden">
+                        <p class="text-gray-400 font-bold text-xs uppercase italic">La imagen generada aparecerá aquí</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="serif text-xl italic font-bold mb-6 text-emerald-900">Campañas Estratégicas</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div onclick="setCampana('Navidad')" class="campaign-card bg-white p-6 rounded-[40px] shadow-sm border border-gray-50 text-center" id="camp-Navidad">
+                            <i data-lucide="snowflake" class="w-8 h-8 mx-auto mb-3 text-blue-400"></i>
+                            <p class="font-black text-[10px] uppercase tracking-widest">Navidad</p>
+                        </div>
+                        <div onclick="setCampana('San Valentín')" class="campaign-card bg-white p-6 rounded-[40px] shadow-sm border border-gray-50 text-center" id="camp-San-Valentin">
+                            <i data-lucide="heart" class="w-8 h-8 mx-auto mb-3 text-rose-400"></i>
+                            <p class="font-black text-[10px] uppercase tracking-widest">San Valentín</p>
+                        </div>
+                        <div onclick="setCampana('Semana Santa')" class="campaign-card bg-white p-6 rounded-[40px] shadow-sm border border-gray-50 text-center" id="camp-Semana-Santa">
+                            <i data-lucide="sun" class="w-8 h-8 mx-auto mb-3 text-amber-400"></i>
+                            <p class="font-black text-[10px] uppercase tracking-widest">Semana Santa</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="bg-emerald-950 p-8 rounded-[50px] text-white shadow-2xl h-full">
+                    <h3 class="serif text-2xl italic mb-6">Lanzar Campaña</h3>
                     
-                    <label class="block text-[10px] font-black uppercase text-gray-400 ml-4 mt-6">Selecciona una oferta predefinida</label>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <button onclick="seleccionarOferta('Fidelidad', '10%')" class="card-promo p-6 bg-emerald-50 border border-emerald-100 text-left">
-                            <p class="font-black text-emerald-900 uppercase text-[10px]">Descuento Amigo</p>
-                            <p class="serif text-lg italic text-emerald-700">-10% en reserva directa</p>
-                        </button>
-                        <button onclick="seleccionarOferta('Temporada Baja', '15%')" class="card-promo p-6 bg-blue-50 border border-blue-100 text-left">
-                            <p class="font-black text-blue-900 uppercase text-[10px]">Escapada Relax</p>
-                            <p class="serif text-lg italic text-blue-700">15% dto. entre semana</p>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-emerald-400 mb-2 block">Audiencia</label>
+                            <div class="flex flex-col gap-2">
+                                <button onclick="setModoEnvio('individual')" id="btn-ind" class="p-4 bg-white/10 rounded-2xl border border-white/10 text-left font-bold text-xs hover:bg-white/20">
+                                    Personalizado (1 a 1)
+                                </button>
+                                <button onclick="setModoEnvio('masivo')" id="btn-mas" class="p-4 bg-emerald-500 rounded-2xl border border-emerald-400 text-left font-bold text-xs">
+                                    Masivo (Toda la base de datos)
+                                </button>
+                            </div>
+                            <p id="stats-audiencia" class="mt-4 text-[10px] text-emerald-300 font-bold italic">Detectados: 124 contactos en check-ins</p>
+                        </div>
+
+                        <div id="campo-individual" class="hidden">
+                            <input type="tel" id="tel-test" placeholder="Teléfono" class="w-full p-4 bg-white/5 rounded-2xl border border-white/10 text-sm font-bold outline-none">
+                        </div>
+
+                        <div class="bg-white/5 p-4 rounded-3xl border border-white/10">
+                            <p class="text-[9px] font-black uppercase text-emerald-400 mb-2 italic">Mensaje Automático</p>
+                            <p id="msg-preview" class="text-xs text-gray-300 italic">"¡Hola! Tenemos una oferta especial de Navidad para ti en RuralGesto..."</p>
+                        </div>
+
+                        <button onclick="ejecutarEnvio()" class="w-full py-6 bg-emerald-400 text-emerald-950 rounded-[35px] font-black uppercase text-[10px] tracking-[0.2em] shadow-xl hover:bg-white transition">
+                            Iniciar Envío
                         </button>
                     </div>
-                </div>
-
-                <div class="mt-8 p-6 bg-slate-900 rounded-[40px] text-white">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Vista previa del mensaje</p>
-                    <p id="previewMensaje" class="text-sm italic text-slate-300">"Hola [Nombre], nos encantó tenerte en nuestra casa rural. Queremos invitarte a volver con un descuento exclusivo del [X] reservando directamente..."</p>
-                </div>
-
-                <button onclick="enviarWhatsApp()" class="w-full mt-6 py-6 bg-emerald-500 text-white rounded-[35px] font-black uppercase text-xs tracking-[0.2em] shadow-xl flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
-                    <i data-lucide="message-circle"></i> Enviar a WhatsApp
-                </button>
+                </section>
             </div>
-        </section>
 
-        <section>
-            <h4 class="serif text-xl italic text-emerald-900 mb-6 font-bold">Últimos contactos</h4>
-            <div class="space-y-3">
-                <div class="bg-white p-6 rounded-[35px] border border-gray-50 flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-sm">Juan Pérez</p>
-                        <p class="text-[9px] text-gray-400 uppercase font-bold">Enviado hace 2 días</p>
-                    </div>
-                    <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[8px] font-black uppercase">Interesado</span>
-                </div>
-            </div>
-        </section>
+        </div>
     </div>
 
     <script>
         lucide.createIcons();
-        let descuentoSeleccionado = "10%";
+        let modoEnvio = 'masivo';
+        let campanaActual = 'Navidad';
 
-        function seleccionarOferta(tipo, valor) {
-            descuentoSeleccionado = valor;
-            const nombre = document.getElementById('nombreCliente').value || "amigo";
-            document.getElementById('previewMensaje').innerText = `Hola ${nombre}, nos encantó tenerte en nuestra casa rural. Queremos invitarte a volver con un descuento exclusivo del ${valor} reservando directamente con nosotros. ¿Te apetece una escapada?`;
+        function setCampana(nombre) {
+            campanaActual = nombre;
+            // Estética de selección
+            document.querySelectorAll('.campaign-card').forEach(c => c.classList.remove('active'));
+            document.getElementById('camp-' + nombre.replace(' ', '-')).classList.add('active');
+            
+            // Actualizar preview
+            document.getElementById('msg-preview').innerText = `¡Hola! Tenemos una oferta especial de ${nombre} para ti en RuralGesto. ¡Reserva directamente y obtén un 15% de descuento!`;
         }
 
-        function enviarWhatsApp() {
-            const nombre = document.getElementById('nombreCliente').value;
-            const tel = document.getElementById('telCliente').value;
-            if(!nombre || !tel) { alert("Pon el nombre y el teléfono, Toni"); return; }
-
-            const mensaje = `Hola ${nombre}, nos encantó tenerte en nuestra casa rural de RuralGesto. Queremos invitarte a volver con un descuento exclusivo del ${descuentoSeleccionado} reservando directamente por aquí. ¿Te apetece una escapada?`;
-            const url = `https://wa.me/${tel}?text=${encodeURIComponent(mensaje)}`;
-            window.open(url, '_blank');
+        function setModoEnvio(modo) {
+            modoEnvio = modo;
+            if(modo === 'individual') {
+                document.getElementById('campo-individual').classList.remove('hidden');
+                document.getElementById('btn-ind').classList.add('bg-emerald-500');
+                document.getElementById('btn-mas').classList.remove('bg-emerald-500');
+            } else {
+                document.getElementById('campo-individual').classList.add('hidden');
+                document.getElementById('btn-mas').classList.add('bg-emerald-500');
+                document.getElementById('btn-ind').classList.remove('bg-emerald-500');
+            }
         }
+
+        function generarImagenIA() {
+            const placeholder = document.getElementById('ai-placeholder');
+            const prompt = document.getElementById('ai-prompt').value;
+            if(!prompt) return alert("Escribe qué quieres que cree la IA, Toni.");
+
+            placeholder.innerHTML = '<div class="flex flex-col items-center gap-4"><div class="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div><p class="text-[10px] font-black uppercase tracking-widest text-emerald-600">IA de RuralGesto pensando...</p></div>';
+            
+            // Simulación de carga de IA
+            setTimeout(() => {
+                placeholder.innerHTML = `<img src="https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">`;
+            }, 2000);
+        }
+
+        function ejecutarEnvio() {
+            if(modoEnvio === 'masivo') {
+                alert("¡Iniciando envío masivo a 124 contactos! RuralGesto procesará las campañas por WhatsApp y Email en segundo plano.");
+            } else {
+                const tel = document.getElementById('tel-test').value;
+                if(!tel) return alert("Pon un teléfono para el envío individual.");
+                const msg = document.getElementById('msg-preview').innerText;
+                window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        }
+
+        // Por defecto
+        setCampana('Navidad');
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rural Gesto - Privado</title>
+    <title>Rural Gesto - Panel</title>
     <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/512/home.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,55 +11,66 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #fff; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .input-gesto { width: 100%; border: 1.5px solid #f2f2f2; border-radius: 20px; padding: 18px; margin-bottom: 12px; font-weight: bold; font-size: 16px; outline: none; }
-        #login-screen { position: fixed; inset: 0; background: white; z-index: 100; display: flex; flex-direction: column; justify-content: center; padding: 40px; }
-        .hidden { display: none !important; }
+        .app-btn { border-radius: 28px; padding: 20px; border: 1.5px solid #f2f2f2; display: flex; align-items: center; transition: 0.2s; text-decoration: none; color: black; }
+        .app-btn:active { transform: scale(0.95); background: #f9f9f9; }
+        .input-login { width: 100%; border: 1.5px solid #f2f2f2; border-radius: 20px; padding: 18px; margin-bottom: 12px; font-weight: bold; font-size: 16px; outline: none; }
     </style>
 </head>
 <body>
-
-    <div id="login-screen">
-        <h1 class="text-4xl italic-black uppercase mb-2">Rural Gesto</h1>
-        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-10 italic">Acceso: El Rinconcito</p>
-        <input type="text" id="user" placeholder="Usuario" class="input-gesto" autocapitalize="none">
-        <input type="password" id="pass" placeholder="Contraseña" class="input-gesto">
-        <button onclick="check()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic text-lg mt-4">ENTRAR</button>
-        <p id="err" class="text-red-500 text-[10px] font-bold uppercase mt-4 text-center hidden">Incorrecto</p>
+    <div id="login-screen" class="fixed inset-0 bg-white z-50 flex flex-col justify-center p-10">
+        <h1 class="text-4xl italic-black uppercase mb-2">RG PRO.</h1>
+        <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-10 italic">El Rinconcito Matarraña</p>
+        <input type="text" id="u" placeholder="Usuario" class="input-login" autocapitalize="none">
+        <input type="password" id="p" placeholder="Contraseña" class="input-login">
+        <button onclick="check()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic text-lg mt-4 shadow-xl">ENTRAR</button>
+        <p id="err" class="text-red-500 text-[10px] font-black uppercase mt-4 text-center hidden">Credenciales Incorrectos</p>
     </div>
 
-    <div id="content" class="p-6 hidden">
-        <header class="mb-10 flex justify-between items-center">
-            <h1 class="text-3xl italic-black uppercase">Rural Gesto</h1>
-            <button onclick="localStorage.removeItem('rg_v'); location.reload();" class="text-[10px] font-black text-gray-300 italic uppercase">Salir</button>
+    <div id="main" class="p-6 hidden">
+        <header class="mb-10 flex justify-between items-start">
+            <div>
+                <h1 class="text-3xl italic-black uppercase">Rural Gesto</h1>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1 italic">Panel Administrador</p>
+            </div>
+            <button onclick="localStorage.removeItem('rg_auth'); location.reload();" class="text-[10px] font-black text-gray-300 italic uppercase">Salir</button>
         </header>
+
         <div class="grid grid-cols-1 gap-4">
-            <a href="/checkin/" class="border-2 border-black rounded-[32px] p-6 flex items-center justify-between">
-                <div><h3 class="italic-black text-xl">Check-in Pro</h3><p class="text-xs text-gray-400 italic">Viajeros</p></div>
-                <span class="text-3xl">🆔</span>
+            <a href="/checkin/" class="app-btn border-black">
+                <span class="text-2xl mr-4">🆔</span>
+                <div><h3 class="italic-black text-lg text-black">Check-in Pro</h3><p class="text-[9px] text-gray-400 font-bold uppercase italic">Registro Viajeros</p></div>
             </a>
-            <a href="/tax/" class="border border-gray-100 rounded-[32px] p-6 flex items-center justify-between">
-                <div><h3 class="italic-black text-xl">Tax Assistant</h3><p class="text-xs text-gray-400 italic">Contabilidad</p></div>
-                <span class="text-3xl">📊</span>
+            <a href="/calendar/" class="app-btn">
+                <span class="text-2xl mr-4">📅</span>
+                <div><h3 class="italic-black text-lg text-black">Calendario</h3><p class="text-[9px] text-gray-400 font-bold uppercase italic">Ocupación Real</p></div>
+            </a>
+            <a href="/marketing/" class="app-btn">
+                <span class="text-2xl mr-4">✉️</span>
+                <div><h3 class="italic-black text-lg text-black">Marketing CRM</h3><p class="text-[9px] text-blue-500 font-bold uppercase italic">Fidelización</p></div>
+            </a>
+            <a href="/tax/" class="app-btn">
+                <span class="text-2xl mr-4">📊</span>
+                <div><h3 class="italic-black text-lg text-black">Tax Assistant</h3><p class="text-[9px] text-gray-400 font-bold uppercase italic">Contabilidad</p></div>
             </a>
         </div>
     </div>
 
     <script>
         function check() {
-            // Usuario: elrinconcito | Clave: 12345
-            if(document.getElementById('user').value.toLowerCase().trim() === 'elrinconcito' && 
-               document.getElementById('pass').value.trim() === '12345') {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-                localStorage.setItem('rg_v', '1');
+            if(document.getElementById('u').value.trim().toLowerCase() === 'elrinconcito' && 
+               document.getElementById('p').value.trim() === '12345') {
+                localStorage.setItem('rg_auth', 'true');
+                show();
             } else {
                 document.getElementById('err').classList.remove('hidden');
+                setTimeout(()=> document.getElementById('err').classList.add('hidden'), 2000);
             }
         }
-        if(localStorage.getItem('rg_v') === '1') {
+        function show() {
             document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('content').classList.remove('hidden');
+            document.getElementById('main').classList.remove('hidden');
         }
+        if(localStorage.getItem('rg_auth') === 'true') show();
     </script>
 </body>
 </html>

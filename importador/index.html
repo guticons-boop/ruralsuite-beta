@@ -1,150 +1,64 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor Reservas | RuralGesto</title>
-    <script src="https://cdn.sheetjs.com/xlsx-0.19.2/package/dist/xlsx.full.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
-        .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #be123c; color: white; }
-    </style>
-</head>
-<body class="p-4 md:p-8 pb-32">
-    <div class="max-w-4xl mx-auto">
-        <header class="flex items-center gap-4 mb-8">
-            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-            <div>
-                <h2 class="serif text-2xl italic text-rose-950 font-bold italic">RuralGesto Engine</h2>
-                <p class="text-[9px] font-black uppercase tracking-widest text-rose-600">Gestión de 860+ Registros</p>
-            </div>
-        </header>
+<script>
+    // ... (Mantén el resto del código igual, solo actualizamos la función de procesado)
 
-        <div class="grid grid-cols-3 gap-2 bg-rose-50 p-1.5 rounded-[30px] mb-8 border border-rose-100">
-            <button onclick="switchTab('checkins')" id="tab-checkins" class="tab-btn active py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest">Check-ins</button>
-            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-rose-900">Clientes</button>
-            <button onclick="switchTab('import')" id="tab-import" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-rose-900 italic">Importar Excel</button>
-        </div>
-
-        <div id="view-checkins" class="space-y-4">
-            <div id="lista-reservas" class="space-y-3">
-                <p class="text-center text-slate-400 text-xs py-10">No hay reservas cargadas. Ve a la pestaña Importar.</p>
-            </div>
-        </div>
-
-        <div id="view-clientes" class="hidden">
-            <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 text-[9px] font-black uppercase text-slate-400">
-                        <tr><th class="p-4">Nombre</th><th class="p-4">Teléfono</th></tr>
-                    </thead>
-                    <tbody id="tabla-clientes-body">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="view-import" class="hidden space-y-6">
-            <div id="drop-zone" class="bg-white border-2 border-dashed border-slate-200 rounded-[40px] p-16 text-center relative">
-                <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" accept=".xlsx, .xls">
-                <div id="status-initial">
-                    <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-rose-500 mb-4"></i>
-                    <p class="serif text-xl italic font-bold italic">Sube tus 860 reservas</p>
-                </div>
-                <div id="status-success" class="hidden text-emerald-600">
-                    <i data-lucide="check-circle" class="w-12 h-12 mx-auto mb-4"></i>
-                    <p class="serif text-xl italic font-bold italic">¡Datos Listos!</p>
-                </div>
-            </div>
-            <button id="btn-procesar" onclick="procesarYGuardar()" class="hidden w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest">
-                Guardar Reservas en Base de Datos
-            </button>
-        </div>
-    </div>
-
-    <script>
-        lucide.createIcons();
-        let datosTemporales = [];
-
-        function switchTab(tab) {
-            document.querySelectorAll('#view-checkins, #view-clientes, #view-import').forEach(v => v.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-white'));
-            document.getElementById('view-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).classList.add('active');
-            if(tab === 'checkins' || tab === 'clientes') renderizarDatos();
-        }
-
-        document.getElementById('file-input').addEventListener('change', function(e) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                datosTemporales = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                
-                document.getElementById('status-initial').classList.add('hidden');
-                document.getElementById('status-success').classList.remove('hidden');
-                document.getElementById('btn-procesar').classList.remove('hidden');
-                alert(datosTemporales.length + " reservas detectadas. Pulsa el botón negro para guardar.");
+    function procesarYGuardar() {
+        const datosFinales = datosTemporales.map(r => {
+            // Unimos NOMBRE + APELLIDO 1 de tu Excel
+            const nombreCompleto = `${r['NOMBRE'] || ''} ${r['APELLIDO 1'] || ''}`.trim();
+            
+            // Mapeo según la foto que me has pasado
+            return {
+                cliente: nombreCompleto || 'Cliente Sin Nombre',
+                // Buscamos la columna de email (parece que es la que tiene la @)
+                email: r['yolandasan'] || r['email'] || 'Sin Email', 
+                // Buscamos la columna del teléfono (la que empieza por 6 o 34)
+                movil: r['686586692'] || r['TELEFONO'] || '000000000',
+                // Fecha de nacimiento para marketing de cumpleaños
+                nacimiento: r['25/05/1995'] || r['FECHA NACIMIENTO'] || '',
+                // Fecha de entrada
+                fechaEntrada: r['06/12/2024'] || r['ENTRADA'] || '',
+                apartamento: r['El Rinconcit'] || 'Apartamento',
+                localizador: 'RG-' + Math.floor(1000 + Math.random() * 9000)
             };
-            reader.readAsArrayBuffer(e.target.files[0]);
         });
+        
+        localStorage.setItem('reservas_ruralgesto', JSON.stringify(datosFinales));
+        alert("¡Éxito! Se han procesado los nombres, emails, teléfonos y fechas de nacimiento.");
+        switchTab('checkins');
+    }
 
-        function procesarYGuardar() {
-            // Generar localizadores si no existen
-            const datosFinales = datosTemporales.map(r => ({
-                ...r,
-                localizador: r.Localizador || 'RG-' + Math.floor(1000 + Math.random() * 9000),
-                cliente: r.Nombre || r.Cliente || 'Cliente Anonimo',
-                apartamento: r.Apartamento || 'Sin asignar',
-                movil: r.Movil || r.Telefono || '000000000'
-            }));
+    function renderizarDatos() {
+        const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
+        const lista = document.getElementById('lista-reservas');
+        const tablaClientes = document.getElementById('tabla-clientes-body');
+        
+        lista.innerHTML = '';
+        tablaClientes.innerHTML = '';
+
+        data.forEach(reserva => {
+            // Render en Check-ins
+            lista.innerHTML += `
+                <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800">${reserva.cliente}</h4>
+                        <p class="text-[9px] font-black text-rose-600 uppercase italic">${reserva.apartamento} • Entra: ${reserva.fechaEntrada}</p>
+                    </div>
+                    <button onclick="enviarWA('${reserva.movil}', '${reserva.apartamento}', '${reserva.localizador}')" class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>`;
             
-            localStorage.setItem('reservas_ruralgesto', JSON.stringify(datosFinales));
-            alert("¡Base de datos actualizada con éxito!");
-            switchTab('checkins');
-        }
-
-        function renderizarDatos() {
-            const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
-            const lista = document.getElementById('lista-reservas');
-            const tablaClientes = document.getElementById('tabla-clientes-body');
-            
-            lista.innerHTML = '';
-            tablaClientes.innerHTML = '';
-
-            if(data.length === 0) return;
-
-            data.forEach(reserva => {
-                // Render Check-ins
-                lista.innerHTML += `
-                    <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm flex justify-between items-center">
-                        <div>
-                            <h4 class="font-bold text-sm">${reserva.cliente}</h4>
-                            <p class="text-[9px] font-black text-rose-600 uppercase italic">${reserva.apartamento} • LOC: ${reserva.localizador}</p>
-                        </div>
-                        <button onclick="enviarWA('${reserva.movil}', '${reserva.apartamento}', '${reserva.localizador}')" class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
-                    </div>`;
-                
-                // Render Clientes
-                tablaClientes.innerHTML += `
-                    <tr class="border-b border-slate-50">
-                        <td class="p-4 font-bold text-slate-700">${reserva.cliente}</td>
-                        <td class="p-4 font-mono text-slate-500">${reserva.movil}</td>
-                    </tr>`;
-            });
-            lucide.createIcons();
-        }
-
-        function enviarWA(movil, apto, loc) {
-            const msg = `Hola! Tu check-in para ${apto} (Localizador: ${loc}) está listo aquí: https://ruralgesto.com/checkin`;
-            window.open(`https://wa.me/${movil}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        // Cargar al inicio
-        renderizarDatos();
-    </script>
-</body>
-</html>
+            // Render en Base de Datos de Clientes (con Fecha de Nacimiento)
+            tablaClientes.innerHTML += `
+                <tr class="border-b border-slate-50">
+                    <td class="p-4">
+                        <p class="font-bold text-slate-700">${reserva.cliente}</p>
+                        <p class="text-[8px] text-slate-400">${reserva.email}</p>
+                    </td>
+                    <td class="p-4 font-mono text-slate-500">${reserva.movil}</td>
+                    <td class="p-4 text-[10px] text-rose-600 font-bold italic">${reserva.nacimiento}</td>
+                </tr>`;
+        });
+        lucide.createIcons();
+    }
+</script>

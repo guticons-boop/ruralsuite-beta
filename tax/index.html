@@ -67,3 +67,113 @@
                     <input type="text" id="concepto" placeholder="Huésped o Gasto..." class="flex-1 p-4 bg-slate-50 rounded-2xl outline-none text-sm font-medium">
                     <input type="number" id="importe" placeholder="€" class="w-24 p-4 bg-slate-50 rounded-2xl outline-none text-sm font-black text-rose-600">
                     <button onclick="addData()" id="btn-add" class="p-4 bg-emerald-600 text-white rounded-2xl shadow-lg">
+                        <i data-lucide="plus"></i>
+                    </button>
+                </div>
+
+                <div id="lista-fiscal" class="space-y-3 max-h-[350px] overflow-y-auto pr-2"></div>
+
+                <div id="panel-renta" class="hidden">
+                    <div class="bg-slate-900 p-10 rounded-[45px] text-white shadow-2xl relative overflow-hidden">
+                        <h4 class="serif text-2xl italic font-bold mb-8">Borrador Declaración 2026</h4>
+                        <div class="space-y-5 text-[11px] font-black uppercase tracking-[0.2em]">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                <span class="opacity-50">Ingresos Brutos</span>
+                                <span id="r-bruto">0,00€</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-3 text-rose-400">
+                                <span>Gastos Deducibles</span>
+                                <span id="r-gastos">0,00€</span>
+                            </div>
+                            <div id="box-iva" class="flex justify-between items-center border-b border-slate-800 pb-3 text-blue-400">
+                                <span>IVA Devengado</span>
+                                <span id="r-iva">0,00€</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-4 text-emerald-400">
+                                <span class="text-sm">Rendimiento Neto</span>
+                                <span id="r-neto" class="text-lg">0,00€</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'in';
+        let fiscalDB = JSON.parse(localStorage.getItem('rg_fiscal_pata_negra_v2') || '{"in":[], "ex":[]}');
+        let myChart;
+
+        function changeTab(t) {
+            currentTab = t;
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('tab-active', 'text-slate-400'));
+            document.getElementById('t-'+t).classList.add('tab-active');
+            document.getElementById('panel-input').classList.toggle('hidden', t === 'tax');
+            document.getElementById('lista-fiscal').classList.toggle('hidden', t === 'tax');
+            document.getElementById('panel-renta').classList.toggle('hidden', t !== 'tax');
+            document.getElementById('btn-add').className = t === 'in' ? 'p-4 bg-emerald-600 text-white rounded-2xl shadow-lg' : 'p-4 bg-rose-600 text-white rounded-2xl shadow-lg';
+            render();
+        }
+
+        function addData() {
+            const c = document.getElementById('concepto').value;
+            const i = parseFloat(document.getElementById('importe').value);
+            if(!c || isNaN(i)) return;
+
+            fiscalDB[currentTab].push({ c, i, m: new Date().getMonth(), f: new Date().toLocaleDateString() });
+            localStorage.setItem('rg_fiscal_pata_negra_v2', JSON.stringify(fiscalDB));
+            document.getElementById('concepto').value = '';
+            document.getElementById('importe').value = '';
+            render();
+        }
+
+        function render() {
+            const list = document.getElementById('lista-fiscal');
+            const filtro = document.getElementById('filtro-mes').value;
+            list.innerHTML = '';
+            let totalIn = 0; let totalEx = 0;
+
+            fiscalDB.in.forEach(item => { if(filtro === 'all' || item.m == filtro) { totalIn += item.i; if(currentTab === 'in') list.innerHTML += itemHtml(item, 'emerald'); } });
+            fiscalDB.ex.forEach(item => { if(filtro === 'all' || item.m == filtro) { totalEx += item.i; if(currentTab === 'ex') list.innerHTML += itemHtml(item, 'rose'); } });
+
+            const ivaRate = parseFloat(document.getElementById('regimen-iva').value);
+            const ivaCalculado = totalIn * ivaRate;
+            const netoFinal = totalIn - totalEx - ivaCalculado;
+
+            document.getElementById('txt-neto').innerText = netoFinal.toFixed(2) + '€';
+            document.getElementById('r-bruto').innerText = totalIn.toFixed(2) + '€';
+            document.getElementById('r-gastos').innerText = totalEx.toFixed(2) + '€';
+            document.getElementById('r-iva').innerText = ivaCalculado.toFixed(2) + '€';
+            document.getElementById('r-neto').innerText = netoFinal.toFixed(2) + '€';
+            document.getElementById('box-iva').classList.toggle('hidden', ivaRate === 0);
+
+            updateChart(totalIn, totalEx, ivaCalculado);
+            lucide.createIcons();
+        }
+
+        function itemHtml(item, color) {
+            return `<div class="bg-white p-5 rounded-3xl border border-slate-50 flex justify-between items-center shadow-sm">
+                        <div><p class="text-[9px] font-black uppercase text-slate-300 italic">${item.f}</p><h4 class="font-bold text-slate-800 text-sm">${item.c}</h4></div>
+                        <span class="font-black text-lg text-${color}-600">${item.i.toFixed(2)}€</span>
+                    </div>`;
+        }
+
+        function updateChart(i, e, v) {
+            const ctx = document.getElementById('chartFiscal').getContext('2d');
+            if(myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Ingresos', 'Gastos', 'IVA'],
+                    datasets: [{ data: [i, e, v], backgroundColor: ['#10b981', '#f43f5e', '#3b82f6'], borderWidth: 0 }]
+                },
+                options: { cutout: '85%', plugins: { legend: { display: false } } }
+            });
+        }
+
+        function enviarAlGestor() { alert("✅ Informe de RuralGesto generado y enviado al gestor."); }
+        window.onload = () => { changeTab('in'); lucide.createIcons(); };
+    </script>
+</body>
+</html>

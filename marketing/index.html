@@ -30,105 +30,26 @@
     </div>
 
     <div id="view-pre" class="space-y-4">
-        <div onclick="usarPlantilla('Navidad', '🎄', 'Casa rural nevada con chimenea acogedora')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+        <div onclick="usarPlantilla('Navidad', '🎄', 'Casa rural nevada con chimenea acogedora', '¡Feliz Navidad! Disfruta de la magia del invierno en nuestra casa rural. ¡Reserva ahora y vive unos días inolvidables con descuento!', 'https://images.unsplash.com/photo-1570129477026-66f851167b6a?auto=format&fit=crop&q=80&w=600')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
             <span class="text-3xl">🎄</span>
             <div><p class="font-black italic uppercase text-sm">Campaña Navidad</p><p class="text-[9px] text-gray-400">Ofertas de invierno</p></div>
         </div>
-        <div onclick="usarPlantilla('Verano', '☀️', 'Piscina cristalina en entorno rural con sol')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+        <div onclick="usarPlantilla('Verano', '☀️', 'Piscina cristalina en entorno rural con sol', '¡Es tiempo de verano! Relájate en nuestra piscina y desconecta en plena naturaleza. ¡Ofertas especiales por tiempo limitado!', 'https://images.unsplash.com/photo-1549514785-5b8d2e8e9e1c?auto=format&fit=crop&q=80&w=600')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
             <span class="text-3xl">☀️</span>
             <div><p class="font-black italic uppercase text-sm">Especial Verano</p><p class="text-[9px] text-gray-400">Piscina y desconexión</p></div>
         </div>
-        <div onclick="usarPlantilla('Escapada', '💖', 'Cena romántica a la luz de las velas')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+        <div onclick="usarPlantilla('San Valentín', '💖', 'Cena romántica a la luz de las velas', '¡Celebra el amor! Escapada romántica para dos en San Valentín. Incluye cena especial y detalles sorpresa. ¡Reserva ya!', 'https://images.unsplash.com/photo-1502672260266-de66fc525f48?auto=format&fit=crop&q=80&w=600')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
             <span class="text-3xl">💖</span>
             <div><p class="font-black italic uppercase text-sm">San Valentín</p><p class="text-[9px] text-gray-400">Parejas y relax</p></div>
         </div>
-    </div>
-
-    <div id="view-ia" class="hidden">
-        <div class="card shadow-xl">
-            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-widest">Editor de Campaña</h2>
-
-            <div class="mb-6">
-                <div class="flex gap-2 mb-4">
-                    <button onclick="document.getElementById('file-input').click()" class="flex-1 bg-slate-100 p-3 rounded-xl text-[9px] font-black uppercase">📁 Subir Foto</button>
-                    <button onclick="toggleAIPrompt()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl text-[9px] font-black uppercase italic">✨ Crear con IA</button>
-                </div>
-                <input type="file" id="file-input" class="hidden" onchange="previewImg(event)">
-                <div id="ia-prompt-box" class="hidden mb-4">
-                    <input type="text" id="ai-desc" placeholder="Describe la foto (ej: Desayuno rústico en terraza)" class="input-mkt">
-                    <button onclick="generarImagenIA()" class="w-full bg-black text-white p-3 mt-2 rounded-xl text-[9px] font-black uppercase italic">Generar Imagen Ahora</button>
-                </div>
-                <img id="preview-img" src="">
-            </div>
-
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Título</label>
-            <input type="text" id="mkt-titulo" class="input-mkt mb-4">
-
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Instrucciones para Texto IA</label>
-            <textarea id="mkt-instr" placeholder="¿Qué quieres que diga el mensaje?" class="input-mkt h-20 mb-4"></textarea>
-            
-            <button onclick="generarTextoIA()" class="w-full bg-blue-100 text-blue-600 p-4 rounded-2xl font-black italic uppercase text-[10px] mb-6">💬 Redactar con IA</button>
-
-            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Mensaje Final</label>
-            <textarea id="mkt-final" class="input-mkt h-32 text-blue-700 italic border-blue-100 bg-blue-50/30"></textarea>
-
-            <div class="grid grid-cols-2 gap-3 mt-6">
-                <button onclick="enviar('WhatsApp')" class="bg-green-500 text-white p-4 rounded-2xl font-black italic uppercase text-xs">WhatsApp</button>
-                <button onclick="enviar('Email')" class="bg-slate-900 text-white p-4 rounded-2xl font-black italic uppercase text-xs">Email</button>
-            </div>
+        <div onclick="usarPlantilla('Escapada Rural', '🏞️', 'Familia haciendo senderismo en la montaña', '¡Aventura en la naturaleza! Descubre las rutas y paisajes de nuestra sierra. Ideal para familias y amantes del aire libre. ¡Planifica tu escapada!', 'https://images.unsplash.com/photo-1502672260266-de66fc525f48?auto=format&fit=crop&q=80&w=600')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+            <span class="text-3xl">🏞️</span>
+            <div><p class="font-black italic uppercase text-sm">Escapada Rural</p><p class="text-[9px] text-gray-400">Aventura y naturaleza</p></div>
         </div>
-    </div>
-
-    <script>
-        function switchMode(mode) {
-            document.getElementById('view-pre').classList.toggle('hidden', mode === 'ia');
-            document.getElementById('view-ia').classList.toggle('hidden', mode === 'pre');
-            document.getElementById('tab1').classList.toggle('active-tab', mode === 'pre');
-            document.getElementById('tab2').classList.toggle('active-tab', mode === 'ia');
-        }
-
-        function toggleAIPrompt() {
-            document.getElementById('ia-prompt-box').classList.toggle('hidden');
-        }
-
-        function previewImg(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = document.getElementById('preview-img');
-                img.src = event.target.result;
-                img.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function generarImagenIA() {
-            const desc = document.getElementById('ai-desc').value;
-            if(!desc) return alert("Escribe una descripción");
-            const img = document.getElementById('preview-img');
-            img.style.display = 'block';
-            img.src = "https://images.unsplash.com/photo-1510797215324-95aa89f43c33?q=80&w=1000&auto=format&fit=crop"; // Simulación
-            alert("Imagen generada basada en: " + desc);
-        }
-
-        function usarPlantilla(nombre, icono, descIA) {
-            switchMode('ia');
-            document.getElementById('mkt-titulo').value = "Oferta " + nombre;
-            document.getElementById('ai-desc').value = descIA;
-            document.getElementById('mkt-instr').value = "Crea un mensaje para " + nombre + " muy atractivo.";
-            generarImagenIA();
-        }
-
-        function generarTextoIA() {
-            const instr = document.getElementById('mkt-instr').value;
-            if(!instr) return alert("Dime qué quieres que ponga");
-            document.getElementById('mkt-final').value = "¡Hola! 🌿 Tenemos una noticia increíble: " + instr + ". ¡Reserva ahora y vive la experiencia RuralGesto!";
-        }
-
-        function enviar(canal) {
-            alert("Enviando campaña por " + canal);
-        }
-    </script>
-</body>
-</html>
+        <div onclick="usarPlantilla('Oferta Última Hora', '⏰', 'Interior de cabaña acogedora con chimenea', '¡No te lo pienses más! Oferta de última hora con un descuento increíble. ¡Disponibilidad limitada, reserva antes de que se agote!', 'https://images.unsplash.com/photo-1570129477026-66f851167b6a?auto=format&fit=crop&q=80&w=600')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition">
+            <span class="text-3xl">⏰</span>
+            <div><p class="font-black italic uppercase text-sm">Última Hora</p><p class="text-[9px] text-gray-400">Descuentos Flash</p></div>
+        </div>
+        <div onclick="usarPlantilla('Nueva Campaña', '⭐', '', '', '')" class="card flex items-center gap-4 cursor-pointer hover:scale-[1.02] transition bg-blue-50 border-blue-200">
+            <span class="text-3xl">⭐</span>
+            <div><p class="font-black italic uppercase text-sm text-blue

@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing & IA | RuralGesto</title>
+    <title>Marketing Hub | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #0f172a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .campaign-card { transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; }
-        .campaign-card:hover { border-color: #10b981; transform: translateY(-3px); }
-        .campaign-card.active { border-color: #10b981; background-color: #f0fdf4; }
-        .tab-active { background-color: #065f46; color: white; }
+        .campana-card { cursor: pointer; transition: all 0.3s ease; overflow: hidden; border: 3px solid transparent; }
+        .campana-card.active { border-color: #10b981; transform: scale(1.02); shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .btn-canal.active { background-color: #059669 !important; color: white !important; }
+        .btn-audiencia.active { background-color: #10b981 !important; color: white !important; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
 
     <div class="max-w-6xl mx-auto">
         <header class="flex justify-between items-center mb-10">
-            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
+            <button onclick="window.location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100">
                 <i data-lucide="arrow-left" class="w-5 h-5 text-gray-400"></i>
             </button>
-            <h2 class="serif text-3xl italic text-emerald-900 font-bold">Marketing Inteligente</h2>
+            <h2 class="serif text-3xl italic text-emerald-900 font-bold text-center flex-1">Marketing RuralGesto</h2>
             <div class="w-12"></div>
         </header>
 
@@ -31,131 +31,132 @@
             
             <div class="lg:col-span-7 space-y-8">
                 
-                <section class="bg-white p-8 rounded-[50px] border border-gray-100 shadow-sm">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
-                            <i data-lucide="sparkles" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <h3 class="serif text-xl italic font-bold">Generador de Imágenes IA</h3>
-                            <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Motor de renderizado RuralGesto v2.0</p>
-                        </div>
+                <section class="bg-white p-8 rounded-[50px] shadow-sm border border-gray-100">
+                    <h3 class="serif text-xl mb-6 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="text-purple-500"></i> Generador de Imagen IA
+                    </h3>
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="ai-prompt" placeholder="Ej: Cena romántica con velas..." class="flex-1 p-4 bg-gray-50 rounded-2xl outline-none border-none font-bold text-sm">
+                        <button onclick="generarImagen()" class="bg-purple-600 text-white px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest">Crear</button>
                     </div>
-                    
-                    <div class="flex gap-3 mb-6">
-                        <input type="text" id="ai-prompt" placeholder="Ej: Cena romántica para dos, velas, ambiente acogedor..." class="flex-1 p-5 bg-gray-50 rounded-3xl border-none font-bold text-sm outline-none focus:ring-2 focus:ring-purple-200">
-                        <button onclick="generarImagenIA()" class="px-8 py-5 bg-purple-600 text-white rounded-3xl font-black text-[10px] uppercase tracking-widest shadow-xl hover:bg-purple-700 transition">Generar</button>
-                    </div>
-
-                    <div id="ai-placeholder" class="w-full aspect-[16/9] bg-slate-100 rounded-[40px] flex items-center justify-center border-2 border-dashed border-gray-200 overflow-hidden relative">
-                        <div id="ai-loading" class="hidden flex flex-col items-center gap-4">
-                            <div class="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                            <p class="text-[10px] font-black uppercase text-purple-600 animate-pulse">Analizando composición...</p>
-                        </div>
-                        <p id="ai-text" class="text-gray-400 font-bold text-xs uppercase italic">Escribe tu idea para crear el visual de la campaña</p>
+                    <div id="ai-display" class="w-full aspect-video bg-slate-100 rounded-[35px] flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-200">
+                        <p id="ai-status" class="text-gray-400 font-bold text-[10px] uppercase">Escribe tu idea arriba</p>
                     </div>
                 </section>
 
                 <section>
-                    <h3 class="serif text-xl italic font-bold mb-6 text-emerald-900">Plantillas de Campaña</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div onclick="setCampana('Navidad', 'snowflake')" class="campaign-card bg-white p-6 rounded-[35px] shadow-sm text-center" id="camp-Navidad">
-                            <i data-lucide="snowflake" class="w-6 h-6 mx-auto mb-2 text-blue-400"></i>
-                            <p class="font-black text-[9px] uppercase">Navidad</p>
+                    <h3 class="serif text-xl mb-6">Plantillas de Temporada</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div onclick="seleccionarCampana('Navidad')" id="card-Navidad" class="campana-card active bg-white rounded-[35px] shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=400&q=80" class="w-full h-24 object-cover">
+                            <div class="p-4 text-center font-black text-[10px] uppercase">Navidad</div>
                         </div>
-                        <div onclick="setCampana('San Valentín', 'heart')" class="campaign-card bg-white p-6 rounded-[35px] shadow-sm text-center" id="camp-San-Valentin">
-                            <i data-lucide="heart" class="w-6 h-6 mx-auto mb-2 text-rose-400"></i>
-                            <p class="font-black text-[9px] uppercase">San Valentín</p>
+                        <div onclick="seleccionarCampana('San Valentín')" id="card-San-Valentin" class="campana-card bg-white rounded-[35px] shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80" class="w-full h-24 object-cover">
+                            <div class="p-4 text-center font-black text-[10px] uppercase">San Valentín</div>
                         </div>
-                        <div onclick="setCampana('Semana Santa', 'sun')" class="campaign-card bg-white p-6 rounded-[35px] shadow-sm text-center" id="camp-Semana-Santa">
-                            <i data-lucide="sun" class="w-6 h-6 mx-auto mb-2 text-amber-400"></i>
-                            <p class="font-black text-[9px] uppercase">S. Santa</p>
+                        <div onclick="seleccionarCampana('Semana Santa')" id="card-Semana-Santa" class="campana-card bg-white rounded-[35px] shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=400&q=80" class="w-full h-24 object-cover">
+                            <div class="p-4 text-center font-black text-[10px] uppercase">Semana Santa</div>
                         </div>
-                        <div onclick="setCampana('Personalizada', 'plus')" class="campaign-card bg-emerald-50 p-6 rounded-[35px] shadow-sm text-center border-dashed border-emerald-200" id="camp-Personalizada">
-                            <i data-lucide="plus" class="w-6 h-6 mx-auto mb-2 text-emerald-600"></i>
-                            <p class="font-black text-[9px] uppercase">Nueva</p>
+                        <div onclick="seleccionarCampana('Personalizada')" id="card-Personalizada" class="campana-card bg-emerald-50 rounded-[35px] shadow-sm flex flex-col items-center justify-center border-dashed border-emerald-200">
+                            <i data-lucide="plus" class="mb-2 text-emerald-600"></i>
+                            <div class="p-4 text-center font-black text-[10px] uppercase text-emerald-600">Nueva Campaña</div>
                         </div>
                     </div>
                 </section>
             </div>
 
             <div class="lg:col-span-5">
-                <section class="bg-emerald-950 p-10 rounded-[60px] text-white shadow-2xl h-full sticky top-8">
-                    <h3 class="serif text-3xl italic mb-8">Lanzar Campaña</h3>
+                <div class="bg-emerald-950 p-10 rounded-[60px] text-white shadow-2xl space-y-8 sticky top-4">
+                    <h3 class="serif text-2xl italic">Lanzar Campaña</h3>
                     
-                    <div class="space-y-8">
-                        <div>
-                            <label class="text-[10px] font-black uppercase text-emerald-400 mb-4 block tracking-widest">1. Elegir Canal</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <button onclick="setCanal('whatsapp')" id="btn-ws" class="flex items-center justify-center gap-2 p-4 rounded-2xl border border-white/10 font-bold text-xs tab-active">
-                                    <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
-                                </button>
-                                <button onclick="setCanal('email')" id="btn-mail" class="flex items-center justify-center gap-2 p-4 rounded-2xl border border-white/10 font-bold text-xs">
-                                    <i data-lucide="mail" class="w-4 h-4"></i> Email
-                                </button>
-                            </div>
+                    <div class="space-y-3">
+                        <label class="text-[9px] font-black uppercase text-emerald-400">Canal de comunicación</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setCanal('whatsapp')" id="btn-ws" class="btn-canal active p-4 rounded-2xl bg-white/5 border border-white/10 font-bold text-xs">WhatsApp</button>
+                            <button onclick="setCanal('email')" id="btn-mail" class="btn-canal p-4 rounded-2xl bg-white/5 border border-white/10 font-bold text-xs">Email</button>
                         </div>
-
-                        <div>
-                            <label class="text-[10px] font-black uppercase text-emerald-400 mb-4 block tracking-widest">2. Audiencia</label>
-                            <div class="space-y-3">
-                                <button onclick="setModoEnvio('masivo')" id="btn-mas" class="w-full p-5 bg-emerald-500 rounded-3xl border border-emerald-400 text-left">
-                                    <p class="font-black text-xs uppercase">Envío Masivo</p>
-                                    <p class="text-[10px] opacity-80">A toda la base de datos (124 contactos)</p>
-                                </button>
-                                <button onclick="setModoEnvio('individual')" id="btn-ind" class="w-full p-5 bg-white/5 rounded-3xl border border-white/10 text-left">
-                                    <p class="font-black text-xs uppercase">Individual</p>
-                                    <p class="text-[10px] opacity-80">Elegir un cliente específico</p>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div id="campo-extra" class="hidden animate-in fade-in slide-in-from-top-2">
-                            <input type="text" id="destino-individual" placeholder="Teléfono o Email del cliente" class="w-full p-5 bg-white/5 rounded-3xl border border-white/10 text-sm font-bold outline-none">
-                        </div>
-
-                        <div class="bg-white/5 p-6 rounded-[35px] border border-white/10">
-                            <p class="text-[9px] font-black uppercase text-emerald-400 mb-3 italic">Mensaje a enviar:</p>
-                            <p id="msg-preview" class="text-xs text-gray-300 leading-relaxed italic">"¡Hola! Te escribimos de RuralGesto. Tenemos una oferta especial de Navidad para ti..."</p>
-                        </div>
-
-                        <button onclick="ejecutarEnvio()" class="w-full py-6 bg-white text-emerald-950 rounded-[35px] font-black uppercase text-[10px] tracking-[0.2em] shadow-xl hover:bg-emerald-400 transition transform active:scale-95">
-                            Ejecutar Campaña
-                        </button>
                     </div>
-                </section>
-            </div>
 
+                    <div class="space-y-3">
+                        <label class="text-[9px] font-black uppercase text-emerald-400">Audiencia</label>
+                        <div class="space-y-2">
+                            <button onclick="setAudiencia('masivo')" id="aud-masivo" class="btn-audiencia active w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-left font-bold text-xs">Envío Masivo (124 contactos)</button>
+                            <button onclick="setAudiencia('individual')" id="aud-individual" class="btn-audiencia w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-left font-bold text-xs">Individual</button>
+                        </div>
+                        <input type="text" id="input-destino" placeholder="Teléfono o Email" class="hidden w-full p-4 bg-black/20 rounded-xl text-xs font-bold border border-white/10">
+                    </div>
+
+                    <div class="bg-black/20 p-6 rounded-3xl border border-white/5">
+                        <p id="preview-text" class="text-xs italic text-emerald-100">"¡Hola! Te enviamos esta oferta especial de Navidad..."</p>
+                    </div>
+
+                    <button onclick="lanzar()" class="w-full py-6 bg-white text-emerald-950 rounded-[30px] font-black uppercase text-[10px] tracking-widest shadow-xl">Ejecutar Ahora</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        let canalActual = 'whatsapp';
-        let modoEnvio = 'masivo';
-        let campanaActual = 'Navidad';
+        let canal = 'whatsapp';
+        let audiencia = 'masivo';
+        let campana = 'Navidad';
 
-        function setCanal(canal) {
-            canalActual = canal;
-            document.getElementById('btn-ws').classList.toggle('tab-active', canal === 'whatsapp');
-            document.getElementById('btn-mail').classList.toggle('tab-active', canal === 'email');
-            actualizarPreview();
+        function setCanal(val) {
+            canal = val;
+            document.querySelectorAll('.btn-canal').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + (val === 'whatsapp' ? 'ws' : 'mail')).classList.add('active');
         }
 
-        function setModoEnvio(modo) {
-            modoEnvio = modo;
-            document.getElementById('btn-mas').classList.toggle('bg-emerald-500', modo === 'masivo');
-            document.getElementById('btn-ind').classList.toggle('bg-emerald-500', modo === 'individual');
-            document.getElementById('campo-extra').classList.toggle('hidden', modo === 'masivo');
+        function setAudiencia(val) {
+            audiencia = val;
+            document.querySelectorAll('.btn-audiencia').forEach(b => b.classList.remove('active'));
+            document.getElementById('aud-' + val).classList.add('active');
+            document.getElementById('input-destino').classList.toggle('hidden', val === 'masivo');
         }
 
-        function setCampana(nombre) {
-            campanaActual = nombre;
-            document.querySelectorAll('.campaign-card').forEach(c => c.classList.remove('active'));
-            document.getElementById('camp-' + nombre.replace(' ', '-')).classList.add('active');
-            actualizarPreview();
+        function seleccionarCampana(val) {
+            campana = val;
+            document.querySelectorAll('.campana-card').forEach(c => c.classList.remove('active'));
+            document.getElementById('card-' + val.replace(' ', '-')).classList.add('active');
+            document.getElementById('preview-text').innerText = `¡Hola! Tenemos una oferta especial de ${val} para ti en RuralGesto. ¡No te la pierdas!`;
         }
 
-        function actualizarPreview() {
-            const texto = campanaActual === 'Personalizada' ? 'tu oferta personalizada' : `nuestra oferta de ${campanaActual}`;
-            document.getElementById('msg-preview').innerText = `¡Hola! Tenemos ${texto} exclusiva para ti en RuralGesto. ¡Reserva directamente
+        function generarImagen() {
+            const prompt = document.getElementById('ai-prompt').value.toLowerCase();
+            const display = document.getElementById('ai-display');
+            const status = document.getElementById('ai-status');
+
+            if(!prompt) return alert("Dime qué quieres dibujar, Toni");
+
+            status.innerText = "IA procesando...";
+            
+            setTimeout(() => {
+                let img = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80"; // Cena
+                if(prompt.includes('navidad')) img = "https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=600&q=80";
+                if(prompt.includes('semana santa') || prompt.includes('sol')) img = "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=600&q=80";
+                
+                display.innerHTML = `<img src="${img}" class="w-full h-full object-cover">`;
+            }, 1500);
+        }
+
+        function lanzar() {
+            const msg = document.getElementById('preview-text').innerText;
+            const dest = document.getElementById('input-destino').value;
+
+            if(audiencia === 'masivo') {
+                alert(`🚀 RuralGesto está enviando tu campaña de ${campana} a 124 clientes por ${canal.toUpperCase()}`);
+            } else {
+                if(!dest) return alert("Introduce el contacto individual");
+                if(canal === 'whatsapp') {
+                    window.open(`https://wa.me/${dest}?text=${encodeURIComponent(msg)}`);
+                } else {
+                    window.location.href = `mailto:${dest}?subject=Oferta Rural&body=${encodeURIComponent(msg)}`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

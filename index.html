@@ -3,114 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGestión | Gestión Profesional de Casas Rurales</title>
+    <title>RuralGestión | Portal Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
-        :root { --main-bg: #fdfdfb; --accent: #1a4731; --text: #1a202c; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--main-bg); color: var(--text); scroll-behavior: smooth; }
+        :root { --accent: #1a4731; --bg: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); scroll-behavior: smooth; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .btn-primary { background: var(--accent); color: white; padding: 12px 24px; border-radius: 12px; font-weight: 800; transition: 0.3s; }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
-        .card-service { background: white; padding: 40px; border-radius: 24px; border: 1px solid #f1f1ee; transition: 0.3s; }
-        .card-service:hover { border-color: var(--accent); }
+        .hidden { display: none; }
+        .glass { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); }
+        .nav-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav class="flex justify-between items-center p-6 md:px-12 fixed w-full bg-[#fdfdfb]/80 backdrop-blur-md z-50">
-        <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
-        <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest">
-            <a href="#servicios" class="hover:text-emerald-800">Servicios</a>
-            <a href="#planes" class="hover:text-emerald-800">Planes</a>
-        </div>
-        <button onclick="location.href='/app-demo.html'" class="btn-primary text-xs uppercase tracking-tighter">Probar Demo</button>
-    </nav>
+    <section id="vista-landing">
+        <nav class="flex justify-between items-center p-6 fixed w-full bg-white/80 backdrop-blur-md z-50">
+            <h1 class="serif text-xl italic">Rural<span class="text-emerald-900">Gestión</span></h1>
+            <button onclick="mostrarLogin()" class="bg-emerald-900 text-white px-6 py-2 rounded-full font-bold text-xs uppercase">Iniciar Sesión</button>
+        </nav>
 
-    <section class="pt-32 pb-20 px-6 md:px-12 grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-        <div>
-            <h2 class="serif text-5xl md:text-7xl leading-tight mb-6">Gestión profesional para tu <span class="italic text-emerald-900">casa rural</span></h2>
-            <p class="text-gray-500 text-lg mb-8 leading-relaxed">La plataforma todo-en-uno que automatiza el check-in legal, sincroniza tus calendarios y gestiona tus impuestos sin esfuerzo.</p>
-            <div class="flex gap-4">
-                <button onclick="location.href='#planes'" class="btn-primary">Empezar ahora</button>
-                <button onclick="location.href='/app-demo.html'" class="border border-gray-200 px-6 py-3 rounded-xl font-bold hover:bg-gray-50 transition">Ver funciones</button>
+        <header class="pt-32 pb-20 px-8 max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+            <div>
+                <h2 class="serif text-6xl mb-6">El software que tu <span class="italic text-emerald-800">negocio rural</span> merece.</h2>
+                <p class="text-gray-500 mb-8">Gestión de calendarios, impuestos y marketing en un solo lugar.</p>
+                <button onclick="mostrarLogin()" class="bg-emerald-900 text-white px-8 py-4 rounded-2xl font-black uppercase text-sm shadow-xl">Probar Demo Ahora</button>
             </div>
-        </div>
-        <div class="rounded-[40px] overflow-hidden shadow-2xl h-[500px]">
-            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover" alt="Casa rural con piscina">
-        </div>
+            <div class="rounded-[40px] overflow-hidden shadow-2xl h-80 md:h-[450px]">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
+            </div>
+        </header>
     </section>
 
-    <section id="servicios" class="py-20 bg-[#f8f8f5] px-6">
-        <div class="max-w-7xl mx-auto text-center mb-16">
-            <h3 class="serif text-4xl mb-4">Todo lo que necesitas en una plataforma</h3>
-            <p class="text-gray-400 uppercase font-black text-[10px] tracking-[0.3em]">Módulos inteligentes para propietarios</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            <div class="card-service">
-                <i data-lucide="shield-check" class="text-emerald-800 mb-6 w-10 h-10"></i>
-                <h4 class="font-extrabold text-xl mb-3 uppercase italic tracking-tighter">Check-in Legal</h4>
-                <p class="text-gray-500 text-sm">Escaneo OCR de documentos y firma digital con envío automático a las autoridades.</p>
-            </div>
-            <div class="card-service">
-                <i data-lucide="calendar-days" class="text-emerald-800 mb-6 w-10 h-10"></i>
-                <h4 class="font-extrabold text-xl mb-3 uppercase italic tracking-tighter">Calendar Manager</h4>
-                <p class="text-gray-500 text-sm">Sincronización en tiempo real con Airbnb, Booking y otros canales para evitar overbooking.</p>
-            </div>
-            <div class="card-service">
-                <i data-lucide="briefcase" class="text-emerald-800 mb-6 w-10 h-10"></i>
-                <h4 class="font-extrabold text-xl mb-3 uppercase italic tracking-tighter">Administración</h4>
-                <p class="text-gray-500 text-sm">Control de gastos, ingresos y pre-declaración de la renta automatizada.</p>
+    <section id="vista-login" class="hidden fixed inset-0 bg-white z-[100] flex items-center justify-center p-6">
+        <div class="w-full max-w-md text-center">
+            <h2 class="serif text-4xl mb-2">Bienvenido, Toni</h2>
+            <p class="text-gray-400 mb-8 uppercase text-[10px] font-bold tracking-widest">Introduce tus credenciales</p>
+            <div class="space-y-4">
+                <input type="text" id="user" placeholder="Usuario" class="w-full p-4 rounded-2xl bg-gray-100 border-none font-bold outline-none focus:ring-2 ring-emerald-800">
+                <input type="password" id="pass" placeholder="Contraseña" class="w-full p-4 rounded-2xl bg-gray-100 border-none font-bold outline-none focus:ring-2 ring-emerald-800">
+                <button onclick="validarAcceso()" class="w-full bg-emerald-900 text-white py-5 rounded-2xl font-black uppercase">Entrar al Panel</button>
+                <button onclick="location.reload()" class="text-gray-400 text-xs uppercase font-bold mt-4">Volver atrás</button>
             </div>
         </div>
     </section>
 
-    <section id="planes" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h3 class="serif text-5xl mb-4">Elige tu plan</h3>
-            <p class="text-gray-400 text-sm">Sin permanencia. Cancela cuando quieras.</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="border border-gray-100 p-10 rounded-[35px] hover:shadow-xl transition">
-                <h5 class="font-bold text-gray-400 mb-2 uppercase text-[10px]">Básico</h5>
-                <div class="text-4xl font-black mb-6">$19.99<span class="text-sm font-normal">/mes</span></div>
-                <ul class="space-y-4 mb-10 text-sm text-gray-600">
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Check-in digital OCR</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> 1 Propiedad</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Soporte por email</li>
-                </ul>
-                <button class="w-full border border-gray-200 py-4 rounded-xl font-bold hover:bg-gray-50">Comenzar</button>
+    <section id="vista-app" class="hidden min-h-screen bg-[#fdfdfb]">
+        <header class="p-8 pt-12 flex justify-between items-center">
+            <div>
+                <h1 class="serif text-3xl italic">Rural<span class="text-emerald-800 font-normal">Gestión</span></h1>
+                <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Panel de Toni • <span id="plan-tag">Plan Pro</span></p>
             </div>
-            <div class="border-2 border-emerald-900 p-10 rounded-[35px] shadow-2xl relative scale-105 bg-white">
-                <span class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-emerald-900 text-white text-[9px] font-black px-4 py-1 rounded-full uppercase">Más popular</span>
-                <h5 class="font-bold text-gray-400 mb-2 uppercase text-[10px]">Pro</h5>
-                <div class="text-4xl font-black mb-6">$39.99<span class="text-sm font-normal">/mes</span></div>
-                <ul class="space-y-4 mb-10 text-sm text-gray-600">
-                    <li class="flex items-center gap-2 font-bold"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Todo en Básico</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Contabilidad completa</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Hasta 5 propiedades</li>
-                </ul>
-                <button class="w-full btn-primary py-4 rounded-xl shadow-lg">Comenzar prueba</button>
+            <button onclick="location.reload()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+        </header>
+
+        <div class="p-6">
+            <div class="rounded-[30px] overflow-hidden h-64 shadow-lg mb-10">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
             </div>
-            <div class="border border-gray-100 p-10 rounded-[35px] hover:shadow-xl transition">
-                <h5 class="font-bold text-gray-400 mb-2 uppercase text-[10px]">Business</h5>
-                <div class="text-4xl font-black mb-6">$59.99<span class="text-sm font-normal">/mes</span></div>
-                <ul class="space-y-4 mb-10 text-sm text-gray-600">
-                    <li class="flex items-center gap-2 font-bold"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Todo en Pro</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Asistente fiscal IRPF</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> API Access</li>
-                </ul>
-                <button class="w-full border border-gray-200 py-4 rounded-xl font-bold hover:bg-gray-50">Contactar</button>
+
+            <nav class="grid grid-cols-2 gap-8 px-4">
+                <div onclick="alert('Abriendo Agenda...')" class="nav-item">
+                    <i data-lucide="calendar" class="w-7 h-7 text-emerald-900"></i>
+                    <span class="text-[11px] font-black uppercase tracking-wider">Agenda</span>
+                </div>
+                <div onclick="alert('Abriendo Marketing...')" class="nav-item">
+                    <i data-lucide="megaphone" class="w-7 h-7 text-emerald-900"></i>
+                    <span class="text-[11px] font-black uppercase tracking-wider">Marketing</span>
+                </div>
+                <div onclick="alert('Abriendo Finanzas...')" class="nav-item">
+                    <i data-lucide="bar-chart-3" class="w-7 h-7 text-emerald-900"></i>
+                    <span class="text-[11px] font-black uppercase tracking-wider">Finanzas</span>
+                </div>
+                <div onclick="alert('Abriendo Web IA...')" class="nav-item">
+                    <i data-lucide="sparkles" class="w-7 h-7 text-emerald-900"></i>
+                    <span class="text-[11px] font-black uppercase tracking-wider">Web IA</span>
+                </div>
+            </nav>
+
+            <div class="mt-12 p-4">
+                <h3 class="font-black text-[10px] uppercase text-gray-400 mb-4 tracking-widest">Actividad Reciente</h3>
+                <div id="historial" class="space-y-3">
+                    <p class="text-xs text-gray-400 italic">No hay movimientos recientes.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="p-12 text-center border-t border-gray-100">
-        <p class="serif text-2xl italic mb-4">RuralGestión</p>
-        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">© 2026 Todos los derechos reservados.</p>
-    </footer>
+    <script>
+        // LÓGICA DE NAVEGACIÓN
+        function mostrarLogin() {
+            document.getElementById('vista-landing').classList.add('hidden');
+            document.getElementById('vista-login').classList.remove('hidden');
+        }
 
-    <script>lucide.createIcons();</script>
+        function validarAcceso() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+
+            // Usuario: toni | Pass: 1234 (puedes cambiarlo)
+            if(u === "toni" && p === "1234") {
+                document.getElementById('vista-login').classList.add('hidden');
+                document.getElementById('vista-app').classList.remove('hidden');
+                cargarHistorial();
+            } else {
+                alert("Usuario o contraseña incorrectos. Prueba con toni / 1234");
+            }
+        }
+
+        function cargarHistorial() {
+            const hist = document.getElementById('historial');
+            const datos = [
+                {accion: "Reserva confirmada", fecha: "Hoy, 10:30", icon: "check-circle"},
+                {accion: "Gasto limpieza registrado", fecha: "Ayer, 18:45", icon: "minus-circle"}
+            ];
+            
+            hist.innerHTML = datos.map(d => `
+                <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-50 shadow-sm">
+                    <span class="text-xs font-bold">${d.accion}</span>
+                    <span class="text-[9px] text-gray-400 font-bold uppercase">${d.fecha}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        lucide.createIcons();
+    </script>
 </body>
 </html>

@@ -3,101 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RuralGestión | Panel</title>
+    <title>RuralGestión | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; margin: 0; padding: 0; overflow: hidden; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
         
-        /* FONDO: CASA RURAL CON PISCINA */
-        .hero-bg {
-            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/11193042804799092068_0');
-            background-size: cover;
-            background-position: center center;
-            height: 100vh; width: 100%; position: fixed; top: 0; left: 0; z-index: 1;
+        /* Marco blanco con la foto encuadrada */
+        .photo-frame {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 35%; /* Deja espacio abajo para el menú */
+            border-radius: 40px;
+            overflow: hidden;
+            background: #f3f4f6;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
         }
 
-        /* Degradado para máxima legibilidad */
-        .overlay {
-            background: linear-gradient(to bottom, 
-                rgba(0,0,0,0.3) 0%, 
-                rgba(0,0,0,0.4) 50%, 
-                rgba(0,0,0,0.95) 100%);
-            position: absolute; inset: 0; z-index: 2;
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .content-layer { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; }
-
-        /* DISEÑO DE BOTONES MINIMALISTAS (SIN CAJAS BLANCAS) */
-        .hub-btn {
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 35px;
-            padding: 35px 10px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255,255,255,0.1);
+        /* Overlay suave para que el logo blanco destaque si es necesario */
+        .photo-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent);
         }
 
-        .hub-btn:active { 
-            transform: scale(0.92); 
-            background: rgba(255,255,255,0.15); 
-            border-color: rgba(59, 130, 246, 0.5); 
+        /* Menú de iconos flotantes (SIN BOTÓN/CAJA DETRÁS) */
+        .hub-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 35%;
+            padding: 20px 40px;
+            display: grid;
+            grid-template-cols: repeat(4, 1fr);
+            align-items: center;
+            justify-items: center;
+            background: white;
         }
 
-        .btn-text {
-            color: white; font-size: 8px; font-weight: 900; text-transform: uppercase;
-            letter-spacing: 2px; font-style: italic; margin-top: 15px;
-            opacity: 0.9;
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
         }
 
-        .icon-svg { color: #60a5fa; /* Azul suave para un look tecnológico y profesional */ }
+        .icon-item:active { transform: scale(0.85); }
+
+        .icon-label {
+            margin-top: 10px;
+            font-size: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8; /* Gris azulado elegante */
+        }
+
+        .icon-svg {
+            color: #1e293b; /* Casi negro para máximo contraste en el blanco */
+            width: 28px;
+            height: 28px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="hero-bg"></div>
-    <div class="overlay"></div>
-
-    <div class="content-layer">
+    <div class="photo-frame">
+        <img src="http://googleusercontent.com/image_generation_content/1" alt="Casa Rural">
+        <div class="photo-overlay"></div>
         
-        <header class="p-10 pt-20">
-            <h1 class="italic-black text-4xl uppercase leading-[0.85] text-white">RURAL<br><span class="text-blue-500">GESTIÓN</span></h1>
-            <p class="text-[9px] font-black uppercase tracking-[0.4em] mt-3 text-white/40 italic">Soluciones para Propietarios</p>
+        <header class="absolute top-10 left-10 z-20">
+            <h1 class="italic-black text-4xl uppercase leading-[0.85] text-white">RURAL<br><span class="text-blue-400">GESTIÓN</span></h1>
         </header>
-
-        <main class="mt-auto p-6 pb-20">
-            <div class="grid grid-cols-2 gap-6 w-full">
-                
-                <div onclick="location.href='calendar/index.html'" class="hub-btn">
-                    <i data-lucide="calendar" class="icon-svg w-7 h-7"></i>
-                    <span class="btn-text">Calendario</span>
-                </div>
-
-                <div onclick="location.href='marketing/index.html'" class="hub-btn">
-                    <i data-lucide="send" class="icon-svg w-7 h-7"></i>
-                    <span class="btn-text">Marketing</span>
-                </div>
-
-                <div onclick="location.href='tax/index.html'" class="hub-btn">
-                    <i data-lucide="layout-dashboard" class="icon-svg w-7 h-7"></i>
-                    <span class="btn-text">Administración</span>
-                </div>
-
-                <div onclick="location.href='web/index.html'" class="hub-btn">
-                    <i data-lucide="wand-2" class="icon-svg w-7 h-7"></i>
-                    <span class="btn-text">Web Builder</span>
-                </div>
-
-            </div>
-        </main>
     </div>
 
+    <main class="hub-container">
+        
+        <div onclick="location.href='calendar/index.html'" class="icon-item">
+            <i data-lucide="calendar" class="icon-svg"></i>
+            <span class="icon-label">Agenda</span>
+        </div>
+
+        <div onclick="location.href='marketing/index.html'" class="icon-item">
+            <i data-lucide="megaphone" class="icon-svg"></i>
+            <span class="icon-label">Marketing</span>
+        </div>
+
+        <div onclick="location.href='tax/index.html'" class="icon-item">
+            <i data-lucide="line-chart" class="icon-svg"></i>
+            <span class="icon-label">Finanzas</span>
+        </div>
+
+        <div onclick="location.href='web/index.html'" class="icon-item">
+            <i data-lucide="sparkles" class="icon-svg"></i>
+            <span class="icon-label">Web IA</span>
+        </div>
+
+    </main>
+
     <script>
-      lucide.createIcons();
+        // Inicializar iconos minimalistas
+        lucide.createIcons();
     </script>
 </body>
 </html>

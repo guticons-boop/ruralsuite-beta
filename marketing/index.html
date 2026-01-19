@@ -2,137 +2,122 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Seguro | RuralGesto</title>
-    <script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+    <title>Marketing & Fidelización | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #2563eb; color: white; }
-        .preview-img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px; display: none; }
+        .offer-card.active { border-color: #be123c; background-color: #fff1f2; transform: scale(1.02); }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
     <div class="max-w-4xl mx-auto">
-        <header class="flex items-center gap-4 mb-8">
+        <header class="flex items-center gap-4 mb-10">
             <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
             <div>
-                <h2 class="serif text-2xl italic text-blue-950 font-bold">Marketing & Comunicación</h2>
-                <p class="text-[9px] font-black uppercase tracking-widest text-blue-600 italic">Difusión Segura RuralGesto</p>
+                <h2 class="serif text-3xl italic text-rose-950 font-bold italic">Marketing & Fidelización</h2>
+                <p class="text-[9px] font-black uppercase tracking-widest text-rose-600">Comunicaciones RuralGesto</p>
             </div>
         </header>
 
-        <div class="grid grid-cols-3 gap-2 bg-blue-50 p-1.5 rounded-[30px] mb-8 border border-blue-100">
-            <button onclick="switchTab('pre')" id="tab-pre" class="tab-btn active py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest transition-all">Predefinidas</button>
-            <button onclick="switchTab('custom')" id="tab-custom" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-blue-900 transition-all">Crear Campaña</button>
-            <button onclick="switchTab('ia')" id="tab-ia" class="tab-btn py-4 rounded-[25px] font-black text-[9px] uppercase tracking-widest text-blue-900 transition-all italic">IA Visual</button>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            <div id="off-10" onclick="selectOffer('10%', 'Te regalamos un 10% de descuento en tu próxima estancia')" class="offer-card bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm cursor-pointer transition-all">
+                <div class="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mb-4 font-black">10%</div>
+                <h3 class="serif text-xl italic font-bold">Fidelización Directa</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase mt-2">Envía un código de descuento</p>
+            </div>
 
-        <div id="view-pre" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
-                    <h4 class="serif text-lg italic font-bold mb-2">Fidelización: 10% Dto</h4>
-                    <p class="text-[9px] text-slate-400 mb-6 uppercase font-bold tracking-wider">Para clientes que ya han venido</p>
-                    <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-blue-600 text-white rounded-xl text-[8px] font-black uppercase">Vía WhatsApp</button>
-                        <button class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl text-[8px] font-black uppercase">Vía Email</button>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
-                    <h4 class="serif text-lg italic font-bold mb-2">Oferta Last Minute</h4>
-                    <p class="text-[9px] text-slate-400 mb-6 uppercase font-bold tracking-wider">Huecos libres fin de semana</p>
-                    <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-blue-600 text-white rounded-xl text-[8px] font-black uppercase">Vía WhatsApp</button>
-                        <button class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl text-[8px] font-black uppercase">Vía Email</button>
-                    </div>
-                </div>
+            <div id="off-promo" onclick="selectOffer('PROMO', '¡Tenemos una oferta especial para volver a vernos!')" class="offer-card bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm cursor-pointer transition-all">
+                <div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-4"><i data-lucide="sparkles"></i></div>
+                <h3 class="serif text-xl italic font-bold">Oferta de Temporada</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase mt-2">Promoción personalizada</p>
             </div>
         </div>
 
-        <div id="view-custom" class="hidden space-y-6">
-            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm">
-                <div class="space-y-4">
-                    <input type="text" id="title" placeholder="Título de la promoción..." class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold border-none outline-none">
-                    
-                    <div id="img-preview-box" class="relative">
-                        <img id="preview-img" class="preview-img mb-4" src="">
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3 mb-4">
-                        <label class="cursor-pointer p-4 bg-blue-50 rounded-2xl text-center border border-blue-100">
-                            <input type="file" class="hidden" onchange="previewFile(event)"><i data-lucide="upload" class="mx-auto text-blue-600 w-4 h-4 mb-1"></i>
-                            <span class="text-[7px] font-black uppercase text-blue-800">Fototeca</span>
-                        </label>
-                        <button onclick="alert('Cargando fotos de la guía...')" class="p-4 bg-emerald-50 rounded-2xl text-center border border-emerald-100">
-                            <i data-lucide="book-open" class="mx-auto text-emerald-600 w-4 h-4 mb-1"></i>
-                            <span class="text-[7px] font-black uppercase text-emerald-800">De la Guía</span>
-                        </button>
-                        <button onclick="switchTab('ia')" class="p-4 bg-purple-50 rounded-2xl text-center border border-purple-100">
-                            <i data-lucide="wand-2" class="mx-auto text-purple-600 w-4 h-4 mb-1"></i>
-                            <span class="text-[7px] font-black uppercase text-purple-800">IA Visual</span>
-                        </button>
-                    </div>
-
-                    <textarea placeholder="Mensaje personalizado..." rows="4" class="w-full p-4 bg-slate-50 rounded-2xl text-xs border-none outline-none"></textarea>
-
-                    <hr class="border-slate-100 my-4">
-
-                    <div class="space-y-3">
-                        <p class="text-[8px] font-black uppercase text-slate-400 ml-2 tracking-widest">Método de Envío (Privacidad Garantizada)</p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="alert('Selecciona cliente de la lista para WhatsApp individual')" class="flex items-center justify-center gap-2 py-4 bg-white border border-slate-200 rounded-2xl text-[9px] font-black uppercase">
-                                <i data-lucide="user" class="w-3 h-3"></i> Individual
-                            </button>
-                            <button onclick="alert('Se preparará la lista para Difusión de WhatsApp (uno a uno)')" class="flex items-center justify-center gap-2 py-4 bg-blue-900 text-white rounded-2xl text-[9px] font-black uppercase italic shadow-lg shadow-blue-100">
-                                <i data-lucide="users" class="w-3 h-3"></i> Difusión Masiva
-                            </button>
-                        </div>
-                        <button class="w-full py-4 bg-slate-100 text-slate-900 rounded-2xl text-[9px] font-black uppercase flex items-center justify-center gap-2">
-                            <i data-lucide="mail"></i> Mailing Masivo (Email)
-                        </button>
-                    </div>
+        <div class="bg-white rounded-[50px] border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                <h4 class="text-[10px] font-black uppercase text-slate-500 italic">Clientes en Base de Datos</h4>
+                <p id="selected-offer-text" class="text-[9px] font-black text-rose-600 uppercase italic">Selecciona una oferta arriba</p>
+            </div>
+            
+            <div id="marketing-list" class="divide-y divide-slate-50">
                 </div>
-            </div>
-        </div>
-
-        <div id="view-ia" class="hidden space-y-6">
-            <div class="bg-slate-900 p-10 rounded-[50px] text-white text-center">
-                <i data-lucide="sparkles" class="w-10 h-10 mx-auto mb-6 text-blue-400"></i>
-                <h3 class="serif text-xl italic mb-4">Generador de Fotos IA</h3>
-                <input type="text" placeholder="Describe tu idea..." class="w-full p-5 bg-white/10 rounded-2xl text-xs mb-4 outline-none border border-white/20">
-                <button onclick="simulateIA()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-[9px] uppercase">Generar Imagen</button>
-            </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        function switchTab(tab) {
-            document.querySelectorAll('#view-pre, #view-custom, #view-ia').forEach(v => v.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-white'));
-            document.getElementById('view-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).classList.add('active');
+        let currentOffer = "";
+        let currentMsg = "";
+
+        function selectOffer(tipo, mensaje) {
+            currentOffer = tipo;
+            currentMsg = mensaje;
+            
+            // Efecto visual
+            document.querySelectorAll('.offer-card').forEach(c => c.classList.remove('active'));
+            if(tipo === '10%') document.getElementById('off-10').classList.add('active');
+            else document.getElementById('off-promo').classList.add('active');
+
+            document.getElementById('selected-offer-text').innerText = "Oferta activa: " + tipo;
+            renderMarketing();
         }
 
-        function previewFile(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const img = document.getElementById('preview-img');
-                img.src = reader.result;
-                img.style.display = 'block';
+        function renderMarketing() {
+            const data = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
+            const container = document.getElementById('marketing-list');
+            container.innerHTML = '';
+
+            if(data.length === 0) {
+                container.innerHTML = '<p class="p-10 text-center text-xs text-slate-400 uppercase font-black">No hay clientes para marketing. Importa un Excel primero.</p>';
+                return;
             }
-            reader.readAsDataURL(event.target.files[0]);
+
+            data.forEach((r, i) => {
+                container.innerHTML += `
+                    <div class="p-6 flex flex-col md:flex-row justify-between items-center gap-4 hover:bg-slate-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-black text-[10px] uppercase">${r.cliente.substring(0,2)}</div>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">${r.cliente}</h4>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase">${r.email || 'Sin email'}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="enviarWhatsApp('${r.movil}', '${r.cliente}')" class="px-5 py-3 bg-emerald-50 text-emerald-600 rounded-2xl font-black text-[8px] uppercase border border-emerald-100 flex items-center gap-2">
+                                <i data-lucide="message-circle" class="w-3 h-3"></i> WhatsApp
+                            </button>
+                            <button onclick="enviarEmail('${r.email}', '${r.cliente}')" class="px-5 py-3 bg-blue-50 text-blue-600 rounded-2xl font-black text-[8px] uppercase border border-blue-100 flex items-center gap-2">
+                                <i data-lucide="mail" class="w-3 h-3"></i> Email
+                            </button>
+                        </div>
+                    </div>`;
+            });
+            lucide.createIcons();
         }
 
-        function simulateIA() {
-            alert('IA generando imagen para El Rinconcito...');
-            setTimeout(() => {
-                const img = document.getElementById('preview-img');
-                img.src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800";
-                img.style.display = 'block';
-                switchTab('custom');
-            }, 2000);
+        function enviarWhatsApp(movil, nombre) {
+            if(!currentOffer) return alert("Por favor, selecciona primero una oferta arriba (10% u Oferta)");
+            if(!movil || movil === '000') return alert("Este cliente no tiene un teléfono válido");
+            
+            const texto = `Hola ${nombre}! ${currentMsg}. Puedes reservar directamente con nosotros. Saludos de RuralGesto!`;
+            window.open(`https://wa.me/${movil}?text=${encodeURIComponent(texto)}`, '_blank');
         }
+
+        function enviarEmail(email, nombre) {
+            if(!currentOffer) return alert("Por favor, selecciona primero una oferta arriba (10% u Oferta)");
+            if(!email || email === 'Sin email') return alert("Este cliente no tiene un email válido");
+
+            const asunto = `Oferta Especial RuralGesto para ${nombre}`;
+            const cuerpo = `Hola ${nombre},\n\n${currentMsg}.\n\nEsperamos verte pronto de nuevo.\n\nAtentamente,\nRuralGesto`;
+            
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+        }
+
+        // Cargar al inicio
+        window.onload = renderMarketing;
     </script>
 </body>
 </html>

@@ -3,48 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RG Calendario</title>
+    <title>Master Cal | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <style>body{font-family:'Inter',sans-serif;}.italic-black{font-style:italic;font-weight:900;}.day-box{aspect-ratio: 1/1; transition: 0.2s;}</style>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #1a1a1a; }
+        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
+        .day-cell { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; border: 1.5px solid #f8f8f8; position: relative; }
+        .occupied { background: #000 !important; color: #fff !important; border-color: #000; }
+        .sync-dot { width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; position: absolute; bottom: 6px; }
+        .apt-tab { padding: 12px 20px; border-radius: 18px; font-size: 10px; font-weight: 900; text-transform: uppercase; border: 2px solid #f2f2f2; transition: 0.3s; white-space: nowrap; }
+        .apt-active { background: #000; color: white; border-color: #000; }
+        .sync-input { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #eee; font-size: 12px; outline: none; margin-bottom: 8px; }
+    </style>
 </head>
-<body class="p-6 bg-white">
-    <header class="mb-10 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase">Ocupación</h1>
+<body class="p-6 max-w-lg mx-auto pb-32">
+
+    <header class="mb-8 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-100 px-4 py-2 rounded-full">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase text-blue-600">Master Cal</h1>
     </header>
 
-    <div class="space-y-10" id="calendars-container">
+    <div class="flex space-x-2 mb-8 overflow-x-auto no-scrollbar">
+        <button onclick="selectApt('almendros')" id="tab-almendros" class="apt-tab apt-active">Los Almendros</button>
+        <button onclick="selectApt('ermita')" id="tab-ermita" class="apt-tab">La Ermita</button>
+        <button onclick="selectApt('tirolina')" id="tab-tirolina" class="apt-tab">La Tirolina</button>
+    </div>
+
+    <div class="flex justify-between items-center mb-8 bg-gray-50 p-4 rounded-[30px]">
+        <button onclick="changeMonth(-1)" class="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-sm font-black italic">←</button>
+        <div class="text-center">
+            <h2 id="month-name" class="italic-black text-2xl uppercase text-black leading-none">Enero</h2>
+            <p id="year-name" class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 italic">2026</p>
         </div>
+        <button onclick="changeMonth(1)" class="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-sm font-black italic">→</button>
+    </div>
+
+    <div class="grid grid-cols-7 gap-2 mb-2 px-1">
+        <div class="text-[9px] font-black text-gray-300 text-center uppercase italic">Lu</div>
+        <div class="text-[9px] font-black text-gray-300 text-center uppercase italic">Ma</div>
+        <div class="text-[9px] font-black text-gray-300 text-center uppercase italic">Mi</div>
+        <div class="text-[9px] font-black text-gray-300 text-center uppercase italic">Ju</div>
+        <div class="text-[9px] font-black text-gray-300 text-center uppercase italic">Vi</div>
+        <div class="text-[9px] font-black text-blue-400 text-center uppercase italic">Sa</div>
+        <div class="text-[9px] font-black text-blue-400 text-center uppercase italic">Do</div>
+    </div>
+
+    <div id="calendar-grid" class="grid grid-cols-7 gap-2 px-1 mb-10"></div>
+
+    <div class="bg-blue-50 p-8 rounded-[40px] border border-blue-100">
+        <h4 class="italic-black text-blue-900 text-sm uppercase mb-4 italic">Sincronización Externa (iCal)</h4>
+        <p class="text-[10px] text-blue-700 font-bold mb-4 italic uppercase">Pega el enlace de Booking o Airbnb:</p>
+        <input type="text" id="ical-url" placeholder="https://ical.booking.com/..." class="sync-input">
+        <button onclick="syncCalendar()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-black italic uppercase text-[10px] tracking-widest shadow-lg shadow-blue-200">Sincronizar Ahora</button>
+    </div>
 
     <script>
-        const aparts = ["Los Almendros", "La Ermita", "La Tirolina"];
-        function createCal(id, name) {
-            let html = `<div class="mb-8"><h4 class="italic-black uppercase mb-4 text-gray-400 text-xs tracking-widest">${name}</h4><div class="grid grid-cols-7 gap-2">`;
-            for(let i=1; i<=31; i++) {
-                const key = `cal-${id}-${i}`;
-                const isOccupied = localStorage.getItem(key) === 'true';
-                html += `<div onclick="toggleDay('${key}')" class="${isOccupied ? 'bg-black text-white' : 'bg-gray-50 text-gray-400'} rounded-xl flex items-center justify-center font-black italic text-[10px] day-box cursor-pointer">
-                    ${i}
-                </div>`;
-            }
-            html += `</div></div>`;
-            return html;
-        }
+        let currentApt = 'almendros';
+        let date = new Date();
+        const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-        function toggleDay(key) {
-            const current = localStorage.getItem(key);
-            localStorage.setItem(key, current === 'true' ? 'false' : 'true');
+        function selectApt(apt) {
+            currentApt = apt;
+            document.querySelectorAll('.apt-tab').forEach(t => t.classList.remove('apt-active'));
+            document.getElementById('tab-'+apt).classList.add('apt-active');
             render();
         }
 
+        function changeMonth(dir) {
+            date.setMonth(date.getMonth() + dir);
+            render();
+        }
+
+        function toggleDay(dayId) {
+            const key = `cal_${currentApt}_${dayId}`;
+            const state = localStorage.getItem(key);
+            localStorage.setItem(key, state === 'true' ? 'false' : 'true');
+            render();
+        }
+
+        function syncCalendar() {
+            const url = document.getElementById('ical-url').value;
+            if(!url) return alert("Pega una URL válida");
+            // En una app real, aquí llamaríamos a un servidor que procese el iCal
+            // Para el prototipo, simulamos la carga de datos
+            alert("Sincronizando con plataforma externa...");
+            setTimeout(() => {
+                alert("Calendario de " + currentApt + " actualizado correctamente.");
+                render();
+            }, 1500);
+        }
+
         function render() {
-            let container = document.getElementById('calendars-container');
-            container.innerHTML = "";
-            aparts.forEach(a => {
-                let id = a.toLowerCase().split(' ')[1] || a.toLowerCase();
-                container.innerHTML += createCal(id, a);
-            });
+            const grid = document.getElementById('calendar-grid');
+            const monthLabel = document.getElementById('month-name');
+            const yearLabel = document.getElementById('year-name');
+            grid.innerHTML = "";
+            monthLabel.innerText = months[date.getMonth()];
+            yearLabel.innerText = date.getFullYear();
+
+            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+            const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+            let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+            for(let i=0; i < startOffset; i++) grid.innerHTML += `<div></div>`;
+
+            for(let d=1; d <= daysInMonth; d++) {
+                const dayId = `${date.getFullYear()}-${date.getMonth()}-${d}`;
+                const key = `cal_${currentApt}_${dayId}`;
+                const isOccupied = localStorage.getItem(key) === 'true';
+                
+                grid.innerHTML += `
+                    <div onclick="toggleDay('${dayId}')" class="day-cell ${isOccupied ? 'occupied' : 'bg-white text-gray-400'}">
+                        ${d}
+                        ${isOccupied ? '<div class="sync-dot"></div>' : ''}
+                    </div>`;
+            }
         }
         render();
     </script>

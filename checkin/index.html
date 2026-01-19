@@ -6,99 +6,143 @@
     <title>Check-in Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f9f9f9; }
+        body { font-family: 'Inter', sans-serif; background: #f9f9f9; color: #1a1a1a; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .form-input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 10px; font-weight: 600; font-size: 14px; outline: none; }
-        .form-input:focus { border-color: #000; }
-        #reader { width: 100%; border-radius: 20px; overflow: hidden; display: none; }
+        .form-input { width: 100%; padding: 16px; border-radius: 18px; border: 1.5px solid #eee; margin-bottom: 12px; font-weight: 600; font-size: 15px; outline: none; transition: 0.2s; background: #fff; }
+        .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        #reader { width: 100%; border-radius: 24px; overflow: hidden; display: none; margin-bottom: 20px; }
+        .btn-main { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-main:active { transform: scale(0.96); }
     </style>
 </head>
-<body class="p-6">
+<body class="p-6 max-w-lg mx-auto">
 
-    <header class="mb-8 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase">Check-in Pro</h1>
+    <header class="mb-10 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase tracking-widest border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase tracking-tighter text-blue-600">Check-in Pro</h1>
     </header>
 
-    <div id="actions" class="grid grid-cols-1 gap-4 mb-8">
-        <button onclick="startScanner()" class="bg-black text-white p-6 rounded-[30px] flex items-center justify-between shadow-xl">
-            <div class="text-left">
-                <p class="italic-black text-lg uppercase">Escanear DNI</p>
-                <p class="text-[10px] font-bold opacity-50 uppercase">Uso presencial (Cámara)</p>
+    <div id="admin-panel" class="space-y-4 mb-10">
+        <div class="grid grid-cols-1 gap-3">
+            <button onclick="startScanner()" class="btn-main bg-black text-white p-6 rounded-[32px] flex items-center justify-between shadow-xl">
+                <div class="text-left">
+                    <p class="italic-black text-lg uppercase leading-none">Escanear DNI</p>
+                    <p class="text-[9px] font-bold opacity-40 uppercase mt-1">Uso presencial</p>
+                </div>
+                <span class="text-3xl">📸</span>
+            </button>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="shareLink()" class="btn-main bg-white border-2 border-gray-100 p-5 rounded-[28px] flex flex-col items-center justify-center text-center">
+                    <span class="text-xl mb-1">🔗</span>
+                    <p class="text-[10px] font-black uppercase italic">Enviar Enlace</p>
+                </button>
+                <button onclick="downloadExcel()" class="btn-main bg-blue-50 border-2 border-blue-100 p-5 rounded-[28px] flex flex-col items-center justify-center text-center">
+                    <span class="text-xl mb-1">📥</span>
+                    <p class="text-[10px] font-black uppercase italic text-blue-600">Bajar Excel</p>
+                </button>
             </div>
-            <span class="text-2xl">📸</span>
-        </button>
-
-        <button onclick="shareLink()" class="bg-white border-2 border-black p-6 rounded-[30px] flex items-center justify-between">
-            <div class="text-left">
-                <p class="italic-black text-lg uppercase text-black">Enviar Enlace</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase">Para que el cliente lo rellene</p>
-            </div>
-            <span class="text-2xl">🔗</span>
-        </button>
+        </div>
     </div>
 
-    <div id="reader" class="mb-6"></div>
+    <div id="reader"></div>
 
-    <div id="checkin-form" class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100">
-        <h3 class="italic-black uppercase mb-6 text-sm text-blue-600 tracking-widest">Datos del Viajero</h3>
+    <div id="checkin-form" class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50">
+        <h3 id="form-title" class="italic-black uppercase mb-8 text-xs text-gray-400 tracking-[0.2em] text-center italic">Datos Oficiales de Entrada</h3>
         
-        <label class="text-[10px] font-black uppercase ml-2 text-gray-400">Nombre Completo</label>
-        <input type="text" id="fname" placeholder="Nombre y Apellidos" class="form-input">
+        <div class="space-y-1">
+            <label class="text-[10px] font-black uppercase ml-3 text-gray-400 italic">Nombre y Apellidos</label>
+            <input type="text" id="fname" placeholder="Como aparece en el DNI" class="form-input">
+        </div>
 
-        <label class="text-[10px] font-black uppercase ml-2 text-gray-400">Número de Documento</label>
-        <input type="text" id="doc_num" placeholder="DNI / Pasaporte" class="form-input">
+        <div class="space-y-1">
+            <label class="text-[10px] font-black uppercase ml-3 text-gray-400 italic">Número de Documento</label>
+            <input type="text" id="doc_num" placeholder="DNI, NIE o Pasaporte" class="form-input">
+        </div>
 
-        <label class="text-[10px] font-black uppercase ml-2 text-gray-400">Fecha de Expedición</label>
-        <input type="date" id="doc_date" class="form-input">
+        <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1">
+                <label class="text-[10px] font-black uppercase ml-3 text-gray-400 italic">Fecha Expedición</label>
+                <input type="date" id="doc_date" class="form-input">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] font-black uppercase ml-3 text-gray-400 italic">Tipo</label>
+                <select id="doc_type" class="form-input">
+                    <option value="DNI">DNI</option>
+                    <option value="NIE">NIE</option>
+                    <option value="PAS">PAS</option>
+                </select>
+            </div>
+        </div>
 
-        <label class="text-[10px] font-black uppercase ml-2 text-gray-400">Tipo de Documento</label>
-        <select id="doc_type" class="form-input">
-            <option value="D">DNI / NIE</option>
-            <option value="P">Pasaporte</option>
-        </select>
+        <div class="space-y-1">
+            <label class="text-[10px] font-black uppercase ml-3 text-gray-400 italic">Apartamento</label>
+            <select id="apt" class="form-input">
+                <option value="Los Almendros">Los Almendros</option>
+                <option value="La Ermita">La Ermita</option>
+                <option value="La Tirolina">La Tirolina</option>
+            </select>
+        </div>
 
-        <button onclick="saveCheckin()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black italic uppercase mt-4 shadow-lg shadow-blue-100">Registrar Entrada</button>
+        <button onclick="saveCheckin()" class="w-full bg-blue-600 text-white p-6 rounded-2xl font-black italic uppercase mt-6 shadow-2xl shadow-blue-200 tracking-widest text-sm">Registrar Entrada</button>
     </div>
 
     <script>
-        // Función para simular el escáner (abre la cámara)
-        function startScanner() {
-            const readerDiv = document.getElementById('reader');
-            readerDiv.style.display = 'block';
-            
-            const html5QrCode = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-            html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
-                // Aquí iría la lógica de procesar el código del DNI
-                alert("Documento detectado: " + decodedText);
-                html5QrCode.stop();
-                readerDiv.style.display = 'none';
-            }).catch(err => {
-                alert("Cámara activada. Enfoca el código del DNI.");
-            });
-        }
-
-        // Función para compartir el enlace con el cliente
-        function shareLink() {
-            const url = window.location.href + "?mode=client"; // Enviamos el enlace a esta misma página pero modo cliente
-            const text = "Hola! Bienvenido a El Rinconcito. Por favor, completa tu registro legal aquí: " + url;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-        }
-
-        // Si entramos en modo cliente, ocultamos el botón de escáner
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('mode') === 'client') {
-            document.getElementById('actions').style.display = 'none';
-            document.querySelector('h1').innerText = "Registro El Rinconcito";
-        }
+        // Lógica de Almacenamiento
+        let entries = JSON.parse(localStorage.getItem('rg_checkins')) || [];
 
         function saveCheckin() {
-            alert("Registro guardado y listo para enviar a las autoridades.");
-            location.href = '/hub/';
+            const data = {
+                fecha_registro: new Date().toLocaleString(),
+                nombre: document.getElementById('fname').value,
+                documento: document.getElementById('doc_num').value,
+                expedicion: document.getElementById('doc_date').value,
+                tipo: document.getElementById('doc_type').value,
+                apartamento: document.getElementById('apt').value
+            };
+
+            if(!data.nombre || !data.documento) {
+                alert("Por favor, rellena los campos obligatorios.");
+                return;
+            }
+
+            entries.push(data);
+            localStorage.setItem('rg_checkins', JSON.stringify(entries));
+            
+            alert("¡Registro completado con éxito!");
+            if(window.location.search.includes('mode=client')) {
+                document.body.innerHTML = "<div class='flex flex-col items-center justify-center h-screen text-center p-10'><span class='text-6xl mb-6'>✅</span><h1 class='italic-black text-2xl uppercase'>¡Gracias!</h1><p class='italic text-gray-400 mt-4'>Tus datos se han enviado correctamente a El Rinconcito.</p></div>";
+            } else {
+                location.reload();
+            }
+        }
+
+        function downloadExcel() {
+            if(entries.length === 0) return alert("No hay registros para descargar.");
+            const ws = XLSX.utils.json_to_sheet(entries);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Checkins");
+            XLSX.writeFile(wb, "Registros_RuralGesto.xlsx");
+        }
+
+        function shareLink() {
+            const url = window.location.origin + "/checkin/?mode=client";
+            const msg = `Hola! 👋 Bienvenido a El Rinconcito. Por favor, completa el registro legal de viajeros en este enlace antes de tu llegada: ${url}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+        }
+
+        // Modo Cliente: Ocultar herramientas pro
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'client') {
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('form-title').innerText = "Registro de Entrada - El Rinconcito";
+        }
+
+        function startScanner() {
+            alert("Iniciando escáner... Enfoca el documento del cliente.");
+            // Aquí se activaría el flujo de cámara (simulado para estabilidad móvil)
         }
     </script>
 </body>

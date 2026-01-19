@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario Reservas | El Rinconcito</title>
+    <title>Agenda | El Rinconcito de Matarraña</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .timeline-grid { display: grid; grid-template-columns: 150px repeat(7, 1fr); }
+        .timeline-grid { display: grid; grid-template-columns: 160px repeat(7, 1fr); border-bottom: 1px solid #f1f5f9; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -19,56 +19,53 @@
             <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
             <div class="text-center">
                 <h2 class="serif text-3xl italic text-emerald-900 font-bold">Agenda de Reservas</h2>
-                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-600 italic">El Rinconcito de Matarraña</p>
+                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600">El Rinconcito de Matarraña</p>
             </div>
-            <div class="flex gap-2">
-                <button class="p-4 bg-emerald-900 text-white rounded-3xl shadow-lg"><i data-lucide="plus"></i></button>
-            </div>
+            <div class="w-12"></div>
         </header>
 
-        <div class="bg-white rounded-[50px] border border-gray-100 shadow-sm overflow-hidden">
-            <div class="timeline-grid bg-slate-50 border-b border-gray-100 text-[10px] font-black uppercase text-gray-400">
-                <div class="p-6 border-r border-gray-100">Propiedad</div>
+        <div class="bg-white rounded-[50px] shadow-sm border border-gray-100 overflow-hidden">
+            <div class="timeline-grid bg-slate-50 text-[10px] font-black uppercase text-gray-400">
+                <div class="p-6 border-r">Propiedad</div>
                 <div class="p-6 text-center">Lun 19</div>
-                <div class="p-6 text-center text-emerald-600 bg-emerald-50/50 italic">Hoy</div>
+                <div class="p-6 text-center bg-emerald-50 text-emerald-700 italic border-x">Hoy</div>
                 <div class="p-6 text-center">Mie 21</div>
                 <div class="p-6 text-center">Jue 22</div>
                 <div class="p-6 text-center">Vie 23</div>
-                <div class="p-6 text-center bg-slate-100/50">Sáb 24</div>
-                <div class="p-6 text-center bg-slate-100/50">Dom 25</div>
+                <div class="p-6 text-center bg-slate-100">Sáb 24</div>
+                <div class="p-6 text-center bg-slate-100">Dom 25</div>
             </div>
 
-            <div class="divide-y divide-gray-50">
-                <div class="timeline-grid items-center">
-                    <div class="p-6 border-r border-gray-100 font-bold text-sm italic">Apartamento 1</div>
-                    <div class="col-span-2 p-2">
-                        <div class="bg-blue-500 text-white text-[9px] p-2 rounded-xl font-black uppercase flex items-center gap-2">
-                            <i data-lucide="info" class="w-3 h-3"></i> Booking (García)
-                        </div>
+            <div class="timeline-grid items-center hover:bg-slate-50/50 transition">
+                <div class="p-6 border-r font-extrabold text-sm text-slate-700 italic">La Tirolina</div>
+                <div class="col-span-2 p-2">
+                    <div class="bg-blue-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase flex items-center gap-2 shadow-md">
+                        <i data-lucide="bookmark" class="w-3 h-3"></i> Booking: García
                     </div>
-                    <div class="col-span-5"></div>
                 </div>
+                <div class="col-span-5"></div>
+            </div>
 
-                <div class="timeline-grid items-center">
-                    <div class="p-6 border-r border-gray-100 font-bold text-sm italic">Apartamento 2</div>
-                    <div class="col-span-4"></div>
-                    <div class="col-span-3 p-2">
-                        <div class="bg-emerald-600 text-white text-[9px] p-2 rounded-xl font-black uppercase flex items-center gap-2">
-                            <i data-lucide="globe" class="w-3 h-3"></i> Web (M. López)
-                        </div>
+            <div class="timeline-grid items-center hover:bg-slate-50/50 transition">
+                <div class="p-6 border-r font-extrabold text-sm text-slate-700 italic">La Ermita</div>
+                <div class="col-span-3"></div>
+                <div class="col-span-3 p-2">
+                    <div class="bg-emerald-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase flex items-center gap-2 shadow-md">
+                        <i data-lucide="globe" class="w-3 h-3"></i> Web: M. López
                     </div>
                 </div>
+                <div class="col-span-1"></div>
+            </div>
 
-                <div class="timeline-grid items-center">
-                    <div class="p-6 border-r border-gray-100 font-bold text-sm italic">Apartamento 3</div>
-                    <div class="col-span-1"></div>
-                    <div class="col-span-2 p-2">
-                        <div class="bg-blue-500 text-white text-[9px] p-2 rounded-xl font-black uppercase flex items-center gap-2">
-                            <i data-lucide="info" class="w-3 h-3"></i> Booking (Pérez)
-                        </div>
+            <div class="timeline-grid items-center hover:bg-slate-50/50 transition">
+                <div class="p-6 border-r font-extrabold text-sm text-slate-700 italic">Los Almendros</div>
+                <div class="col-span-1"></div>
+                <div class="col-span-2 p-2">
+                    <div class="bg-blue-600 text-white text-[9px] p-3 rounded-2xl font-black uppercase flex items-center gap-2 shadow-md">
+                        <i data-lucide="bookmark" class="w-3 h-3"></i> Booking: Pérez
                     </div>
-                    <div class="col-span-4"></div>
                 </div>
+                <div class="col-span-4"></div>
             </div>
         </div>
     </div>

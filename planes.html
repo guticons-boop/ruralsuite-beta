@@ -3,106 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planes de Suscripción | RuralGesto</title>
+    <title>Planes | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #0f172a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
+        .plan-card { transition: all 0.4s ease; border: 1px solid #f1f5f9; }
+        .plan-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05); }
+        .plan-popular { border: 2px solid #10b981; position: relative; }
+        .badge-popular { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); }
     </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="p-6 md:p-12 pb-32">
 
     <div class="max-w-6xl mx-auto">
         <header class="text-center mb-16">
-            <h1 class="serif text-5xl italic text-emerald-950 mb-4">Elige tu plan RuralGesto</h1>
-            <p class="text-gray-400 font-bold uppercase tracking-widest text-xs">Sin permanencia, crece cuando lo necesites</p>
+            <h2 class="serif text-4xl italic text-emerald-950 mb-4 font-bold">Planes diseñados para el mundo rural</h2>
+            <p class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em]">Escala tu gestión con RuralGesto</p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm flex flex-col">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="plan-card bg-white p-8 rounded-[45px] flex flex-col">
                 <div class="mb-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Esencial</h3>
+                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-600 mb-2">Esencial</h3>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black text-emerald-950">19€</span>
-                        <span class="text-gray-400 text-sm">/mes</span>
+                        <span class="text-4xl font-black italic">19€</span>
+                        <span class="text-slate-400 text-xs">/mes</span>
                     </div>
+                    <p class="text-[11px] text-slate-500 mt-4 font-bold italic">Hasta 2 alojamientos</p>
                 </div>
-                <ul class="space-y-4 mb-10 flex-grow">
-                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> 1 Alojamiento
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Check-in con OCR
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Calendario base
-                    </li>
+                <ul class="space-y-4 mb-10 flex-1 text-xs font-semibold text-slate-600">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Calendario Unificado</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Motor de Reservas Web</li>
+                    <li class="flex items-center gap-2 text-slate-300"><i data-lucide="x" class="w-4 h-4"></i> Asistente Fiscal IA</li>
                 </ul>
-                <button class="w-full py-5 bg-gray-100 text-gray-900 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-gray-200 transition">Seleccionar</button>
+                <button class="w-full py-4 bg-slate-50 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition">Elegir Plan</button>
             </div>
 
-            <div class="bg-emerald-950 p-10 rounded-[50px] shadow-2xl flex flex-col transform md:scale-105 relative border-4 border-emerald-400">
-                <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-400 text-emerald-950 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">El más popular</div>
+            <div class="plan-card bg-white p-8 rounded-[45px] flex flex-col plan-popular shadow-xl shadow-emerald-900/5">
+                <span class="badge-popular bg-emerald-500 text-white px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter italic">Más Popular</span>
                 <div class="mb-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-2">Profesional</h3>
+                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-600 mb-2">Crecimiento</h3>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black text-white">49€</span>
-                        <span class="text-emerald-300/50 text-sm">/mes</span>
+                        <span class="text-4xl font-black italic">35€</span>
+                        <span class="text-slate-400 text-xs">/mes</span>
                     </div>
+                    <p class="text-[11px] text-slate-500 mt-4 font-bold italic font-bold">Hasta 5 alojamientos</p>
                 </div>
-                <ul class="space-y-4 mb-10 flex-grow text-white">
-                    <li class="flex items-center gap-3 text-sm font-semibold">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Hasta 10 alojamientos
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Gestión de limpiezas
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Web de reservas directas
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold text-emerald-300">
-                        <i data-lucide="check" class="w-4 h-4"></i> Marketing por WhatsApp
-                    </li>
+                <ul class="space-y-4 mb-10 flex-1 text-xs font-semibold text-slate-600">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Todo lo del Plan Esencial</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Asistente Fiscal IA</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Marketing con IA</li>
                 </ul>
-                <button class="w-full py-5 bg-emerald-400 text-emerald-950 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition">Empezar ahora</button>
+                <button class="w-full py-4 bg-emerald-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition shadow-lg shadow-emerald-900/20">Tu Plan Actual</button>
             </div>
 
-            <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm flex flex-col">
+            <div class="plan-card bg-white p-8 rounded-[45px] flex flex-col">
                 <div class="mb-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Grandes Carteras</h3>
+                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-600 mb-2">Profesional</h3>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-3xl font-black text-emerald-950">A medida</span>
+                        <span class="text-4xl font-black italic">49€</span>
+                        <span class="text-slate-400 text-xs">/mes</span>
                     </div>
+                    <p class="text-[11px] text-slate-500 mt-4 font-bold italic">Hasta 10 alojamientos</p>
                 </div>
-                <ul class="space-y-4 mb-10 flex-grow">
-                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                        <i data-lucide="plus" class="w-4 h-4 text-emerald-500"></i> +10 Alojamientos
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                        <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i> Multiusuario (Equipo)
-                    </li>
-                    <li class="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                        <i data-lucide="headset" class="w-4 h-4 text-emerald-500"></i> Soporte VIP 24/7
-                    </li>
+                <ul class="space-y-4 mb-10 flex-1 text-xs font-semibold text-slate-600">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Todo lo del Plan Crecimiento</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Gestión de Limpiezas Pro</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Multi-usuario (Equipo)</li>
                 </ul>
-                <button onclick="window.location.href='mailto:info@ruralgesto.com'" class="w-full py-5 border-2 border-emerald-950 text-emerald-950 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-emerald-950 hover:text-white transition">Consultar</button>
+                <button class="w-full py-4 bg-slate-50 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition">Elegir Plan</button>
             </div>
 
-        </div>
+            <div class="plan-card bg-emerald-50 p-8 rounded-[45px] flex flex-col border-dashed border-emerald-200">
+                <div class="mb-8">
+                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-800 mb-2 italic text-center">Grandes Gestores</h3>
+                    <div class="text-center py-4">
+                        <span class="serif text-3xl italic font-bold text-emerald-900">A medida</span>
+                    </div>
+                    <p class="text-[11px] text-emerald-700 mt-4 text-center font-bold">Más de 10 alojamientos</p>
+                </div>
+                <div class="flex-1 flex flex-col justify-center items-center text-center px-2">
+                    <p class="text-[10px] font-bold text-emerald-800 mb-4 italic">Conexiones API personalizadas y soporte premium 24/7</p>
+                </div>
+                <button class="w-full py-4 border-2 border-emerald-900 text-emerald-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-900 hover:text-white transition">Contactar</button>
+            </div>
 
-        <div class="text-center mt-12">
-            <button onclick="location.href='index.html'" class="text-[10px] font-black uppercase text-gray-400 tracking-widest hover:text-emerald-700 transition flex items-center justify-center gap-2 mx-auto">
-                <i data-lucide="arrow-left" class="w-3 h-3"></i> Volver al inicio
-            </button>
         </div>
     </div>
 
-    <script>
-        // Esta línea es fundamental para que aparezcan los iconos
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

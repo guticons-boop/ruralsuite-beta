@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tax Assistant</title>
+    <title>Rural Gesto - Tax</title>
     <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/512/home.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .card-tax { border-radius: 35px; border: 1.5px solid #f2f2f2; padding: 30px; }
-    </style>
+    <style>body { font-family: 'Inter', sans-serif; }.italic-black { font-style: italic; font-weight: 900; }</style>
 </head>
 <body class="p-6">
     <div class="max-w-md mx-auto">
-        <header class="mb-8 flex justify-between items-center text-right">
-            <button onclick="location.href='/hub/'" class="text-xs font-bold text-gray-400 uppercase italic">← Panel</button>
-            <h1 class="italic-black text-2xl">Tax Assistant</h1>
+        <header class="mb-8 flex justify-between items-center">
+            <button onclick="location.href='/hub/'" class="text-xs font-bold text-gray-400 italic">← VOLVER</button>
+            <h1 class="italic-black text-2xl uppercase">Rural Gesto</h1>
         </header>
 
-        <div class="card-tax bg-black text-white mb-6">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500">IRPF El Rinconcito (20%)</p>
-            <h2 id="tax-display" class="text-5xl italic-black mt-2">1.866,00€</h2>
+        <div class="bg-black text-white p-8 rounded-[40px] mb-6">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Previsión Trimestral (20%)</p>
+            <h2 id="tax-display" class="text-5xl italic-black">1.866,00€</h2>
         </div>
 
         <div class="grid grid-cols-2 gap-4 mb-8">
@@ -36,8 +32,8 @@
                 <p class="text-xl font-black italic text-red-500">1.450€</p>
             </div>
         </div>
-
-        <button onclick="alert('Añadiendo nuevo registro...')" class="w-full bg-gray-100 p-5 rounded-2xl font-bold italic">+ Nuevo Movimiento</button>
+        
+        <button onclick="alert('Registro guardado en Rural Gesto')" class="w-full bg-gray-100 p-5 rounded-2xl font-black italic">AÑADIR MOVIMIENTO</button>
     </div>
 </body>
 </html>

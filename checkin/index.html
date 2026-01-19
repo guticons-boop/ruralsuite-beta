@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check-in Scan | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -11,7 +12,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .tab-btn.active { background-color: #be123c; color: white; }
-        .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
+        .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -19,130 +20,25 @@
     <div class="max-w-2xl mx-auto">
         <header class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-4">
-                <button onclick="location.href='../index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-slate-100"><i data-lucide="arrow-left"></i></button>
+                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-slate-100">
+                    <i data-lucide="arrow-left"></i>
+                </button>
                 <h2 class="serif text-2xl italic text-rose-950 font-bold">Check-in Scan</h2>
             </div>
-            <div id="status-badge" class="px-4 py-2 bg-slate-100 rounded-2xl text-[10px] font-black uppercase text-slate-400">Listo</div>
+            <div id="status" class="px-4 py-2 bg-slate-100 rounded-2xl text-[10px] font-black uppercase text-slate-400 tracking-widest">Listo</div>
         </header>
 
-        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8">
-            <button onclick="tab('scan')" id="btn-scan" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Escanear / Nuevo</button>
-            <button onclick="tab('list')" id="btn-list" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Historial</button>
+        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8 border border-slate-200">
+            <button onclick="switchView('scan')" id="btn-scan" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest transition-all">Escanear</button>
+            <button onclick="switchView('list')" id="btn-list" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest transition-all">Historial</button>
         </div>
 
-        <div id="sec-scan" class="space-y-6">
-            <div class="grid grid-cols-2 gap-4">
-                <div class="relative bg-rose-600 p-8 rounded-[40px] text-white text-center shadow-xl active:scale-95 transition-all">
-                    <input type="file" accept="image/*" capture="camera" onchange="hacerOCR(this)" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <div id="ocr-icon"><i data-lucide="camera" class="mx-auto mb-2 w-8 h-8"></i></div>
-                    <div id="ocr-loading" class="hidden"><div class="spinner mb-2"></div></div>
-                    <p class="font-black uppercase text-[10px]">Escanear DNI</p>
+        <div id="view-scan" class="space-y-6">
+            <div class="relative bg-rose-600 p-10 rounded-[50px] text-white text-center shadow-xl active:scale-95 transition-all overflow-hidden">
+                <div id="ocr-ui">
+                    <i data-lucide="camera" class="mx-auto mb-3 w-10 h-10"></i>
+                    <p class="font-black uppercase text-xs tracking-widest">Escanear DNI o Pasaporte</p>
                 </div>
-                <div onclick="mandarLink()" class="bg-white p-8 rounded-[40px] border border-slate-100 text-center cursor-pointer hover:bg-slate-50">
-                    <i data-lucide="send" class="mx-auto mb-2 w-8 h-8 text-rose-500"></i>
-                    <p class="font-black uppercase text-[10px] text-slate-800">Enviar Enlace</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 rounded-[50px] border border-slate-100 shadow-xl space-y-4">
-                <h4 class="serif text-lg font-bold italic mb-4 border-b pb-2 text-rose-900">Ficha de Entrada</h4>
-                <div class="space-y-3">
-                    <input type="text" id="f-nombre" placeholder="Nombre y Apellidos" class="w-full p-4 bg-slate-50 rounded-2xl outline-none text-sm font-bold">
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="text" id="f-dni" placeholder="DNI / NIE" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm font-mono">
-                        <input type="date" id="f-nac" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm text-slate-400">
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="tel" id="f-tel" placeholder="WhatsApp" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm">
-                        <input type="email" id="f-mail" placeholder="Email" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm">
-                    </div>
-                </div>
-                <button onclick="guardar()" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[11px] uppercase tracking-widest mt-4 shadow-lg active:bg-rose-900 transition-colors">
-                    Guardar Registro Oficial
-                </button>
-            </div>
-        </div>
-
-        <div id="sec-list" class="hidden">
-            <div id="contenedor-lista" class="space-y-3"></div>
-        </div>
-    </div>
-
-    <script>
-        let db = JSON.parse(localStorage.getItem('ruralgesto_pata_negra') || '[]');
-
-        function tab(t) {
-            document.getElementById('sec-scan').classList.toggle('hidden', t !== 'scan');
-            document.getElementById('sec-list').classList.toggle('hidden', t !== 'list');
-            document.getElementById('btn-scan').classList.toggle('active', t === 'scan');
-            document.getElementById('btn-list').classList.toggle('active', t === 'list');
-            if(t === 'list') renderList();
-        }
-
-        async function hacerOCR(input) {
-            if (!input.files || !input.files[0]) return;
-            document.getElementById('ocr-icon').classList.add('hidden');
-            document.getElementById('ocr-loading').classList.remove('hidden');
-            document.getElementById('status-badge').innerText = "Leyendo...";
-
-            try {
-                const img = input.files[0];
-                const result = await Tesseract.recognize(img, 'spa');
-                const text = result.data.text;
-                const dniMatch = text.match(/\d{8}[A-Z]/i);
-                if(dniMatch) document.getElementById('f-dni').value = dniMatch[0].toUpperCase();
-                const lines = text.split('\n').filter(l => l.trim().length > 4);
-                if(lines.length > 0) document.getElementById('f-nombre').value = lines[0].trim();
-                document.getElementById('status-badge').innerText = "¡Hecho!";
-            } catch (e) {
-                alert("Error de lectura");
-            } finally {
-                document.getElementById('ocr-icon').classList.remove('hidden');
-                document.getElementById('ocr-loading').classList.add('hidden');
-            }
-        }
-
-        function guardar() {
-            const nom = document.getElementById('f-nombre').value;
-            const dni = document.getElementById('f-dni').value;
-            if(!nom || !dni) return alert("Faltan datos");
-
-            db.push({
-                nombre: nom, dni: dni,
-                tel: document.getElementById('f-tel').value,
-                mail: document.getElementById('f-mail').value,
-                fecha: new Date().toLocaleDateString()
-            });
-            localStorage.setItem('ruralgesto_pata_negra', JSON.stringify(db));
-            alert("Huésped guardado");
-            document.querySelectorAll('input').forEach(i => i.value = "");
-            tab('list');
-        }
-
-        function renderList() {
-            const cont = document.getElementById('contenedor-lista');
-            if(db.length === 0) {
-                cont.innerHTML = '<p class="text-center py-10 text-slate-300">Sin registros</p>';
-            } else {
-                cont.innerHTML = db.map((r) => `
-                    <div class="bg-white p-6 rounded-[35px] border border-slate-100 flex justify-between items-center shadow-sm">
-                        <div>
-                            <p class="text-[9px] font-black text-rose-600 uppercase italic">${r.fecha}</p>
-                            <h4 class="font-bold text-slate-800">${r.nombre}</h4>
-                            <p class="text-[10px] font-mono text-slate-400">${r.dni}</p>
-                        </div>
-                        <button onclick="window.open('https://wa.me/${r.tel}')" class="p-4 bg-emerald-50 text-emerald-600 rounded-2xl"><i data-lucide="send" class="w-5 h-5"></i></button>
-                    </div>
-                `).reverse().join('');
-            }
-            lucide.createIcons();
-        }
-
-        function mandarLink() {
-            const tel = prompt("WhatsApp:");
-            if(tel) window.open(`https://wa.me/${tel}?text=Hola, rellena el check-in: https://ruralgesto.com/form`);
-        }
-        window.onload = () => lucide.createIcons();
-    </script>
-</body>
-</html>
+                <div id="ocr-loading" class="hidden">
+                    <div class="spinner mb-3"></div>
+                    <p class="font-black uppercase text-xs tracking-wid

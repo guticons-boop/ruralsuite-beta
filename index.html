@@ -3,81 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Planes y Gestión</title>
+    <title>RuralGesto | Gestión Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .card-plan { transition: transform 0.3s ease; }
-        .card-plan:hover { transform: translateY(-10px); }
+        .italic-black { font-style: italic; font-weight: 900; letter-spacing: -2px; }
+        html { scroll-behavior: smooth; }
     </style>
 </head>
 <body>
 
-    <nav class="flex justify-between items-center p-6 sticky top-0 bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
-        <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gesto</span></h1>
-        <button onclick="location.href='hub/index.html'" class="bg-[#1a4731] text-white px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest">Entrar al Panel</button>
+    <nav class="flex justify-between items-center p-8 sticky top-0 bg-white/80 backdrop-blur-md z-50">
+        <h1 class="serif text-3xl italic">Rural<span class="text-emerald-900">Gesto</span></h1>
+        <div class="flex items-center gap-8">
+            <a href="#precios" class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-emerald-800 transition">Planes</a>
+            <button onclick="location.href='hub/index.html'" class="bg-[#1a4731] text-white px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition">Entrar</button>
+        </div>
     </nav>
 
-    <header class="max-w-6xl mx-auto px-6 py-16 text-center">
-        <h2 class="serif text-6xl mb-6">Elige el plan perfecto para tu <span class="italic text-emerald-800">crecimiento</span></h2>
-        <p class="text-gray-500 max-w-2xl mx-auto text-lg mb-12">Desde la gestión fiscal básica hasta la automatización total con IA para tu casa rural.</p>
-
-        <div class="grid md:grid-cols-3 gap-8 mt-12">
-            
-            <div class="card-plan bg-white p-10 rounded-[40px] shadow-sm border border-gray-100 flex flex-col">
-                <h4 class="font-black uppercase text-[10px] tracking-[0.3em] text-gray-400 mb-4">Esencial</h4>
-                <div class="text-4xl font-black mb-6">19,99€<span class="text-sm text-gray-400 font-normal">/mes</span></div>
-                <ul class="text-left space-y-4 mb-10 flex-grow">
-                    <li class="text-xs font-bold text-gray-600">✓ Asistente Fiscal Básico</li>
-                    <li class="text-xs font-bold text-gray-600">✓ Agenda de Reservas</li>
-                    <li class="text-xs font-bold text-gray-600 italic">✗ Marketing IA</li>
-                </ul>
-                <button class="w-full py-4 rounded-2xl border-2 border-emerald-900 text-emerald-900 font-black uppercase text-[10px] tracking-widest">Seleccionar</button>
+    <header class="max-w-7xl mx-auto px-6 pt-10 pb-24">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7">
+                <h2 class="italic-black text-7xl md:text-9xl uppercase leading-[0.8] text-slate-900 mb-8">
+                    RURAL<br><span class="text-emerald-900">GESTIÓN</span>
+                </h2>
+                <p class="text-gray-500 text-xl md:text-2xl max-w-xl leading-relaxed mb-10">
+                    La herramienta definitiva para propietarios que buscan <span class="text-emerald-900 font-bold underline decoration-emerald-200">control total</span> sobre sus casas rurales.
+                </p>
+                <div class="flex gap-4">
+                    <button onclick="location.href='hub/index.html'" class="bg-emerald-900 text-white px-10 py-6 rounded-3xl font-black uppercase text-xs tracking-widest shadow-2xl hover:bg-emerald-800 transition">Comenzar Ahora</button>
+                </div>
             </div>
-
-            <div class="card-plan bg-emerald-900 p-10 rounded-[40px] shadow-2xl flex flex-col relative overflow-hidden">
-                <div class="absolute top-5 right-5 bg-emerald-400 text-emerald-900 text-[8px] font-black px-3 py-1 rounded-full uppercase italic">Popuar</div>
-                <h4 class="font-black uppercase text-[10px] tracking-[0.3em] text-emerald-300 mb-4">Profesional</h4>
-                <div class="text-4xl font-black mb-6 text-white">39,99€<span class="text-sm text-emerald-300 font-normal">/mes</span></div>
-                <ul class="text-left space-y-4 mb-10 flex-grow">
-                    <li class="text-xs font-bold text-white">✓ Todo lo del Plan Esencial</li>
-                    <li class="text-xs font-bold text-white">✓ Check-in Legal Ilimitado</li>
-                    <li class="text-xs font-bold text-white">✓ Generador de Marketing IA</li>
-                </ul>
-                <button class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black uppercase text-[10px] tracking-widest">Probar Gratis</button>
+            <div class="lg:col-span-5">
+                <div class="rounded-[50px] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-700 aspect-[4/5]">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover" alt="Casa Rural">
+                </div>
             </div>
-
-            <div class="card-plan bg-white p-10 rounded-[40px] shadow-sm border border-gray-100 flex flex-col">
-                <h4 class="font-black uppercase text-[10px] tracking-[0.3em] text-gray-400 mb-4">Empresa</h4>
-                <div class="text-4xl font-black mb-6">59,99€<span class="text-sm text-gray-400 font-normal">/mes</span></div>
-                <ul class="text-left space-y-4 mb-10 flex-grow">
-                    <li class="text-xs font-bold text-gray-600">✓ Multigestión (Varias casas)</li>
-                    <li class="text-xs font-bold text-gray-600">✓ Soporte 24/7 Prioritario</li>
-                    <li class="text-xs font-bold text-gray-600">✓ Web Builder Personalizado</li>
-                </ul>
-                <button class="w-full py-4 rounded-2xl border-2 border-emerald-900 text-emerald-900 font-black uppercase text-[10px] tracking-widest">Contactar</button>
-            </div>
-
         </div>
     </header>
 
-    <section class="bg-gray-50 py-20 px-6">
-        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="rounded-[40px] overflow-hidden shadow-xl">
-                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover">
+    <section id="precios" class="bg-emerald-950 py-32 px-6 rounded-t-[60px]">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20">
+                <h3 class="serif text-5xl text-white italic mb-4">Planes de suscripción</h3>
+                <p class="text-emerald-300 font-bold uppercase tracking-widest text-[10px]">Escalabilidad para tu negocio</p>
             </div>
-            <div>
-                <h3 class="serif text-4xl mb-4 italic text-emerald-900">¿Por qué RuralGesto?</h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-6">Hemos diseñado esta herramienta específicamente para las necesidades de Toni y propietarios rurales que buscan simplicidad técnica con resultados profesionales.</p>
-                <div class="space-y-3">
-                    <div class="flex items-center gap-3 text-[10px] font-black uppercase text-gray-400">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> 100% Mobile Friendly
-                    </div>
-                    <div class="flex items-center gap-3 text-[10px] font-black uppercase text-gray-400">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Conexión con Autoridades
-                    </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/5 backdrop-blur-lg p-10 rounded-[40px] border border-white/10 flex flex-col hover:bg-white/10 transition">
+                    <h4 class="text-white font-black uppercase text-[10px] tracking-widest mb-6 opacity-50">Esencial</h4>
+                    <div class="text-5xl font-black text-white mb-8">19€<span class="text-sm font-normal opacity-50">/mes</span></div>
+                    <ul class="text-white/70 space-y-4 mb-10 flex-grow text-xs font-bold">
+                        <li>✓ Gestión Fiscal Básica</li>
+                        <li>✓ 1 Propiedad</li>
+                        <li>✓ Soporte por Email</li>
+                    </ul>
+                    <button class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black uppercase text-[10px]">Elegir</button>
+                </div>
+
+                <div class="bg-emerald-400 p-10 rounded-[40px] flex flex-col scale-105 shadow-2xl">
+                    <h4 class="text-emerald-900 font-black uppercase text-[10px] tracking-widest mb-6">Recomendado</h4>
+                    <div class="text-5xl font-black text-emerald-900 mb-8">39€<span class="text-sm font-normal opacity-70">/mes</span></div>
+                    <ul class="text-emerald-900 space-y-4 mb-10 flex-grow text-xs font-bold">
+                        <li>✓ Todo lo anterior</li>
+                        <li>✓ Multi-propiedad</li>
+                        <li>✓ Marketing IA</li>
+                        <li>✓ Check-in Legal</li>
+                    </ul>
+                    <button class="w-full py-4 rounded-2xl bg-emerald-900 text-white font-black uppercase text-[10px]">Probar Gratis</button>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-lg p-10 rounded-[40px] border border-white/10 flex flex-col hover:bg-white/10 transition">
+                    <h4 class="text-white font-black uppercase text-[10px] tracking-widest mb-6 opacity-50">Empresa</h4>
+                    <div class="text-5xl font-black text-white mb-8">59€<span class="text-sm font-normal opacity-50">/mes</span></div>
+                    <ul class="text-white/70 space-y-4 mb-10 flex-grow text-xs font-bold">
+                        <li>✓ Gestión Ilimitada</li>
+                        <li>✓ Consultoría Fiscal</li>
+                        <li>✓ Web propia</li>
+                    </ul>
+                    <button class="w-full py-4 rounded-2xl border border-white/20 text-white font-black uppercase text-[10px]">Contactar</button>
                 </div>
             </div>
         </div>

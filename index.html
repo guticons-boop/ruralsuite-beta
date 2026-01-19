@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Gestión Premium de Alojamientos</title>
+    <title>RuralGesto | Software de Gestión de Viviendas Turísticas y Casas Rurales</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .hero-bg {
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=2070');
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=2000');
             background-size: cover;
             background-position: center;
         }
@@ -26,55 +26,63 @@
         </div>
     </nav>
 
-    <section class="hero-bg h-screen flex items-center justify-center text-center px-6">
+    <section class="hero-bg h-[85vh] flex items-center justify-center text-center px-6">
         <div class="max-w-4xl">
-            <span class="text-white/80 text-[10px] font-bold uppercase tracking-[0.4em] mb-4 block italic">Soluciones para El Rinconcito</span>
+            <span class="text-white/80 text-[10px] font-bold uppercase tracking-[0.4em] mb-4 block italic">Solución profesional para tu negocio turístico</span>
             <h1 class="text-white text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8">
-                Gestiona tu <br><span class="text-blue-400 italic">libertad.</span>
+                Gestiona tu <br><span class="text-green-400 italic">libertad.</span>
             </h1>
             <p class="text-white/90 text-xl md:text-2xl font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
-                El sistema operativo inteligente diseñado para alojamientos rurales que buscan excelencia y automatización.
+                El sistema operativo inteligente diseñado para Casas Rurales, Apartamentos y VUTs que buscan excelencia y automatización.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="location.href='/hub/'" class="bg-blue-600 text-white px-12 py-6 rounded-2xl font-black italic uppercase text-lg shadow-2xl hover:bg-blue-700 transition">Comenzar Ahora</button>
-                <a href="#info" class="glass px-12 py-6 rounded-2xl font-black italic uppercase text-lg hover:bg-white transition">Saber más</a>
+                <button onclick="location.href='/hub/'" class="bg-green-600 text-white px-12 py-6 rounded-2xl font-black italic uppercase text-lg shadow-2xl hover:bg-green-700 transition">Comenzar Ahora</button>
             </div>
         </div>
     </section>
 
-    <section id="info" class="py-24 px-6 bg-slate-50">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
-            <div class="space-y-4">
-                <div class="text-4xl">🏨</div>
-                <h3 class="text-2xl font-black italic uppercase tracking-tighter">Check-in Pro</h3>
-                <p class="text-slate-500 font-medium">Escaneo de DNI con inteligencia artificial y generación de partes legales en segundos.</p>
+    <section class="py-20 px-6 bg-white -mt-10 relative z-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
+                <div class="text-3xl text-blue-600">🪪</div>
+                <h3 class="text-lg font-black italic uppercase tracking-tighter">Check-in Legal</h3>
+                <p class="text-slate-500 text-sm font-medium">Escaneo automático de DNI con OCR. Generación de partes de viajeros y conexión directa con autoridades (Policía/Guardia Civil).</p>
             </div>
-            <div class="space-y-4">
-                <div class="text-4xl">📅</div>
-                <h3 class="text-2xl font-black italic uppercase tracking-tighter">Sincronización</h3>
-                <p class="text-slate-500 font-medium">Tus calendarios de Booking y Airbnb cruzados con tu contabilidad de forma automática.</p>
+
+            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
+                <div class="text-3xl text-blue-600">🔄</div>
+                <h3 class="text-lg font-black italic uppercase tracking-tighter">Sincronización</h3>
+                <p class="text-slate-500 text-sm font-medium">Conexión total iCal con Booking, Airbnb, Expedia y cualquier plataforma. Calendario unificado sin overbookings.</p>
             </div>
-            <div class="space-y-4">
-                <div class="text-4xl">⚖️</div>
-                <h3 class="text-2xl font-black italic uppercase tracking-tighter">Tax Assistant</h3>
-                <p class="text-slate-500 font-medium">Controla tus impuestos y gastos derivados (limpieza, suavizante, suministros) en tiempo real.</p>
+
+            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
+                <div class="text-3xl text-blue-600">📊</div>
+                <h3 class="text-lg font-black italic uppercase tracking-tighter">Tax Assistant</h3>
+                <p class="text-slate-500 text-sm font-medium">Control total de ingresos netos y gastos operativos (suavizante, palomitas, luz). Preparado para la Renta.</p>
             </div>
+
+            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
+                <div class="text-3xl text-blue-600">📢</div>
+                <h3 class="text-lg font-black italic uppercase tracking-tighter">Marketing Simple</h3>
+                <p class="text-slate-500 text-sm font-medium">Crea campañas digitales, envía ofertas por WhatsApp y fideliza a tus huéspedes con un solo click.</p>
+            </div>
+
         </div>
     </section>
 
-    <footer class="py-20 border-t border-slate-100">
+    <footer class="py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
-                <div class="text-2xl italic-black uppercase mb-2">RuralGesto</div>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest italic">Software de Gestión para el Matarraña</p>
+                <div class="text-2xl italic-black uppercase mb-1">RuralGesto</div>
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest italic">Software de Gestión de Alojamientos Turísticos</p>
             </div>
-            <div class="flex gap-8 text-[10px] font-black uppercase italic text-slate-400">
-                <a href="#" class="hover:text-black">Privacidad</a>
-                <a href="#" class="hover:text-black">Condiciones</a>
-                <a href="#" class="hover:text-black">Suscripción Pro</a>
+            <div class="text-slate-400 text-[10px] font-bold uppercase italic text-center">
+                © 2026 RURALGESTO. SOLUCIONES DIGITALES PARA HOSPEDAJE.
             </div>
-            <div class="text-slate-300 text-[10px] font-bold uppercase">
-                © 2026 RURALGESTO. TODOS LOS DERECHOS RESERVADOS.
+            <div class="flex gap-6 text-[10px] font-black uppercase italic text-slate-400">
+                <a href="#" class="hover:text-black transition">Privacidad</a>
+                <a href="#" class="hover:text-black transition">Suscripción Pro</a>
             </div>
         </div>
     </footer>

@@ -9,24 +9,31 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .tab-btn.active { background-color: #be123c; color: white; }
-        /* Estilo para el gráfico de quesito manual */
-        .pie-chart {
-            width: 200px; height: 200px; border-radius: 50%;
-            background: conic-gradient(#10b981 0% 40%, #34d399 40% 70%, #6ee7b7 70% 100%);
-            margin: 0 auto; position: relative;
+        /* Gráfico con 3 colores distintos */
+        #pie-chart {
+            width: 220px; height: 220px; border-radius: 50%;
+            background: conic-gradient(#0f172a 0% 40%, #be123c 40% 70%, #059669 70% 100%);
+            margin: 0 auto; transition: all 0.5s ease;
         }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
     <div class="max-w-4xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
-            <div class="flex items-center gap-4">
-                <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <h2 class="serif text-3xl italic text-rose-950 font-bold">Asistente Fiscal</h2>
+        <header class="flex flex-col gap-6 mb-10">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+                    <h2 class="serif text-3xl italic text-rose-950 font-bold">Asistente Fiscal</h2>
+                </div>
+                <div class="flex bg-slate-100 p-1 rounded-2xl border border-slate-200">
+                    <button onclick="changeTime('mes')" id="time-mes" class="px-4 py-2 text-[8px] font-black uppercase rounded-xl bg-white shadow-sm">Mensual</button>
+                    <button onclick="changeTime('año')" id="time-año" class="px-4 py-2 text-[8px] font-black uppercase rounded-xl text-slate-400">Anual</button>
+                </div>
             </div>
-            <div class="flex bg-slate-100 p-1.5 rounded-[20px] border border-slate-200">
-                <button onclick="changeTime('mes')" id="time-mes" class="px-6 py-3 text-[9px] font-black uppercase rounded-[15px] bg-white shadow-sm text-slate-900">Mensual</button>
-                <button onclick="changeTime('año')" id="time-año" class="px-6 py-3 text-[9px] font-black uppercase rounded-[15px] text-slate-400">Anual</button>
+
+            <div class="flex bg-rose-50 p-1.5 rounded-2xl border border-rose-100 self-center md:self-end">
+                <button id="reg-iva" onclick="toggleRegimen('iva')" class="px-6 py-2 text-[9px] font-black uppercase rounded-xl bg-rose-900 text-white transition">Con IVA</button>
+                <button id="reg-renta" onclick="toggleRegimen('renta')" class="px-6 py-2 text-[9px] font-black uppercase rounded-xl text-rose-900 transition">Sin IVA (Renta)</button>
             </div>
         </header>
 
@@ -38,69 +45,52 @@
 
         <div id="view-resumen" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-8 rounded-[40px] border border-emerald-100 text-center shadow-sm">
+                <div onclick="toggleDetails('det-ingresos')" class="bg-white p-8 rounded-[40px] border border-emerald-100 text-center shadow-sm cursor-pointer hover:scale-[1.02] transition">
                     <p class="text-[9px] font-black uppercase text-slate-400 mb-2">Ingresos Brutos (<span class="current-time">Mes</span>)</p>
                     <p id="ingresos-val" class="serif text-4xl italic font-bold text-emerald-700">4.580€</p>
+                    <p class="text-[8px] mt-2 text-slate-300 font-bold uppercase tracking-widest">Pulsar para ver detalle</p>
                 </div>
-                <div class="bg-white p-8 rounded-[40px] border border-rose-100 text-center shadow-sm">
+                <div onclick="toggleDetails('det-gastos')" class="bg-white p-8 rounded-[40px] border border-rose-100 text-center shadow-sm cursor-pointer hover:scale-[1.02] transition">
                     <p class="text-[9px] font-black uppercase text-slate-400 mb-2">Gastos Detectados</p>
                     <p id="gastos-val" class="serif text-4xl italic font-bold text-rose-600">1.120€</p>
+                    <p class="text-[8px] mt-2 text-slate-300 font-bold uppercase tracking-widest">Pulsar para ver detalle</p>
                 </div>
+            </div>
+
+            <div id="det-ingresos" class="hidden bg-emerald-50 rounded-[35px] p-6 space-y-3">
+                <div class="flex justify-between text-xs border-b border-emerald-100 pb-2"><span class="font-bold italic">La Tirolina</span><span id="det-i-t">1.832€</span></div>
+                <div class="flex justify-between text-xs border-b border-emerald-100 pb-2"><span class="font-bold italic">La Ermita</span><span id="det-i-e">1.374€</span></div>
+                <div class="flex justify-between text-xs"><span class="font-bold italic">Los Almendros</span><span id="det-i-a">1.374€</span></div>
+            </div>
+            <div id="det-gastos" class="hidden bg-rose-50 rounded-[35px] p-6 space-y-3">
+                <div class="flex justify-between text-xs border-b border-rose-100 pb-2"><span class="font-bold italic">Mantenimiento y Limpieza</span><span>450€</span></div>
+                <div class="flex justify-between text-xs border-b border-rose-100 pb-2"><span class="font-bold italic">Suministros (Luz/Agua)</span><span>320€</span></div>
+                <div class="flex justify-between text-xs"><span class="font-bold italic">Comisiones Portales</span><span>350€</span></div>
             </div>
         </div>
 
         <div id="view-graficos" class="hidden space-y-6">
             <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm text-center">
-                <h4 class="text-[10px] font-black uppercase text-slate-400 mb-8 tracking-widest italic">Reparto de Ingresos por Propiedad</h4>
-                
+                <h4 class="text-[10px] font-black uppercase text-slate-400 mb-8 tracking-widest italic">Reparto por Propiedad</h4>
                 <div class="flex flex-col md:flex-row items-center justify-center gap-12">
-                    <div class="pie-chart shadow-2xl"></div>
-                    
+                    <div id="pie-chart" class="shadow-2xl"></div>
                     <div class="text-left space-y-4">
-                        <div class="flex items-center gap-3">
-                            <span class="w-4 h-4 rounded-full bg-[#10b981]"></span>
-                            <div><p class="text-[10px] font-black uppercase text-slate-400">Tirolina</p><p id="chart-t" class="font-bold">1.832€ (40%)</p></div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="w-4 h-4 rounded-full bg-[#34d399]"></span>
-                            <div><p class="text-[10px] font-black uppercase text-slate-400">La Ermita</p><p id="chart-e" class="font-bold">1.374€ (30%)</p></div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="w-4 h-4 rounded-full bg-[#6ee7b7]"></span>
-                            <div><p class="text-[10px] font-black uppercase text-slate-400">Los Almendros</p><p id="chart-a" class="font-bold">1.374€ (30%)</p></div>
-                        </div>
+                        <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-[#0f172a]"></span><div><p class="text-[8px] font-black uppercase text-slate-400">Tirolina</p><p id="chart-t" class="font-bold">1.832€</p></div></div>
+                        <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-[#be123c]"></span><div><p class="text-[8px] font-black uppercase text-slate-400">La Ermita</p><p id="chart-e" class="font-bold">1.374€</p></div></div>
+                        <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-[#059669]"></span><div><p class="text-[8px] font-black uppercase text-slate-400">Los Almendros</p><p id="chart-a" class="font-bold">1.374€</p></div></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="view-declara" class="hidden space-y-6">
-            <div class="bg-emerald-900 p-8 rounded-[40px] text-white mb-6">
-                <p class="text-[9px] font-black uppercase text-emerald-300">Rendimiento Estimado (Capital Inmobiliario)</p>
-                <h3 class="serif text-3xl italic">Beneficio Neto: 3.460€</h3>
+            <div id="box-iva" class="bg-rose-900 p-8 rounded-[40px] text-white">
+                <p class="text-[10px] font-black uppercase text-rose-300 mb-2">IVA Trimestral (303)</p>
+                <h3 class="serif text-3xl italic">458,20€ a ingresar</h3>
             </div>
-
-            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm space-y-6">
-                <h4 class="serif text-xl italic font-bold">Datos pendientes para Renta</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Amortización (3% constr.)</label>
-                        <input type="number" placeholder="Ej: 1.200€" class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-black uppercase text-slate-400 ml-2">IBI y Tasas</label>
-                        <input type="number" placeholder="Ej: 350€" class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Intereses Hipoteca</label>
-                        <input type="number" placeholder="Ej: 900€" class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Seguros (Hogar/RC)</label>
-                        <input type="number" placeholder="Ej: 240€" class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold outline-none">
-                    </div>
-                </div>
-                <button class="w-full py-5 bg-slate-900 text-white rounded-[25px] font-black text-[10px] uppercase tracking-widest shadow-xl">Calcular Renta Final</button>
+            <div id="box-renta" class="hidden bg-[#0f172a] p-8 rounded-[40px] text-white">
+                <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Rendimiento Renta</p>
+                <h3 class="serif text-3xl italic">3.460€ Neto Est.</h3>
             </div>
         </div>
     </div>
@@ -115,18 +105,32 @@
         }
 
         function changeTime(time) {
-            document.getElementById('time-mes').className = time === 'mes' ? 'px-6 py-3 text-[9px] font-black uppercase rounded-[15px] bg-white shadow-sm text-slate-900' : 'px-6 py-3 text-[9px] font-black uppercase rounded-[15px] text-slate-400';
-            document.getElementById('time-año').className = time === 'año' ? 'px-6 py-3 text-[9px] font-black uppercase rounded-[15px] bg-white shadow-sm text-slate-900' : 'px-6 py-3 text-[9px] font-black uppercase rounded-[15px] text-slate-400';
+            const isMes = time === 'mes';
+            document.getElementById('time-mes').className = isMes ? 'px-4 py-2 text-[8px] font-black uppercase rounded-xl bg-white shadow-sm' : 'px-4 py-2 text-[8px] font-black uppercase rounded-xl text-slate-400';
+            document.getElementById('time-año').className = !isMes ? 'px-4 py-2 text-[8px] font-black uppercase rounded-xl bg-white shadow-sm' : 'px-4 py-2 text-[8px] font-black uppercase rounded-xl text-slate-400';
             
-            document.querySelectorAll('.current-time').forEach(el => el.innerText = time === 'mes' ? 'Mes' : 'Año');
+            document.querySelectorAll('.current-time').forEach(el => el.innerText = isMes ? 'Mes' : 'Año');
             
-            if(time === 'mes') {
-                document.getElementById('ingresos-val').innerText = '4.580€';
-                document.getElementById('chart-t').innerText = '1.832€ (40%)';
-            } else {
-                document.getElementById('ingresos-val').innerText = '54.960€';
-                document.getElementById('chart-t').innerText = '21.984€ (40%)';
-            }
+            // Actualización de cifras
+            const mult = isMes ? 1 : 12;
+            document.getElementById('ingresos-val').innerText = (4580 * mult).toLocaleString() + '€';
+            document.getElementById('gastos-val').innerText = (1120 * mult).toLocaleString() + '€';
+            document.getElementById('det-i-t').innerText = (1832 * mult).toLocaleString() + '€';
+            document.getElementById('det-i-e').innerText = (1374 * mult).toLocaleString() + '€';
+            document.getElementById('det-i-a').innerText = (1374 * mult).toLocaleString() + '€';
+        }
+
+        function toggleDetails(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        function toggleRegimen(type) {
+            const isIva = type === 'iva';
+            document.getElementById('reg-iva').className = isIva ? 'px-6 py-2 text-[9px] font-black uppercase rounded-xl bg-rose-900 text-white' : 'px-6 py-2 text-[9px] font-black uppercase rounded-xl text-rose-900';
+            document.getElementById('reg-renta').className = !isIva ? 'px-6 py-2 text-[9px] font-black uppercase rounded-xl bg-slate-900 text-white' : 'px-6 py-2 text-[9px] font-black uppercase rounded-xl text-rose-900';
+            document.getElementById('box-iva').classList.toggle('hidden', !isIva);
+            document.getElementById('box-renta').classList.toggle('hidden', isIva);
         }
     </script>
 </body>

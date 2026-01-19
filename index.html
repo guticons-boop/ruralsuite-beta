@@ -2,107 +2,113 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RuralSuite Business Beta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>RuralSuite Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/609/609803.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        .app-card { transition: all 0.2s ease; border: 1px solid #f0f0f0; border-radius: 20px; }
-        .app-card:active { transform: scale(0.95); background-color: #f9f9f9; }
-        .bg-white-pure { background-color: #ffffff; }
-        canvas { border: 1px solid #ddd; border-radius: 10px; width: 100%; height: 150px; touch-action: none; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; }
+        .glass-card { border-radius: 24px; border: 1px solid #f0f0f0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card:active { transform: scale(0.97); background-color: #fafafa; }
+        .status-badge { padding: 4px 12px; border-radius: 100px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .btn-primary { background: #000; color: #fff; border-radius: 16px; padding: 16px; font-weight: 600; width: 100%; transition: opacity 0.2s; }
+        .btn-primary:active { opacity: 0.8; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 12px; }
     </style>
 </head>
-<body class="bg-white text-gray-800 font-sans">
+<body>
 
-    <div id="hub" class="max-w-md mx-auto p-6">
-        <header class="mb-10 text-center">
-            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">RuralSuite</h1>
-            <p class="text-blue-500 font-medium mt-1">Gestión Integral de Alojamientos</p>
-        </header>
+    <div id="hub" class="max-w-md mx-auto p-6 pb-24">
+        <div class="flex justify-between items-center mt-4 mb-10">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight">RuralSuite</h1>
+                <p class="text-gray-400 text-sm font-medium">Panel de Control</p>
+            </div>
+            <div class="bg-blue-50 text-blue-600 status-badge">Plan Business</div>
+        </div>
 
-        <div class="grid grid-cols-2 gap-5">
-            <div onclick="showApp('checkin')" class="app-card p-6 bg-white shadow-sm flex flex-col items-center cursor-pointer">
-                <span class="text-4xl mb-3">🆔</span>
-                <span class="font-bold text-xs uppercase tracking-wider">Check-in Scan</span>
+        <div class="grid grid-cols-1 gap-4">
+            <div onclick="openApp('checkin')" class="glass-card p-5 flex items-center space-x-4 cursor-pointer">
+                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl">🆔</div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-900 italic">Check-in Scan</h3>
+                    <p class="text-xs text-gray-400">Escaneo DNI y envío legal</p>
+                </div>
+                <span class="text-gray-300">→</span>
             </div>
-            <div onclick="showApp('calendar')" class="app-card p-6 bg-white shadow-sm flex flex-col items-center cursor-pointer">
-                <span class="text-4xl mb-3">📅</span>
-                <span class="font-bold text-xs uppercase tracking-wider">Calendario</span>
+
+            <div onclick="openApp('calendar')" class="glass-card p-5 flex items-center space-x-4 cursor-pointer">
+                <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-2xl">📅</div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-900 italic">Calendario iCal</h3>
+                    <p class="text-xs text-gray-400">Sincronizado con Airbnb/Booking</p>
+                </div>
+                <span class="text-gray-300">→</span>
             </div>
-            <div onclick="showApp('accounting')" class="app-card p-6 bg-white shadow-sm flex flex-col items-center cursor-pointer">
-                <span class="text-4xl mb-3">📊</span>
-                <span class="font-bold text-xs uppercase tracking-wider">Contabilidad</span>
+
+            <div onclick="openApp('accounting')" class="glass-card p-5 flex items-center space-x-4 cursor-pointer">
+                <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-2xl">📊</div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-900 italic">Contabilidad</h3>
+                    <p class="text-xs text-gray-400">Ingresos, gastos y modelos IRPF</p>
+                </div>
+                <span class="text-gray-300">→</span>
             </div>
-            <div onclick="showApp('tax')" class="app-card p-6 bg-white shadow-sm flex flex-col items-center cursor-pointer">
-                <span class="text-4xl mb-3">⚖️</span>
-                <span class="font-bold text-xs uppercase tracking-wider">Tax Assistant</span>
-            </div>
-            <div onclick="showApp('marketing')" class="app-card p-6 bg-white shadow-sm flex flex-col items-center cursor-pointer">
-                <span class="text-4xl mb-3">📢</span>
-                <span class="font-bold text-xs uppercase tracking-wider">Marketing</span>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Crecimiento</h2>
+            <div onclick="openApp('marketing')" class="glass-card p-6 bg-gray-900 text-white cursor-pointer">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-bold text-lg italic italic">Rural Marketing</h3>
+                        <p class="text-gray-400 text-xs mt-1">Automatiza ofertas y festivos</p>
+                    </div>
+                    <span class="text-2xl">📢</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="app-checkin" class="hidden fixed inset-0 bg-white p-6 overflow-y-auto">
-        <div class="flex items-center justify-between mb-6">
-            <button onclick="goHome()" class="text-blue-600 font-bold">← Inicio</button>
-            <span class="font-bold text-gray-400">CHECK-IN SCAN</span>
+    <div id="app-calendar" class="fixed inset-0 bg-white hidden p-6 overflow-y-auto z-50">
+        <button onclick="closeApp()" class="mb-6 text-sm font-bold text-gray-400 uppercase tracking-widest flex items-center">
+            <span class="mr-2">✕</span> Cerrar Calendario
+        </button>
+        <h2 class="text-2xl font-bold mb-6 italic">Ocupación Enero</h2>
+        
+        <div class="calendar-grid mb-8">
+            <div class="day bg-gray-50 text-gray-300">29</div>
+            <div class="day bg-gray-50 text-gray-300">30</div>
+            <div class="day bg-gray-50 text-gray-300">31</div>
+            <div class="day font-bold">1</div><div class="day font-bold">2</div>
+            <div class="day bg-red-100 text-red-600 font-bold">3</div>
+            <div class="day bg-red-100 text-red-600 font-bold">4</div>
+            <script>
+                for(let i=5; i<=31; i++) {
+                    document.write(`<div class="day font-bold ${i==19?'bg-blue-600 text-white':''}">${i}</div>`);
+                }
+            </script>
         </div>
         
-        <div class="space-y-6">
-            <div class="border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center bg-gray-50">
-                <p class="text-gray-500 mb-4">Escáner de DNI / Pasaporte</p>
-                <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg">📸 Activar Cámara</button>
+        <div class="space-y-4 text-sm">
+            <div class="p-4 border-l-4 border-red-500 bg-red-50 rounded-r-xl">
+                <p class="font-bold">Ocupado: Airbnb</p>
+                <p class="text-xs text-red-700">Huésped: Juan García (2 noches)</p>
             </div>
-
-            <div class="bg-white border rounded-xl p-4">
-                <h3 class="font-bold mb-3 text-sm">DATOS EXTRAÍDOS (OCR)</h3>
-                <input type="text" placeholder="Nombre completo" class="w-full mb-2 p-3 border rounded-lg text-sm bg-gray-50">
-                <input type="text" placeholder="Número de Documento" class="w-full p-3 border rounded-lg text-sm bg-gray-50">
-            </div>
-
-            <div class="bg-white">
-                <h3 class="font-bold mb-3 text-sm">FIRMA DEL PARTE LEGAL</h3>
-                <canvas id="signature-pad"></canvas>
-                <button class="text-xs text-gray-400 mt-2">Limpiar firma</button>
-            </div>
-
-            <button onclick="alert('Datos enviados a SES.Hospedajes (Simulado)')" class="w-full bg-green-500 text-white p-4 rounded-xl font-bold shadow-lg mt-4">FINALIZAR Y ENVIAR</button>
         </div>
-    </div>
-
-    <div id="app-accounting" class="hidden fixed inset-0 bg-white p-6 overflow-y-auto">
-        <div class="flex items-center justify-between mb-6">
-            <button onclick="goHome()" class="text-blue-600 font-bold">← Inicio</button>
-            <span class="font-bold text-gray-400">FINANZAS</span>
-        </div>
-        <table class="w-full text-left text-sm border-collapse">
-            <thead>
-                <tr class="bg-gray-50 text-gray-500 uppercase text-[10px]">
-                    <th class="p-3 border">Fecha</th>
-                    <th class="p-3 border">Concepto</th>
-                    <th class="p-3 border">Euros</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td class="p-3 border">19/01</td><td class="p-3 border text-blue-600">Reserva Airbnb</td><td class="p-3 border font-bold">+240€</td></tr>
-                <tr><td class="p-3 border">18/01</td><td class="p-3 border text-red-600">Limpieza</td><td class="p-3 border font-bold">-45€</td></tr>
-            </tbody>
-        </table>
-        <button class="w-full mt-6 bg-gray-100 p-3 rounded-lg font-bold text-sm">⬇️ EXPORTAR EXCEL</button>
     </div>
 
     <script>
-        function showApp(app) {
+        function openApp(id) {
+            document.querySelectorAll('[id^="app-"]').forEach(el => el.classList.add('hidden'));
+            const app = document.getElementById('app-' + id);
+            if(app) app.classList.remove('hidden');
             document.getElementById('hub').classList.add('hidden');
-            document.querySelectorAll('[id^="app-"]').forEach(el => el.classList.add('hidden'));
-            document.getElementById('app-' + app).classList.remove('hidden');
         }
-        function goHome() {
-            document.getElementById('hub').classList.remove('hidden');
+        function closeApp() {
             document.querySelectorAll('[id^="app-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('hub').classList.remove('hidden');
         }
     </script>
 </body>

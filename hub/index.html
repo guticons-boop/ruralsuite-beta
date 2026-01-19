@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RuralGesto | Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; } .serif { font-family: 'DM+Serif+Display', serif; }</style>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .card-shadow { box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); }
+    </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="p-6 md:p-12 pb-24">
     <div class="max-w-6xl mx-auto">
         <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
@@ -16,29 +21,38 @@
                 <p class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">El Rinconcito de Toni</p>
             </div>
             <div class="flex flex-wrap gap-2">
-                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm"><p class="text-[7px] font-black text-slate-400 uppercase">Apt 1</p><p class="text-xs font-bold text-rose-900 serif italic">La Tirolina</p></div>
-                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm"><p class="text-[7px] font-black text-slate-400 uppercase">Apt 2</p><p class="text-xs font-bold text-rose-900 serif italic">La Ermita</p></div>
-                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm"><p class="text-[7px] font-black text-slate-400 uppercase">Apt 3</p><p class="text-xs font-bold text-rose-900 serif italic">Los Almendros</p></div>
+                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[7px] font-black text-slate-400 uppercase">Apt 1</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">La Tirolina</p>
+                </div>
+                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[7px] font-black text-slate-400 uppercase">Apt 2</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">La Ermita</p>
+                </div>
+                <div class="px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[7px] font-black text-slate-400 uppercase">Apt 3</p>
+                    <p class="text-xs font-bold text-rose-900 serif italic">Los Almendros</p>
+                </div>
             </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div onclick="location.href='../checkin/index.html'" class="group cursor-pointer bg-rose-600 p-10 rounded-[50px] shadow-xl hover:bg-rose-700 transition-all text-white">
+            <div onclick="location.href='../checkin/index.html'" class="group cursor-pointer bg-rose-600 p-10 rounded-[50px] card-shadow hover:bg-rose-700 transition-all text-white text-left">
                 <div class="p-4 bg-white/10 rounded-3xl w-fit mb-12"><i data-lucide="scan" class="w-8 h-8"></i></div>
                 <h3 class="serif text-3xl font-bold italic mb-2">Check-in Scan</h3>
-                <p class="text-rose-100 text-sm">Registro oficial de viajeros.</p>
+                <p class="text-rose-100 text-sm">Registro oficial y escaneo de DNI.</p>
             </div>
 
-            <div onclick="location.href='../tax/index.html'" class="group cursor-pointer bg-slate-900 p-10 rounded-[50px] shadow-xl hover:bg-black transition-all text-white">
+            <div onclick="location.href='../tax/index.html'" class="group cursor-pointer bg-slate-900 p-10 rounded-[50px] card-shadow hover:bg-black transition-all text-white text-left">
                 <div class="p-4 bg-emerald-500 rounded-3xl w-fit mb-12"><i data-lucide="pie-chart" class="w-8 h-8"></i></div>
                 <h3 class="serif text-3xl font-bold italic mb-2">Fiscalidad</h3>
-                <p class="text-slate-400 text-sm">Control de ingresos y gastos.</p>
+                <p class="text-slate-400 text-sm">Control de ingresos y gastos 2026.</p>
             </div>
 
-            <div onclick="location.href='../calendar/index.html'" class="group cursor-pointer bg-white p-10 rounded-[50px] border border-slate-100 shadow-sm hover:border-blue-200 transition-all">
+            <div onclick="location.href='../calendar/index.html'" class="group cursor-pointer bg-white p-10 rounded-[50px] border border-slate-100 card-shadow hover:border-blue-200 transition-all text-left">
                 <div class="p-4 bg-blue-50 rounded-3xl w-fit mb-12 text-blue-600"><i data-lucide="calendar" class="w-8 h-8"></i></div>
                 <h3 class="serif text-3xl font-bold italic text-rose-950 mb-2">Calendario</h3>
-                <p class="text-slate-500 text-sm">Disponibilidad de las 3 casas.</p>
+                <p class="text-slate-500 text-sm">Disponibilidad de las 3 propiedades.</p>
             </div>
         </div>
     </div>

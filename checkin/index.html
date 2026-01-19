@@ -5,125 +5,83 @@
     <title>Check-in Scan | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-btn.active { background-color: #be123c; color: white; }
+        .tab-btn.active { background-color: #be123c; color: white; border-color: #be123c; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #be123c; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
-    <div class="max-w-4xl mx-auto">
-        <header class="flex justify-between items-center mb-8">
-            <div class="flex items-center gap-4">
-                <button onclick="window.history.back()" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+    <div class="max-w-2xl mx-auto">
+        <header class="flex items-center gap-4 mb-8">
+            <button onclick="window.history.back()" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100 hover:bg-slate-50 transition-all"><i data-lucide="arrow-left"></i></button>
+            <div>
                 <h2 class="serif text-3xl italic text-rose-950 font-bold">Check-in Scan</h2>
+                <p id="ocr-status" class="text-[9px] font-black uppercase text-slate-400 mt-1 tracking-widest">Listo para escanear</p>
             </div>
-            <div id="status-ocr" class="hidden text-rose-600 font-black text-[10px] uppercase animate-pulse">Procesando DNI...</div>
         </header>
 
-        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8 border border-slate-200">
-            <button onclick="showSection('nuevo')" id="btn-nuevo" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Registrar Huésped</button>
-            <button onclick="showSection('db')" id="btn-db" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Base de Datos</button>
+        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8">
+            <button onclick="switchView('scan')" id="btn-scan" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Escanear / Nuevo</button>
+            <button onclick="switchView('base')" id="btn-base" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Huéspedes</button>
         </div>
 
-        <div id="sec-nuevo" class="space-y-6">
+        <div id="view-scan" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="relative bg-rose-600 p-8 rounded-[40px] text-white text-center cursor-pointer hover:bg-rose-700 transition-all">
-                    <input type="file" accept="image/*" capture="camera" onchange="runOCR(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <i data-lucide="scan" class="mx-auto mb-2 w-8 h-8"></i>
-                    <p class="font-bold uppercase text-[10px]">Escanear DNI / OCR</p>
+                <div class="relative bg-rose-600 p-8 rounded-[40px] text-white text-center shadow-lg active:scale-95 transition-all overflow-hidden group">
+                    <input type="file" accept="image/*" capture="camera" onchange="iniciarOCR(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20">
+                    <i data-lucide="camera" class="mx-auto mb-2 w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <p class="font-black uppercase text-[10px] tracking-tighter">Escanear DNI ahora</p>
                 </div>
-                <div onclick="enviarEnlace()" class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm text-center cursor-pointer hover:bg-slate-50">
-                    <i data-lucide="send" class="mx-auto mb-2 w-8 h-8 text-rose-500"></i>
-                    <p class="font-bold uppercase text-[10px] text-slate-800">Enviar Enlace Auto Check-in</p>
+                <div onclick="enviarEnlace()" class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm text-center cursor-pointer hover:bg-slate-50 transition-all">
+                    <i data-lucide="share-2" class="mx-auto mb-2 w-8 h-8 text-rose-500"></i>
+                    <p class="font-black uppercase text-[10px] text-slate-800 tracking-tighter">Enviar Enlace al Cliente</p>
                 </div>
             </div>
 
-            <div class="bg-white p-10 rounded-[50px] border border-slate-100 shadow-xl space-y-4">
-                <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="documento" placeholder="DNI / NIE" class="p-4 bg-slate-50 rounded-2xl outline-none font-mono">
-                    <input type="date" id="nacimiento" class="p-4 bg-slate-50 rounded-2xl outline-none text-slate-400">
+            <div class="bg-white p-8 md:p-10 rounded-[50px] border border-slate-100 shadow-xl space-y-6">
+                <h3 class="serif text-xl font-bold italic border-b pb-4">Datos del Viajero</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Nombre y Apellidos</label>
+                        <input type="text" id="nombre" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-sm" placeholder="Se rellenará al escanear...">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Nº Documento (DNI/NIE)</label>
+                            <input type="text" id="dni" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-mono text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">F. Nacimiento</label>
+                            <input type="date" id="nacimiento" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Teléfono WhatsApp</label>
+                            <input type="tel" id="telefono" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none text-sm" placeholder="34600000000">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Email</label>
+                            <input type="email" id="email" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none text-sm">
+                        </div>
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="tel" id="telefono" placeholder="WhatsApp (Ej: 34600...)" class="p-4 bg-slate-50 rounded-2xl outline-none">
-                    <input type="email" id="email" placeholder="Email" class="p-4 bg-slate-50 rounded-2xl outline-none">
-                </div>
-                <button onclick="guardarCliente()" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[11px] uppercase tracking-widest mt-4">Guardar en RuralGesto</button>
+
+                <button onclick="guardarCheckin()" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[11px] uppercase tracking-widest hover:bg-rose-950 transition-all shadow-xl flex items-center justify-center gap-3">
+                    <i data-lucide="save"></i> Guardar y Finalizar Check-in
+                </button>
             </div>
         </div>
 
-        <div id="sec-db" class="hidden">
+        <div id="view-base" class="hidden">
             <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
                 <table class="w-full text-left text-[11px]">
-                    <thead class="bg-slate-50 border-b border-slate-100">
-                        <tr><th class="p-5 uppercase text-slate-400 font-black">Huésped</th><th class="p-5 uppercase text-slate-400 font-black">DNI</th><th class="p-5 uppercase text-slate-400 font-black">Contacto</th><th class="p-5"></th></tr>
-                    </thead>
-                    <tbody id="lista-clientes" class="divide-y divide-slate-50"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let clientes = JSON.parse(localStorage.getItem('rg_clientes') || '[]');
-
-        async function runOCR(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            document.getElementById('status-ocr').classList.remove('hidden');
-            const result = await Tesseract.recognize(file, 'spa');
-            const text = result.data.text;
-            const dniMatch = text.match(/\d{8}[A-Z]/);
-            if(dniMatch) document.getElementById('documento').value = dniMatch[0];
-            document.getElementById('nombre').value = text.split('\n')[0].substring(0,20);
-            document.getElementById('status-ocr').classList.add('hidden');
-            alert("Lectura completada. Verifica los datos.");
-        }
-
-        function guardarCliente() {
-            const c = {
-                nombre: document.getElementById('nombre').value,
-                dni: document.getElementById('documento').value,
-                nac: document.getElementById('nacimiento').value,
-                tel: document.getElementById('telefono').value,
-                mail: document.getElementById('email').value,
-                fecha: new Date().toLocaleDateString()
-            };
-            if(!c.nombre) return alert("Falta el nombre");
-            clientes.push(c);
-            localStorage.setItem('rg_clientes', JSON.stringify(clientes));
-            alert("Huésped guardado correctamente");
-            location.reload();
-        }
-
-        function showSection(s) {
-            document.getElementById('sec-nuevo').classList.toggle('hidden', s !== 'nuevo');
-            document.getElementById('sec-db').classList.toggle('hidden', s !== 'db');
-            document.getElementById('btn-nuevo').classList.toggle('active', s === 'nuevo');
-            document.getElementById('btn-db').classList.toggle('active', s === 'db');
-            if(s === 'db') renderClientes();
-        }
-
-        function renderClientes() {
-            const html = clientes.map(c => `
-                <tr>
-                    <td class="p-5 font-bold">${c.nombre}</td>
-                    <td class="p-5 font-mono text-rose-600">${c.dni}</td>
-                    <td class="p-5 text-slate-500">${c.tel}</td>
-                    <td class="p-5"><button onclick="window.open('https://wa.me/${c.tel}')" class="text-emerald-600"><i data-lucide="message-circle"></i></button></td>
-                </tr>`).join('');
-            document.getElementById('lista-clientes').innerHTML = html;
-            lucide.createIcons();
-        }
-
-        function enviarEnlace() {
-            const tel = prompt("WhatsApp del cliente:");
-            if(tel) window.open(`https://wa.me/${tel}?text=Hola, por favor rellena el check-in aquí: https://ruralgesto.com/auto-checkin`);
-        }
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+                    <thead class="bg-slate-50 border-b border-slate-10

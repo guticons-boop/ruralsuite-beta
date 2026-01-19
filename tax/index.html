@@ -3,129 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tax Central | RuralGesto</title>
+    <title>Administración | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7f6; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .card { background: white; border-radius: 30px; padding: 25px; border: 1px solid #eee; }
-        .tab-btn { flex: 1; padding: 12px 5px; border-radius: 18px; font-weight: 800; font-size: 9px; text-transform: uppercase; transition: 0.3s; color: #9ca3af; }
-        .active-tab { background: #fff; color: #2563eb; shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .input-tax { width: 100%; padding: 14px; border-radius: 15px; background: #f9fafb; border: 1px solid #eee; font-weight: 700; margin-top: 5px; outline: none; font-size: 13px; }
+        .card { background: white; border-radius: 30px; padding: 25px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
+        .tab-btn { flex: 1; padding: 12px 5px; border-radius: 18px; font-weight: 800; font-size: 10px; text-transform: uppercase; transition: 0.3s; color: #64748b; border: none; cursor: pointer; }
+        .active-tab { background: #fff; color: #2563eb; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .input-adm { width: 100%; padding: 14px; border-radius: 15px; background: #f1f5f9; border: 2px solid transparent; font-weight: 700; margin-top: 5px; outline: none; transition: 0.2s; }
+        .input-adm:focus { border-color: #2563eb; background: #fff; }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto pb-32">
 
     <header class="mb-6 flex justify-between items-center">
         <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
-        <h1 class="italic-black text-2xl uppercase text-blue-600 italic">Tax Central</h1>
+        <h1 class="italic-black text-2xl uppercase text-blue-600 italic">Administración</h1>
     </header>
 
-    <div class="flex bg-gray-200/50 p-1.5 rounded-[22px] mb-8">
-        <button id="t-diario" onclick="showTab('diario')" class="tab-btn active-tab">Diario</button>
-        <button id="t-analitica" onclick="showTab('analitica')" class="tab-btn">Finanzas</button>
-        <button id="t-renta" onclick="showTab('renta')" class="tab-btn">Renta (IA)</button>
+    <div class="flex bg-slate-200/50 p-1.5 rounded-[22px] mb-8">
+        <button id="btn-diario" onclick="cambiarVista('diario')" class="tab-btn active-tab">Registro</button>
+        <button id="btn-graficos" onclick="cambiarVista('graficos')" class="tab-btn">Finanzas</button>
+        <button id="btn-renta" onclick="cambiarVista('renta')" class="tab-btn">Pre-Renta</button>
     </div>
 
-    <div id="view-diario" class="space-y-6">
-        <div class="card shadow-xl border-l-8 border-l-blue-500">
-            <h2 class="italic-black text-xs uppercase mb-4 text-blue-600">Registrar Ingreso/Gasto</h2>
-            <select id="tipo-mov" class="input-tax mb-4">
+    <div id="vista-diario" class="space-y-6">
+        <div class="card border-l-8 border-l-blue-500">
+            <h2 class="italic-black text-xs uppercase mb-4 text-blue-600">Nuevo Movimiento</h2>
+            
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Tipo de operación</label>
+            <select id="tipo" class="input-adm mb-4">
                 <option value="ingreso">➕ Ingreso (Reserva)</option>
-                <option value="gasto">➖ Gasto (Suministros/Limpieza)</option>
+                <option value="gasto">➖ Gasto (Suministros/Reparación)</option>
             </select>
-            <input type="text" placeholder="Concepto (ej: Reserva Familia García)" class="input-tax mb-4">
-            <input type="number" placeholder="Importe (€)" class="input-tax mb-6">
-            <button class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs">Guardar Movimiento</button>
+
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Concepto</label>
+            <input type="text" id="concepto" placeholder="Ej: Limpieza Apartamento 1" class="input-adm mb-4">
+
+            <label class="text-[9px] font-black text-gray-400 uppercase ml-2 italic">Importe (€)</label>
+            <input type="number" id="importe" placeholder="0.00" class="input-adm mb-6">
+
+            <button onclick="guardarDato()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase text-xs shadow-lg shadow-blue-100">Guardar en el Libro</button>
         </div>
     </div>
 
-    <div id="view-analitica" class="hidden space-y-6">
-        <div class="card shadow-xl">
-            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400">Rendimiento Anual</h2>
-            <canvas id="mainChart" height="250"></canvas>
-            <div class="flex gap-2 mt-6">
-                <button onclick="exportData('pdf')" class="flex-1 bg-red-50 text-red-600 p-3 rounded-xl font-black text-[10px] uppercase">PDF</button>
-                <button onclick="exportData('excel')" class="flex-1 bg-green-50 text-green-600 p-3 rounded-xl font-black text-[10px] uppercase">Excel</button>
+    <div id="vista-graficos" class="hidden space-y-6">
+        <div class="card">
+            <h2 class="italic-black text-xs uppercase mb-6 text-gray-400 italic tracking-widest">Balance de Ingresos</h2>
+            <div style="height: 250px; position: relative;">
+                <canvas id="graficoFinanzas"></canvas>
+            </div>
+            <div class="flex gap-2 mt-8">
+                <button onclick="alert('Exportando Excel...')" class="flex-1 bg-green-50 text-green-600 p-4 rounded-xl font-black text-[10px] uppercase">Descargar Excel</button>
+                <button onclick="window.print()" class="flex-1 bg-red-50 text-red-600 p-4 rounded-xl font-black text-[10px] uppercase">Guardar PDF</button>
             </div>
         </div>
     </div>
 
-    <div id="view-renta" class="hidden space-y-6">
-        <div class="bg-slate-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
-            <div class="relative z-10">
-                <p class="text-[10px] font-black uppercase text-blue-400 mb-2 italic">Modelo 100 - Estimación</p>
-                <h2 class="text-3xl italic-black uppercase leading-tight">Pre-Declaración <br>Renta 2025</h2>
-            </div>
-            <div class="absolute -right-4 -bottom-4 opacity-20 text-8xl">⚖️</div>
+    <div id="vista-renta" class="hidden space-y-6">
+        <div class="bg-blue-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
+            <h2 class="text-3xl italic-black uppercase leading-tight relative z-10">Cálculo de <br>Impuestos</h2>
+            <p class="text-[10px] font-black uppercase text-blue-300 mt-2 relative z-10">Borrador IRPF 2026</p>
+            <span class="absolute -right-6 -bottom-6 text-9xl opacity-10">🏛️</span>
         </div>
 
         <div class="card">
-            <h3 class="italic-black text-[10px] uppercase mb-4 text-gray-400 italic">Resumen para Hacienda</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between border-b border-gray-100 pb-2">
-                    <span class="text-xs font-bold text-gray-500">Ingresos Brutos:</span>
-                    <span class="text-xs font-black">24.500,00€</span>
+            <div class="space-y-4 mb-8">
+                <div class="flex justify-between items-center border-b border-gray-50 pb-3">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">Ingresos Totales</span>
+                    <span class="font-black text-blue-600">12.450,00€</span>
                 </div>
-                <div class="flex justify-between border-b border-gray-100 pb-2">
-                    <span class="text-xs font-bold text-gray-500">Gastos Deducibles:</span>
-                    <span class="text-xs font-black text-red-500">-4.200,00€</span>
+                <div class="flex justify-between items-center border-b border-gray-50 pb-3">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">Gastos Deducibles</span>
+                    <span class="font-black text-red-500">-2.100,00€</span>
                 </div>
-                <div class="flex justify-between border-b border-gray-100 pb-2 bg-blue-50 p-2 rounded-lg">
-                    <span class="text-xs font-black text-blue-700">Rendimiento Neto:</span>
-                    <span class="text-xs font-black text-blue-700">20.300,00€</span>
+                <div class="flex justify-between items-center bg-blue-50 p-4 rounded-2xl">
+                    <span class="text-[10px] font-black text-blue-800 uppercase">Rendimiento Neto</span>
+                    <span class="text-lg font-black text-blue-800">10.350,00€</span>
                 </div>
             </div>
 
-            <div class="mt-8">
-                <p class="text-[9px] font-black text-gray-400 uppercase mb-4 italic">Completa para optimizar:</p>
-                <label class="text-[9px] font-bold ml-2">IBI Anual Propiedad (€)</label>
-                <input type="number" placeholder="Ej: 450" class="input-tax mb-4">
-                
-                <label class="text-[9px] font-bold ml-2">Intereses Hipoteca (si aplica)</label>
-                <input type="number" placeholder="Ej: 1200" class="input-tax mb-6">
+            <p class="text-[9px] font-black text-gray-400 uppercase mb-4 italic text-center">Datos adicionales para la deducción</p>
+            <input type="number" placeholder="IBI Pagado (€)" class="input-adm mb-3">
+            <input type="number" placeholder="Seguro del Hogar (€)" class="input-adm mb-6">
 
-                <button class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black italic uppercase text-xs">
-                    ✨ Generar Borrador para Gestoría
-                </button>
-            </div>
+            <button onclick="alert('Generando borrador para el gestor...')" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black italic uppercase text-xs">
+                Enviar a mi Gestor
+            </button>
         </div>
     </div>
 
     <script>
-        function showTab(tab) {
-            document.getElementById('view-diario').classList.toggle('hidden', tab !== 'diario');
-            document.getElementById('view-analitica').classList.toggle('hidden', tab !== 'analitica');
-            document.getElementById('view-renta').classList.toggle('hidden', tab !== 'renta');
-            
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
-            document.getElementById('t-' + tab).classList.add('active-tab');
+        let miGrafico = null;
 
-            if(tab === 'analitica') initChart();
+        function cambiarVista(vista) {
+            // Ocultar todas
+            document.getElementById('vista-diario').classList.add('hidden');
+            document.getElementById('vista-graficos').classList.add('hidden');
+            document.getElementById('vista-renta').classList.add('hidden');
+            
+            // Quitar clases activas de botones
+            document.getElementById('btn-diario').classList.remove('active-tab');
+            document.getElementById('btn-graficos').classList.remove('active-tab');
+            document.getElementById('btn-renta').classList.remove('active-tab');
+
+            // Mostrar seleccionada
+            document.getElementById('vista-' + vista).classList.remove('hidden');
+            document.getElementById('btn-' + vista).classList.add('active-tab');
+
+            // Si es la pestaña de finanzas, cargar el gráfico
+            if(vista === 'graficos') {
+                setTimeout(cargarGrafico, 100);
+            }
         }
 
-        function initChart() {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            new Chart(ctx, {
+        function cargarGrafico() {
+            const ctx = document.getElementById('graficoFinanzas').getContext('2d');
+            
+            // Si el gráfico ya existe, lo destruimos para que no de error al recargar
+            if(miGrafico) { miGrafico.destroy(); }
+
+            miGrafico = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Ene', 'Feb', 'Mar', 'Abr'],
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
                     datasets: [{
-                        label: 'Ingresos Netos',
-                        data: [4200, 3800, 5100, 4900],
+                        label: 'Ingresos (€)',
+                        data: [2100, 1800, 3200, 2900, 4100, 3800],
                         backgroundColor: '#2563eb',
-                        borderRadius: 10
+                        borderRadius: 12
                     }]
                 },
-                options: { 
+                options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { display: false } } }
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
                 }
             });
         }
 
-        function exportData(type) {
-            alert("
+        function guardarDato() {
+            const concepto = document.getElementById('concepto').value;
+            const importe = document.getElementById('importe').value;
+            if(!concepto || !importe) return alert("Por favor, rellena los datos.");
+            
+            alert(`Registrado con éxito: ${concepto} por ${importe}€`);
+            document.getElementById('concepto').value = "";
+            document.getElementById('importe').value = "";
+        }
+    </script>
+</body>
+</html>

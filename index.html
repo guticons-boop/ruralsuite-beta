@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Software de Gestión de Viviendas Turísticas y Casas Rurales</title>
+    <title>RuralGesto | Gestión Inteligente de Viviendas Turísticas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .hero-bg {
-            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=2000');
+            /* Imagen profesional de casa rural con piscina (Libre de derechos) */
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000');
             background-size: cover;
             background-position: center;
         }
@@ -21,71 +22,13 @@
 
     <nav class="absolute w-full z-50 px-6 py-8">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-white text-3xl italic-black uppercase">RuralGesto</div>
-            <a href="/hub/" class="glass px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-black hover:text-white transition">Panel de Control</a>
+            <div class="text-white text-3xl italic-black uppercase tracking-tighter">RuralGesto</div>
+            <a href="/hub/" class="glass px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-black hover:text-white transition shadow-xl">Acceso Clientes</a>
         </div>
     </nav>
 
-    <section class="hero-bg h-[85vh] flex items-center justify-center text-center px-6">
+    <section class="hero-bg h-[85vh] flex items-center justify-center text-center px-6 shadow-inner">
         <div class="max-w-4xl">
-            <span class="text-white/80 text-[10px] font-bold uppercase tracking-[0.4em] mb-4 block italic">Solución profesional para tu negocio turístico</span>
+            <span class="text-white/90 text-[10px] font-bold uppercase tracking-[0.4em] mb-4 block italic">Solución profesional para tu negocio turístico</span>
             <h1 class="text-white text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8">
-                Gestiona tu <br><span class="text-green-400 italic">libertad.</span>
-            </h1>
-            <p class="text-white/90 text-xl md:text-2xl font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
-                El sistema operativo inteligente diseñado para Casas Rurales, Apartamentos y VUTs que buscan excelencia y automatización.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="location.href='/hub/'" class="bg-green-600 text-white px-12 py-6 rounded-2xl font-black italic uppercase text-lg shadow-2xl hover:bg-green-700 transition">Comenzar Ahora</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 px-6 bg-white -mt-10 relative z-10">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
-                <div class="text-3xl text-blue-600">🪪</div>
-                <h3 class="text-lg font-black italic uppercase tracking-tighter">Check-in Legal</h3>
-                <p class="text-slate-500 text-sm font-medium">Escaneo automático de DNI con OCR. Generación de partes de viajeros y conexión directa con autoridades (Policía/Guardia Civil).</p>
-            </div>
-
-            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
-                <div class="text-3xl text-blue-600">🔄</div>
-                <h3 class="text-lg font-black italic uppercase tracking-tighter">Sincronización</h3>
-                <p class="text-slate-500 text-sm font-medium">Conexión total iCal con Booking, Airbnb, Expedia y cualquier plataforma. Calendario unificado sin overbookings.</p>
-            </div>
-
-            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
-                <div class="text-3xl text-blue-600">📊</div>
-                <h3 class="text-lg font-black italic uppercase tracking-tighter">Tax Assistant</h3>
-                <p class="text-slate-500 text-sm font-medium">Control total de ingresos netos y gastos operativos (suavizante, palomitas, luz). Preparado para la Renta.</p>
-            </div>
-
-            <div class="bg-white p-8 rounded-[35px] shadow-xl border border-slate-50 space-y-4">
-                <div class="text-3xl text-blue-600">📢</div>
-                <h3 class="text-lg font-black italic uppercase tracking-tighter">Marketing Simple</h3>
-                <p class="text-slate-500 text-sm font-medium">Crea campañas digitales, envía ofertas por WhatsApp y fideliza a tus huéspedes con un solo click.</p>
-            </div>
-
-        </div>
-    </section>
-
-    <footer class="py-16 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div>
-                <div class="text-2xl italic-black uppercase mb-1">RuralGesto</div>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest italic">Software de Gestión de Alojamientos Turísticos</p>
-            </div>
-            <div class="text-slate-400 text-[10px] font-bold uppercase italic text-center">
-                © 2026 RURALGESTO. SOLUCIONES DIGITALES PARA HOSPEDAJE.
-            </div>
-            <div class="flex gap-6 text-[10px] font-black uppercase italic text-slate-400">
-                <a href="#" class="hover:text-black transition">Privacidad</a>
-                <a href="#" class="hover:text-black transition">Suscripción Pro</a>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+                Gestiona tu <br><span class="text-blue-

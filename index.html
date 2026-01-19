@@ -11,7 +11,18 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #fff; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .input-gesto { width: 100%; border: 1.5px solid #f2f2f2; border-radius: 20px; padding: 18px; margin-bottom: 12px; font-weight: bold; outline: none; }
+        /* He cambiado el estilo del input para que sea más cómodo en el móvil */
+        .input-gesto { 
+            width: 100%; 
+            border: 1.5px solid #f2f2f2; 
+            border-radius: 20px; 
+            padding: 18px; 
+            margin-bottom: 12px; 
+            font-weight: bold; 
+            outline: none; 
+            appearance: none; /* Quita sombras raras en iPhone */
+            font-size: 16px; /* Evita que el iPhone haga zoom al escribir */
+        }
         .input-gesto:focus { border-color: #000; }
         #login-screen { position: fixed; inset: 0; background: white; z-index: 100; display: flex; flex-direction: column; justify-content: center; padding: 40px; }
         .hidden { display: none !important; }
@@ -23,10 +34,10 @@
         <h1 class="text-4xl italic-black uppercase mb-2">Rural Gesto</h1>
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-10 italic">Acceso Privado · El Rinconcito</p>
         
-        <input type="text" id="user-name" placeholder="Usuario" class="input-gesto" autocapitalize="none">
+        <input type="text" id="user-name" placeholder="Usuario" class="input-gesto" autocapitalize="none" spellcheck="false">
         <input type="password" id="user-pass" placeholder="Contraseña" class="input-gesto">
         
-        <button onclick="checkLogin()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic text-lg mt-4">ENTRAR</button>
+        <button onclick="checkLogin()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic text-lg mt-4 shadow-xl">ENTRAR</button>
         <p id="error-msg" class="text-red-500 text-[10px] font-bold uppercase mt-4 text-center hidden">Datos incorrectos</p>
     </div>
 
@@ -46,18 +57,35 @@
                 <span class="text-3xl">📊</span>
             </a>
         </div>
+        
+        <div class="mt-12 p-6 bg-gray-50 rounded-[32px]">
+            <h4 class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-2 italic">Estado</h4>
+            <p class="text-sm font-bold italic">Sincronizado con Fuentespalda</p>
+        </div>
     </div>
 
     <script>
         function checkLogin() {
-            const user = document.getElementById('user-name').value;
-            const pass = document.getElementById('user-pass').value;
+            const user = document.getElementById('user-name').value.toLowerCase().trim();
+            const pass = document.getElementById('user-pass').value.trim();
+
+            // Usuario: elrinconcito | Contraseña: prueba
             if(user === 'elrinconcito' && pass === 'prueba') {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-content').classList.remove('hidden');
+                // Guardamos la sesión para que no pida login todo el rato
+                localStorage.setItem('rg_sesion', 'activa');
             } else {
-                document.getElementById('error-msg').classList.remove('hidden');
+                const err = document.getElementById('error-msg');
+                err.classList.remove('hidden');
+                setTimeout(() => err.classList.add('hidden'), 2000);
             }
+        }
+
+        // Si ya te habías logueado antes, entra directo
+        if(localStorage.getItem('rg_sesion') === 'activa') {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
         }
     </script>
 </body>

@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Panel - RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -9,43 +10,109 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8f8f5; }
         .serif { font-family: 'DM+Serif+Display', serif; }
+        .card-modulo {
+            background: white;
+            padding: 2rem;
+            border-radius: 2rem;
+            border: 1px solid #f1f1f1;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+        }
+        .card-modulo:hover {
+            transform: translateY(-5px);
+            shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            border-color: #1a4731;
+        }
+        .icon-container {
+            width: 64px;
+            height: 64px;
+            background: #f0fdf4;
+            border-radius: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: #1a4731;
+        }
     </style>
 </head>
-<body class="p-8">
+<body class="p-6 md:p-12">
+
     <header class="flex justify-between items-center mb-12 max-w-6xl mx-auto">
-        <h1 class="serif text-2xl italic">Rural<span class="text-emerald-900">Gesto</span></h1>
-        <div class="flex items-center gap-4 text-right">
-            <div class="text-xs font-bold uppercase tracking-widest text-emerald-900 italic">Toni • Plan Pro</div>
-            <button onclick="location.href='../index.html'" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 transition">
-                <i data-lucide="power" class="w-4 h-4"></i>
+        <div>
+            <h1 class="serif text-3xl italic leading-none">Rural<span class="text-emerald-900 font-normal">Gesto</span></h1>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mt-2 text-center md:text-left">Panel de Control</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:block text-right">
+                <p class="text-xs font-black uppercase text-emerald-900">Toni</p>
+                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Suscripción Pro</p>
+            </div>
+            <button onclick="location.href='../index.html'" class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 transition">
+                <i data-lucide="power" class="w-5 h-5"></i>
             </button>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto">
-        <div class="w-full h-64 rounded-[40px] overflow-hidden shadow-2xl mb-12">
+        <div class="w-full h-48 md:h-80 rounded-[40px] overflow-hidden shadow-2xl mb-12 relative">
             <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="absolute bottom-8 left-8 text-white">
+                <h2 class="serif text-3xl italic">Bienvenido de nuevo</h2>
+                <p class="text-xs opacity-80 font-medium uppercase tracking-widest">Tu casa rural está lista para hoy</p>
+            </div>
         </div>
 
-        <h2 class="serif text-5xl mb-10 italic">Módulos</h2>
+        <h3 class="text-[11px] font-black uppercase tracking-[0.4em] text-gray-300 mb-8 ml-4">Módulos Activos</h3>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div onclick="location.href='../tax/index.html'" class="cursor-pointer group flex flex-col items-center">
-                <div class="w-20 h-20 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center justify-center group-hover:shadow-md transition">
-                    <i data-lucide="briefcase" class="w-8 h-8 text-emerald-900"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div onclick="location.href='../calendar/index.html'" class="card-modulo">
+                <div class="icon-container">
+                    <i data-lucide="calendar" class="w-8 h-8"></i>
                 </div>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] mt-4 text-gray-400 group-hover:text-emerald-900">Administración</span>
+                <h4 class="font-black text-sm uppercase mb-2">Agenda</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed">Calendario de reservas y limpieza.</p>
             </div>
 
-            <div class="opacity-30 flex flex-col items-center">
-                <div class="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center">
-                    <i data-lucide="calendar" class="w-8 h-8 text-gray-400"></i>
+            <div onclick="location.href='../checkin/index.html'" class="card-modulo">
+                <div class="icon-container">
+                    <i data-lucide="user-check" class="w-8 h-8"></i>
                 </div>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] mt-4 text-gray-400">Agenda</span>
+                <h4 class="font-black text-sm uppercase mb-2">Check-in</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed">Registro legal de viajeros (DNI).</p>
             </div>
+
+            <div onclick="location.href='../tax/index.html'" class="card-modulo">
+                <div class="icon-container">
+                    <i data-lucide="briefcase" class="w-8 h-8"></i>
+                </div>
+                <h4 class="font-black text-sm uppercase mb-2">Asistente Fiscal</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed">Cálculo de IRPF e impuestos.</p>
+            </div>
+
+            <div onclick="location.href='../marketing/index.html'" class="card-modulo">
+                <div class="icon-container">
+                    <i data-lucide="megaphone" class="w-8 h-8"></i>
+                </div>
+                <h4 class="font-black text-sm uppercase mb-2">Marketing</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed">Promociones y fidelización.</p>
+            </div>
+
         </div>
     </main>
 
-    <script>lucide.createIcons();</script>
+    <footer class="mt-20 text-center">
+        <p class="text-[9px] font-bold text-gray-300 uppercase tracking-widest italic">RuralGesto v2.0 • 2026</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

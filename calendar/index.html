@@ -8,46 +8,43 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .day { aspect-ratio: 1/1; display: flex; items-center; justify-content: center; border-radius: 12px; font-size: 10px; font-weight: bold; cursor: pointer; border: 1px solid #f1f1f1; }
+        .day { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 10px; font-weight: bold; border: 1px solid #f1f1f1; color: #cbd5e1; }
         .booked { background: #1a1a1a; color: white; border: none; }
     </style>
 </head>
 <body class="p-6 md:p-12 pb-32">
-    <div class="max-w-4xl mx-auto">
-        <header class="flex justify-between items-center mb-12">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-16">
             <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
-            <h2 class="serif text-3xl italic text-rose-950">Enero 2026</h2>
-            <div class="flex gap-2"><i data-lucide="chevron-left"></i><i data-lucide="chevron-right"></i></div>
+            <h2 class="serif text-4xl italic text-rose-950">Enero 2026</h2>
+            <div class="flex gap-4"><i data-lucide="chevron-left" class="cursor-pointer"></i><i data-lucide="chevron-right" class="cursor-pointer"></i></div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm">
-                <p class="text-[9px] font-black uppercase text-rose-900 mb-4 tracking-widest">La Tirolina</p>
-                <div class="grid grid-cols-7 gap-1" id="cal-1">
-                    </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm">
+                <p class="text-[10px] font-black uppercase text-rose-900 mb-6 tracking-[0.3em]">La Tirolina</p>
+                <div class="grid grid-cols-7 gap-2" id="c1"></div>
             </div>
-            <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm">
-                <p class="text-[9px] font-black uppercase text-rose-900 mb-4 tracking-widest">La Ermita</p>
-                <div class="grid grid-cols-7 gap-1" id="cal-2"></div>
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm">
+                <p class="text-[10px] font-black uppercase text-rose-900 mb-6 tracking-[0.3em]">La Ermita</p>
+                <div class="grid grid-cols-7 gap-2" id="c2"></div>
             </div>
-            <div class="bg-white p-6 rounded-[30px] border border-slate-100 shadow-sm">
-                <p class="text-[9px] font-black uppercase text-rose-900 mb-4 tracking-widest">Los Almendros</p>
-                <div class="grid grid-cols-7 gap-1" id="cal-3"></div>
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm">
+                <p class="text-[10px] font-black uppercase text-rose-900 mb-6 tracking-[0.3em]">Los Almendros</p>
+                <div class="grid grid-cols-7 gap-2" id="c3"></div>
             </div>
         </div>
     </div>
     <script>
         lucide.createIcons();
-        function draw(id, bookedDays) {
+        function fill(id, b) {
             const el = document.getElementById(id);
             for(let i=1; i<=31; i++) {
-                const isBooked = bookedDays.includes(i);
-                el.innerHTML += `<div class="day ${isBooked ? 'booked' : ''}">${i}</div>`;
+                const isB = b.includes(i);
+                el.innerHTML += `<div class="day ${isB?'booked':''}">${i}</div>`;
             }
         }
-        draw('cal-1', [12,13,14,20,21]);
-        draw('cal-2', [5,6,7,18,19]);
-        draw('cal-3', [25,26,27]);
+        fill('c1', [12,13,14,20,21]); fill('c2', [1,2,3,15,16,17]); fill('c3', [28,29,30]);
     </script>
 </body>
 </html>

@@ -2,178 +2,141 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente Fiscal | RuralGesto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <title>Fiscal Pro | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-active { color: #be123c; border-bottom: 4px solid #be123c; }
-        canvas { max-width: 100% !important; height: auto !important; }
+        .tab-btn.active { background-color: #be123c; color: white; }
+        #pie-chart {
+            width: 200px; height: 200px; border-radius: 50%;
+            background: conic-gradient(#2563eb 0% 40%, #f97316 40% 70%, #10b981 70% 100%);
+            margin: 0 auto; border: 6px solid white; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
-    <div class="max-w-5xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
-            <div class="flex items-center gap-4">
-                <button onclick="location.href='../index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-slate-100"><i data-lucide="arrow-left"></i></button>
-                <h2 class="serif text-3xl font-bold italic text-rose-950">Asistente Fiscal</h2>
+    <div class="max-w-4xl mx-auto">
+        <header class="flex flex-col gap-6 mb-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
+                    <h2 class="serif text-2xl italic text-rose-950 font-bold">Asistente Fiscal</h2>
+                </div>
+                <div class="flex bg-slate-100 p-1 rounded-2xl border border-slate-200">
+                    <button onclick="changeTime('mes')" id="time-mes" class="px-4 py-2 text-[8px] font-black uppercase rounded-xl bg-white shadow-sm">Mensual</button>
+                    <button onclick="changeTime('año')" id="time-año" class="px-4 py-2 text-[8px] font-black uppercase rounded-xl text-slate-400">Anual</button>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <select id="filtro-mes" onchange="render()" class="p-3 bg-white border border-slate-200 rounded-2xl font-black text-[10px] uppercase outline-none shadow-sm">
-                    <option value="all">Año Completo 2026</option>
-                    <option value="0">Enero</option><option value="1">Febrero</option>
-                    <option value="2">Marzo</option><option value="3">Abril</option>
-                    <option value="4">Mayo</option><option value="5">Junio</option>
-                </select>
-                <button onclick="enviarAlGestor()" class="p-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase flex items-center gap-2">
-                    <i data-lucide="mail" class="w-3 h-3"></i> Enviar al Gestor
-                </button>
+            <div class="flex bg-rose-50 p-1 rounded-2xl border border-rose-100 self-center">
+                <button id="reg-iva" onclick="toggleRegimen('iva')" class="px-6 py-2 text-[9px] font-black uppercase rounded-xl bg-rose-900 text-white transition">Con IVA</button>
+                <button id="reg-renta" onclick="toggleRegimen('renta')" class="px-6 py-2 text-[9px] font-black uppercase rounded-xl text-rose-900 transition">Sin IVA (Renta)</button>
             </div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1">
-                <div class="bg-white p-8 rounded-[45px] border border-slate-100 shadow-xl text-center">
-                    <h4 class="serif font-bold italic mb-6">Estado de Caja</h4>
-                    <div style="position: relative; margin: auto; height:250px; width:250px;">
-                        <canvas id="chartFiscal"></canvas>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[9px] font-black text-slate-400 uppercase">Neto</span>
-                            <span id="txt-neto" class="text-xl font-black text-slate-800">0,00€</span>
-                        </div>
-                    </div>
-                    <div class="mt-8">
-                        <label class="text-[9px] font-black uppercase text-slate-400 block mb-2">Tu Régimen Fiscal</label>
-                        <select id="regimen-iva" onchange="render()" class="w-full p-4 bg-slate-50 rounded-2xl text-[11px] font-bold outline-none border-none">
-                            <option value="0">Particular (Solo IRPF)</option>
-                            <option value="0.10">Turístico (10% IVA)</option>
-                            <option value="0.21">General (21% IVA)</option>
-                        </select>
-                    </div>
+        <div class="grid grid-cols-4 gap-1.5 mb-8 bg-white p-1 rounded-[25px] shadow-sm border border-slate-100">
+            <button onclick="switchTab('resumen')" id="tab-resumen" class="tab-btn active py-4 rounded-[20px] font-black text-[7px] md:text-[9px] uppercase tracking-widest transition-all">Resumen</button>
+            <button onclick="switchTab('graficos')" id="tab-graficos" class="tab-btn py-4 rounded-[20px] font-black text-[7px] md:text-[9px] uppercase tracking-widest transition-all">Gráficos</button>
+            <button onclick="switchTab('historico')" id="tab-historico" class="tab-btn py-4 rounded-[20px] font-black text-[7px] md:text-[9px] uppercase tracking-widest transition-all">Reservas</button>
+            <button onclick="switchTab('declara')" id="tab-declara" class="tab-btn py-4 rounded-[20px] font-black text-[7px] md:text-[9px] uppercase tracking-widest transition-all">Declaración</button>
+        </div>
+
+        <div id="view-resumen" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div onclick="toggleDetails('det-ingresos')" class="bg-white p-8 rounded-[40px] border border-emerald-100 text-center shadow-sm cursor-pointer hover:bg-emerald-50 transition">
+                    <p class="text-[9px] font-black uppercase text-slate-400 mb-2 italic">Ingresos Brutos (<span id="txt-periodo">Mes</span>)</p>
+                    <p id="ingresos-val" class="serif text-4xl italic font-bold text-emerald-700">4.580€</p>
+                </div>
+                <div onclick="toggleDetails('det-gastos')" class="bg-white p-8 rounded-[40px] border border-rose-100 text-center shadow-sm cursor-pointer hover:bg-rose-50 transition">
+                    <p class="text-[9px] font-black uppercase text-slate-400 mb-2 italic">Gastos Totales</p>
+                    <p id="gastos-val" class="serif text-4xl italic font-bold text-rose-600">1.120€</p>
                 </div>
             </div>
+            <div id="det-ingresos" class="hidden space-y-3 bg-slate-50 p-6 rounded-[35px] border border-slate-100">
+                <h4 class="text-[10px] font-black uppercase text-slate-500 mb-2 italic">Ingresos por Alojamiento</h4>
+                <div class="flex justify-between text-xs p-2"><span>La Tirolina</span><span class="font-bold">1.832€</span></div>
+                <div class="flex justify-between text-xs p-2"><span>La Ermita</span><span class="font-bold">1.374€</span></div>
+                <div class="flex justify-between text-xs p-2"><span>Los Almendros</span><span class="font-bold">1.374€</span></div>
+            </div>
+        </div>
 
-            <div class="lg:col-span-2 space-y-6">
-                <nav class="flex border-b border-slate-100 mb-6">
-                    <button onclick="changeTab('in')" id="t-in" class="flex-1 py-4 font-black text-[10px] uppercase tab-active">Ingresos</button>
-                    <button onclick="changeTab('ex')" id="t-ex" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Gastos</button>
-                    <button onclick="changeTab('tax')" id="t-tax" class="flex-1 py-4 font-black text-[10px] uppercase text-slate-400">Declaración Renta</button>
-                </nav>
-
-                <div id="panel-input" class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-md flex gap-3">
-                    <input type="text" id="concepto" placeholder="Huésped o Gasto..." class="flex-1 p-4 bg-slate-50 rounded-2xl outline-none text-sm font-medium">
-                    <input type="number" id="importe" placeholder="€" class="w-24 p-4 bg-slate-50 rounded-2xl outline-none text-sm font-black text-rose-600">
-                    <button onclick="addData()" id="btn-add" class="p-4 bg-emerald-600 text-white rounded-2xl shadow-lg">
-                        <i data-lucide="plus"></i>
-                    </button>
-                </div>
-
-                <div id="lista-fiscal" class="space-y-3 max-h-[350px] overflow-y-auto pr-2"></div>
-
-                <div id="panel-renta" class="hidden">
-                    <div class="bg-slate-900 p-10 rounded-[45px] text-white shadow-2xl relative overflow-hidden">
-                        <h4 class="serif text-2xl italic font-bold mb-8">Borrador Declaración 2026</h4>
-                        <div class="space-y-5 text-[11px] font-black uppercase tracking-[0.2em]">
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                                <span class="opacity-50">Ingresos Brutos</span>
-                                <span id="r-bruto">0,00€</span>
-                            </div>
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-3 text-rose-400">
-                                <span>Gastos Deducibles</span>
-                                <span id="r-gastos">0,00€</span>
-                            </div>
-                            <div id="box-iva" class="flex justify-between items-center border-b border-slate-800 pb-3 text-blue-400">
-                                <span>IVA Devengado</span>
-                                <span id="r-iva">0,00€</span>
-                            </div>
-                            <div class="flex justify-between items-center pt-4 text-emerald-400">
-                                <span class="text-sm">Rendimiento Neto</span>
-                                <span id="r-neto" class="text-lg">0,00€</span>
-                            </div>
-                        </div>
-                    </div>
+        <div id="view-graficos" class="hidden text-center space-y-8">
+            <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm">
+                <div id="pie-chart"></div>
+                <div class="flex justify-center flex-wrap gap-4 mt-10">
+                    <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl"><span class="w-3 h-3 rounded-full bg-blue-600"></span><span class="text-[9px] font-bold">Tirolina</span></div>
+                    <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl"><span class="w-3 h-3 rounded-full bg-orange-500"></span><span class="text-[9px] font-bold">Ermita</span></div>
+                    <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl"><span class="w-3 h-3 rounded-full bg-emerald-500"></span><span class="text-[9px] font-bold">Almendros</span></div>
                 </div>
             </div>
+        </div>
+
+        <div id="view-historico" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[9px] font-black uppercase text-slate-400 border-b border-slate-50">
+                            <th class="pb-4 pl-2">Fecha</th>
+                            <th class="pb-4">Cliente / Apartamento</th>
+                            <th class="pb-4">Localizador</th>
+                            <th class="pb-4 text-right pr-2">Importe</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-[10px]">
+                        <tr class="border-b border-slate-50 hover:bg-slate-50 transition">
+                            <td class="py-4 pl-2 font-bold">12/01/26</td>
+                            <td class="py-4">García, Fam.<br><span class="text-blue-600 font-bold uppercase text-[8px]">La Tirolina</span></td>
+                            <td class="py-4 font-mono">RG-7429</td>
+                            <td class="py-4 text-right pr-2 font-black text-emerald-700">450,00€</td>
+                        </tr>
+                        <tr class="border-b border-slate-50 hover:bg-slate-50 transition">
+                            <td class="py-4 pl-2 font-bold">15/01/26</td>
+                            <td class="py-4">Marta López<br><span class="text-orange-600 font-bold uppercase text-[8px]">La Ermita</span></td>
+                            <td class="py-4 font-mono">RG-1022</td>
+                            <td class="py-4 text-right pr-2 font-black text-emerald-700">300,00€</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-declara" class="hidden space-y-6">
+            <div class="bg-slate-900 p-8 rounded-[40px] text-white shadow-xl">
+                <p class="text-[9px] font-black uppercase text-slate-400 mb-1">Resultado Neto Estimado</p>
+                <h3 id="resultado-neto" class="serif text-3xl italic">3.460,00 €</h3>
+            </div>
+            <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
+                <h4 class="text-[10px] font-black uppercase text-rose-600 mb-4">Gastos Deducibles Renta</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="text-[8px] font-black uppercase text-slate-400 ml-2">IBI / Tasas</label><input type="number" class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold border-none outline-none"></div>
+                    <div><label class="text-[8px] font-black uppercase text-slate-400 ml-2">Amortización (3%)</label><input type="number" class="w-full p-4 bg-slate-50 rounded-2xl text-xs font-bold border-none outline-none"></div>
+                </div>
+            </div>
+            <button onclick="alert('Generando borrador para el gestor...')" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-3"><i data-lucide="mail"></i> Enviar al Gestor</button>
         </div>
     </div>
 
     <script>
-        let currentTab = 'in';
-        let fiscalDB = JSON.parse(localStorage.getItem('rg_fiscal_pata_negra_v2') || '{"in":[], "ex":[]}');
-        let myChart;
-
-        function changeTab(t) {
-            currentTab = t;
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('tab-active', 'text-slate-400'));
-            document.getElementById('t-'+t).classList.add('tab-active');
-            document.getElementById('panel-input').classList.toggle('hidden', t === 'tax');
-            document.getElementById('lista-fiscal').classList.toggle('hidden', t === 'tax');
-            document.getElementById('panel-renta').classList.toggle('hidden', t !== 'tax');
-            document.getElementById('btn-add').className = t === 'in' ? 'p-4 bg-emerald-600 text-white rounded-2xl shadow-lg' : 'p-4 bg-rose-600 text-white rounded-2xl shadow-lg';
-            render();
+        lucide.createIcons();
+        function switchTab(tab) {
+            document.querySelectorAll('#view-resumen, #view-graficos, #view-historico, #view-declara').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('active');
         }
-
-        function addData() {
-            const c = document.getElementById('concepto').value;
-            const i = parseFloat(document.getElementById('importe').value);
-            if(!c || isNaN(i)) return;
-
-            fiscalDB[currentTab].push({ c, i, m: new Date().getMonth(), f: new Date().toLocaleDateString() });
-            localStorage.setItem('rg_fiscal_pata_negra_v2', JSON.stringify(fiscalDB));
-            document.getElementById('concepto').value = '';
-            document.getElementById('importe').value = '';
-            render();
+        function changeTime(time) {
+            const isMes = time === 'mes';
+            document.getElementById('time-mes').className = isMes ? 'px-4 py-2 text-[8px] font-black uppercase rounded-xl bg-white shadow-sm' : 'px-4 py-2 text-[8px] font-black uppercase rounded-xl text-slate-400';
+            document.getElementById('time-año').className = !isMes ? 'px-4 py-2 text-[8px] font-black uppercase rounded-xl bg-white shadow-sm' : 'px-4 py-2 text-[8px] font-black uppercase rounded-xl text-slate-400';
+            document.getElementById('txt-periodo').innerText = isMes ? 'Mes' : 'Año';
         }
-
-        function render() {
-            const list = document.getElementById('lista-fiscal');
-            const filtro = document.getElementById('filtro-mes').value;
-            list.innerHTML = '';
-            let totalIn = 0; let totalEx = 0;
-
-            fiscalDB.in.forEach(item => { if(filtro === 'all' || item.m == filtro) { totalIn += item.i; if(currentTab === 'in') list.innerHTML += itemHtml(item, 'emerald'); } });
-            fiscalDB.ex.forEach(item => { if(filtro === 'all' || item.m == filtro) { totalEx += item.i; if(currentTab === 'ex') list.innerHTML += itemHtml(item, 'rose'); } });
-
-            const ivaRate = parseFloat(document.getElementById('regimen-iva').value);
-            const ivaCalculado = totalIn * ivaRate;
-            const netoFinal = totalIn - totalEx - ivaCalculado;
-
-            document.getElementById('txt-neto').innerText = netoFinal.toFixed(2) + '€';
-            document.getElementById('r-bruto').innerText = totalIn.toFixed(2) + '€';
-            document.getElementById('r-gastos').innerText = totalEx.toFixed(2) + '€';
-            document.getElementById('r-iva').innerText = ivaCalculado.toFixed(2) + '€';
-            document.getElementById('r-neto').innerText = netoFinal.toFixed(2) + '€';
-            document.getElementById('box-iva').classList.toggle('hidden', ivaRate === 0);
-
-            updateChart(totalIn, totalEx, ivaCalculado);
-            lucide.createIcons();
+        function toggleDetails(id) { document.getElementById(id).classList.toggle('hidden'); }
+        function toggleRegimen(type) {
+            const isIva = type === 'iva';
+            document.getElementById('reg-iva').className = isIva ? 'px-6 py-2 text-[9px] font-black uppercase rounded-xl bg-rose-900 text-white' : 'px-6 py-2 text-[9px] font-black uppercase rounded-xl text-rose-900';
+            document.getElementById('reg-renta').className = !isIva ? 'px-6 py-2 text-[9px] font-black uppercase rounded-xl bg-slate-900 text-white' : 'px-6 py-2 text-[9px] font-black uppercase rounded-xl text-rose-900';
         }
-
-        function itemHtml(item, color) {
-            return `<div class="bg-white p-5 rounded-3xl border border-slate-50 flex justify-between items-center shadow-sm">
-                        <div><p class="text-[9px] font-black uppercase text-slate-300 italic">${item.f}</p><h4 class="font-bold text-slate-800 text-sm">${item.c}</h4></div>
-                        <span class="font-black text-lg text-${color}-600">${item.i.toFixed(2)}€</span>
-                    </div>`;
-        }
-
-        function updateChart(i, e, v) {
-            const ctx = document.getElementById('chartFiscal').getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Ingresos', 'Gastos', 'IVA'],
-                    datasets: [{ data: [i, e, v], backgroundColor: ['#10b981', '#f43f5e', '#3b82f6'], borderWidth: 0 }]
-                },
-                options: { cutout: '85%', plugins: { legend: { display: false } } }
-            });
-        }
-
-        function enviarAlGestor() { alert("✅ Informe de RuralGesto generado y enviado al gestor."); }
-        window.onload = () => { changeTab('in'); lucide.createIcons(); };
     </script>
 </body>
 </html>

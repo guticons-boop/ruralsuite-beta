@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RG Marketing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
+    <style>body{font-family:'Inter',sans-serif;}.italic-black{font-style:italic;font-weight:900;}</style>
+</head>
+<body class="p-6 bg-white">
+    <header class="mb-8 flex justify-between items-center">
+        <button onclick="location.href='/hub/'" class="text-xs font-black text-gray-300 italic uppercase">← Volver</button>
+        <h1 class="italic-black text-2xl uppercase">Clientes</h1>
+    </header>
+
+    <div id="bday-hero"></div>
+
+    <div class="space-y-4 mb-12" id="client-list">
+        </div>
+
+    <div class="bg-gray-50 p-8 rounded-[40px] border border-gray-100">
+        <h4 class="italic-black text-lg mb-6 uppercase">Nuevo Registro</h4>
+        <input id="n" type="text" placeholder="Nombre del Huésped" class="w-full p-4 rounded-2xl mb-2 font-bold italic outline-none border-none bg-white shadow-sm">
+        <input id="d" type="date" class="w-full p-4 rounded-2xl mb-6 font-bold outline-none border-none bg-white shadow-sm">
+        <button onclick="add()" class="w-full bg-black text-white p-5 rounded-2xl font-black italic uppercase shadow-xl">Guardar Cliente</button>
+    </div>
+
+    <script>
+        let cls = JSON.parse(localStorage.getItem('rg_cls')) || [];
+        
+        function add() {
+            const n = document.getElementById('n').value;
+            const d = document.getElementById('d').value;
+            if(n && d) {
+                cls.push({n, d});
+                localStorage.setItem('rg_cls', JSON.stringify(cls));
+                location.reload();
+            }
+        }
+
+        function render() {
+            const list = document.getElementById('client-list');
+            const hero = document.getElementById('bday-hero');
+            const today = new Date().toISOString().slice(5, 10);
+            let hasBday = false;
+
+            cls.forEach(c => {
+                const isToday = c.d.slice(5, 10) === today;
+                if(isToday) hasBday = true;
+                list.innerHTML += `
+                    <div class="p-6 bg-white border border-gray-100 rounded-3xl flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="font-black italic uppercase text-sm">${c.n}</p>
+                            <p class="text-[10px] font-bold text-gray-300 uppercase">${c.d}</p>
+                        </div>
+                        <button onclick="window.open('https://wa.me/?text=Hola ${c.n}, ¡Feliz cumpleaños de parte de El Rinconcito!')" class="text-xl">✉️</button>
+                    </div>`;
+            });
+
+            if(hasBday) {
+                hero.innerHTML = `<div class="bg-yellow-400 p-8 rounded-[40px] mb-8 shadow-lg shadow-yellow-100 flex items-center justify-between">
+                    <div><h3 class="italic-black text-xl uppercase">¡Cumpleaños hoy!</h3><p class="text-xs font-bold text-yellow-900 italic">Envía una oferta ahora</p></div>
+                    <span class="text-4xl">🎁</span>
+                </div>`;
+            }
+        }
+        render();
+    </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check-in Scan Pro | RuralGesto</title>
+    <title>Check-in Scan | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
@@ -10,21 +10,137 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .loader { border-top-color: #be123c; animation: spinner 1.5s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .tab-btn.active { background-color: #be123c; color: white; }
     </style>
 </head>
 <body class="p-4 md:p-8 pb-32">
-    <div class="max-w-2xl mx-auto">
-        <header class="flex items-center justify-between mb-8">
+    <div class="max-w-5xl mx-auto">
+        <header class="flex justify-between items-center mb-8">
             <div class="flex items-center gap-4">
                 <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl shadow-sm border border-gray-100"><i data-lucide="arrow-left"></i></button>
-                <h2 class="serif text-2xl italic text-rose-950 font-bold">Check-in Scan</h2>
+                <h2 class="serif text-3xl italic text-rose-950 font-bold">Check-in Scan</h2>
             </div>
-            <div id="ocr-status" class="hidden flex items-center gap-2 text-[10px] font-black text-rose-600 uppercase italic">
-                <div class="loader w-4 h-4 border-2 border-slate-200 rounded-full"></div> Procesando DNI...
-            </div>
+            <div id="badge-total" class="bg-rose-900 text-white px-6 py-2 rounded-2xl font-black text-[10px] uppercase">0 REGISTROS</div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div class="relative bg-rose-600 p-8 rounded-
+        <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-[30px] mb-8 border border-slate-200">
+            <button onclick="switchTab('registro')" id="t-registro" class="tab-btn active py-4 rounded-[25px] font-black text-[10px] uppercase tracking-widest">Nuevo Registro</button>
+            <button onclick="switchTab('lista')" id="t-lista" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest">Base de Datos</button>
+            <button onclick="switchTab('config')" id="t-config" class="tab-btn py-4 rounded-[25px] font-black text-[10px] uppercase text-slate-500 tracking-widest italic">Configuración</button>
+        </div>
+
+        <div id="v-registro" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="relative bg-rose-600 p-8 rounded-[40px] text-white overflow-hidden cursor-pointer active:scale-95 transition-all text-center">
+                    <input type="file" accept="image/*" capture="camera" onchange="processOCR(event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <i data-lucide="scan" class="mx-auto mb-2 w-8 h-8"></i>
+                    <p class="font-bold uppercase text-[10px]">Escanear DNI (OCR)</p>
+                </div>
+                <div onclick="shareLink()" class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm text-center cursor-pointer hover:bg-slate-50">
+                    <i data-lucide="send" class="mx-auto mb-2 w-8 h-8 text-rose-500"></i>
+                    <p class="font-bold uppercase text-[10px] text-slate-800">Enviar Enlace al Cliente</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-xl space-y-4">
+                <input type="text" id="f-nombre" placeholder="Nombre y Apellidos" class="w-full p-4 bg-slate-50 rounded-2xl outline-none text-sm font-bold">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="f-dni" placeholder="DNI / Documento" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm font-mono">
+                    <input type="tel" id="f-tel" placeholder="Teléfono" class="p-4 bg-slate-50 rounded-2xl outline-none text-sm">
+                </div>
+                <input type="email" id="f-email" placeholder="Email del huésped" class="w-full p-4 bg-slate-50 rounded-2xl outline-none text-sm">
+                <button onclick="guardarRegistro()" class="w-full py-5 bg-slate-900 text-white rounded-[25px] font-black text-[10px] uppercase tracking-widest shadow-lg">Finalizar y Guardar</button>
+            </div>
+        </div>
+
+        <div id="v-lista" class="hidden">
+            <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
+                <table class="w-full text-left text-[11px]">
+                    <thead class="bg-slate-50 border-b border-slate-100">
+                        <tr>
+                            <th class="p-5 uppercase text-slate-400 font-black">Huésped</th>
+                            <th class="p-5 uppercase text-slate-400 font-black">Contacto</th>
+                            <th class="p-5 uppercase text-slate-400 font-black">Documento</th>
+                            <th class="p-5 uppercase text-slate-400 font-black">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-body" class="divide-y divide-slate-50"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="v-config" class="hidden text-center py-20">
+            <button onclick="hardReset()" class="py-4 px-10 bg-rose-50 text-rose-600 rounded-2xl font-black text-[10px] uppercase border border-rose-100">Borrar toda la memoria</button>
+        </div>
+    </div>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('reservas_ruralgesto') || '[]');
+
+        function switchTab(t) {
+            document.querySelectorAll('#v-registro, #v-lista, #v-config').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-slate-500'); });
+            document.getElementById('v-' + t).classList.remove('hidden');
+            document.getElementById('t-' + t).classList.add('active');
+            document.getElementById('t-' + t).classList.remove('text-slate-500');
+            renderLista();
+        }
+
+        async function processOCR(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            alert("Procesando imagen... Espera un segundo.");
+            const result = await Tesseract.recognize(file, 'spa');
+            // Intento de limpieza rápida de datos
+            const text = result.data.text;
+            const dniMatch = text.match(/\d{8}[A-Z]/);
+            if(dniMatch) document.getElementById('f-dni').value = dniMatch[0];
+            document.getElementById('f-nombre').value = text.split('\n')[0].substring(0,25);
+            alert("Datos extraídos. Por favor, revisa y completa.");
+        }
+
+        function guardarRegistro() {
+            const nuevo = {
+                nombre: document.getElementById('f-nombre').value,
+                tel: document.getElementById('f-tel').value,
+                mail: document.getElementById('f-email').value,
+                dni: document.getElementById('f-dni').value,
+                fecha: new Date().toLocaleDateString()
+            };
+            if(!nuevo.nombre) return alert("Pon al menos el nombre.");
+            db.push(nuevo);
+            localStorage.setItem('reservas_ruralgesto', JSON.stringify(db));
+            alert("¡Registro guardado!");
+            // Limpiar campos
+            document.querySelectorAll('input').forEach(i => i.value = '');
+            switchTab('lista');
+        }
+
+        function renderLista() {
+            document.getElementById('badge-total').innerText = db.length + " REGISTROS";
+            const body = document.getElementById('tabla-body');
+            body.innerHTML = db.map((r, i) => `
+                <tr>
+                    <td class="p-5 font-bold text-slate-800">${r.nombre}</td>
+                    <td class="p-5 text-slate-500 font-mono">${r.tel}<br>${r.mail}</td>
+                    <td class="p-5 font-bold text-rose-600">${r.dni}</td>
+                    <td class="p-5"><button onclick="window.open('https://wa.me/${r.tel}')" class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></button></td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function shareLink() {
+            const tel = prompt("Teléfono del cliente (con 34):");
+            if(tel) window.open(`https://wa.me/${tel}?text=${encodeURIComponent('Hola! Rellena tus datos para el check-in aquí: https://ruralgesto.com/form')}`);
+        }
+
+        function hardReset() {
+            if(confirm("¿Borrar todo?")) { localStorage.removeItem('reservas_ruralgesto'); location.reload(); }
+        }
+
+        window.onload = renderLista;
+        lucide.createIcons();
+    </script>
+</body>
+</html>

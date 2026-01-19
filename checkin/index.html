@@ -6,116 +6,117 @@
     <title>Check-in Pro | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,900&display=swap" rel="stylesheet">
-    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
     <style>
         body { font-family: 'Inter', sans-serif; background: #f9f9f9; }
         .italic-black { font-style: italic; font-weight: 900; letter-spacing: -1px; }
-        .form-input { width: 100%; padding: 16px; border-radius: 18px; border: 1.5px solid #eee; margin-bottom: 12px; font-weight: 600; outline: none; background: #fff; }
-        #video { width: 100%; border-radius: 24px; display: none; background: #000; }
-        #canvas { display: none; }
-        .loading-spinner { display: none; border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        #camera-layer { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
+        #video { width: 100%; height: 100%; object-fit: cover; }
+        .guide-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; aspect-ratio: 1.6/1; border: 2px solid #3b82f6; border-radius: 20px; box-shadow: 0 0 0 4000px rgba(0,0,0,0.6); }
+        .form-input { width: 100%; padding: 16px; border-radius: 18px; border: 1.5px solid #eee; margin-bottom: 12px; font-weight: 600; background: #fff; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-6 max-w-lg mx-auto">
 
     <header class="mb-10 flex justify-between items-center">
-        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-200 px-4 py-2 rounded-full">← Volver</button>
+        <button onclick="location.href='/hub/'" class="text-[10px] font-black text-gray-400 italic uppercase border border-gray-100 px-4 py-2 rounded-full">← Volver</button>
         <h1 class="italic-black text-2xl uppercase text-blue-600">Check-in Pro</h1>
     </header>
 
-    <div id="scanner-container" class="mb-8">
+    <div id="camera-layer">
         <video id="video" autoplay playsinline></video>
-        <canvas id="canvas"></canvas>
-        
-        <button id="btn-scan" onclick="startCamera()" class="w-full bg-black text-white p-6 rounded-[32px] flex items-center justify-between shadow-xl mb-4">
-            <div class="text-left">
-                <p class="italic-black text-lg uppercase leading-none">Escanear DNI</p>
-                <p class="text-[9px] font-bold opacity-40 uppercase mt-1">Cámara Inteligente</p>
-            </div>
-            <span class="text-3xl">📸</span>
-        </button>
-
-        <div id="loading" class="flex flex-col items-center mb-4 hidden">
-            <div class="loading-spinner mb-2"></div>
-            <p class="text-[10px] font-black uppercase text-blue-600 italic">Analizando documento...</p>
+        <div class="guide-box"></div>
+        <div class="absolute bottom-10 left-0 w-full px-10 flex flex-col items-center">
+            <p class="text-white text-[10px] font-bold uppercase mb-4 bg-black/50 px-4 py-2 rounded-full">Encuadra el DNI dentro del marco</p>
+            <button onclick="takePhoto()" class="w-20 h-20 bg-white rounded-full border-8 border-white/30 shadow-2xl"></button>
+            <button onclick="stopCamera()" class="mt-6 text-white text-[10px] font-black uppercase italic underline">Cancelar</button>
         </div>
-
-        <button id="btn-capture" onclick="captureAndProcess()" class="hidden w-full bg-blue-600 text-white p-4 rounded-2xl font-black italic uppercase mb-4">Capturar Foto</button>
     </div>
 
-    <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50">
-        <div class="space-y-1">
-            <label class="text-[10px] font-black uppercase ml-3 text-gray-400">Nombre Completo</label>
-            <input type="text" id="fname" placeholder="Pendiente de escáner..." class="form-input">
+    <button onclick="startCamera()" class="w-full bg-black text-white p-8 rounded-[40px] flex items-center justify-between shadow-2xl mb-8">
+        <div class="text-left">
+            <p class="italic-black text-xl uppercase">Escanear Documento</p>
+            <p class="text-[9px] font-bold opacity-40 uppercase">DNI / NIE / Pasaporte</p>
         </div>
+        <span class="text-4xl">🪪</span>
+    </button>
 
-        <div class="space-y-1">
-            <label class="text-[10px] font-black uppercase ml-3 text-gray-400">DNI / Pasaporte</label>
-            <input type="text" id="doc_num" placeholder="Número detectado" class="form-input">
-        </div>
-
-        <button onclick="save()" class="w-full bg-blue-600 text-white p-6 rounded-2xl font-black italic uppercase mt-6">Finalizar Registro</button>
+    <div id="status" class="hidden bg-blue-600 text-white p-6 rounded-[30px] mb-8 text-center animate-pulse">
+        <div class="loader mr-3"></div>
+        <span class="italic-black uppercase text-xs">Analizando Datos...</span>
     </div>
+
+    <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100">
+        <label class="text-[10px] font-black uppercase ml-3 text-gray-300">Nombre del Huésped</label>
+        <input type="text" id="fname" placeholder="Esperando escáner..." class="form-input">
+
+        <label class="text-[10px] font-black uppercase ml-3 text-gray-300">Número de Identidad</label>
+        <input type="text" id="doc_num" placeholder="DNI detectado" class="form-input">
+
+        <button onclick="alert('Guardado')" class="w-full bg-blue-600 text-white p-6 rounded-2xl font-black italic uppercase mt-4 shadow-xl">Confirmar Datos</button>
+    </div>
+
+    <canvas id="canvas" class="hidden"></canvas>
 
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
-        const btnScan = document.getElementById('btn-scan');
-        const btnCapture = document.getElementById('btn-capture');
-        const loading = document.getElementById('loading');
+        const camLayer = document.getElementById('camera-layer');
+        const statusDiv = document.getElementById('status');
 
         async function startCamera() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "environment", width: { ideal: 1280 } } 
+                });
                 video.srcObject = stream;
-                video.style.display = 'block';
-                btnScan.classList.add('hidden');
-                btnCapture.classList.remove('hidden');
+                camLayer.style.display = 'block';
             } catch (err) {
-                alert("Error al acceder a la cámara. Asegúrate de dar permisos.");
+                alert("No se pudo acceder a la cámara trasera. Revisa los permisos.");
             }
         }
 
-        function captureAndProcess() {
-            loading.classList.remove('hidden');
-            btnCapture.classList.add('hidden');
-            
+        function stopCamera() {
+            video.srcObject.getTracks().forEach(t => t.stop());
+            camLayer.style.display = 'none';
+        }
+
+        async function takePhoto() {
             const context = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Procesar con Tesseract OCR
-            Tesseract.recognize(canvas.toDataURL('image/png'), 'spa')
-                .then(({ data: { text } }) => {
-                    console.log(text);
-                    extractData(text);
-                })
-                .finally(() => {
-                    loading.classList.add('hidden');
-                    video.style.display = 'none';
-                    btnScan.classList.remove('hidden');
-                    // Detener cámara
-                    video.srcObject.getTracks().forEach(track => track.stop());
-                });
-        }
+            stopCamera();
+            statusDiv.classList.remove('hidden');
 
-        function extractData(text) {
-            // Lógica simple para buscar patrones (esto es lo que hace el "Pro")
-            const dniMatch = text.match(/\d{8}[A-Z]/);
-            if(dniMatch) document.getElementById('doc_num').value = dniMatch[0];
-            
-            // Intenta pillar líneas en mayúsculas para el nombre
-            const lines = text.split('\n').filter(l => l.length > 5);
-            if(lines.length > 0) document.getElementById('fname').value = lines[0].trim();
-            
-            alert("Escaneo finalizado. Revisa los datos.");
-        }
+            try {
+                // Tesseract 4 es mucho más potente
+                const worker = await Tesseract.createWorker('spa');
+                const { data: { text } } = await worker.recognize(canvas.toDataURL('image/jpeg'));
+                
+                // Limpiamos y buscamos patrones
+                const dniRegex = /\d{8}[A-Z]/g;
+                const foundDni = text.match(dniRegex);
+                
+                if(foundDni) {
+                    document.getElementById('doc_num').value = foundDni[0];
+                }
 
-        function save() {
-            alert("Guardado en RuralGesto");
-            location.href='/hub/';
+                // Intentar sacar el nombre (primera línea con texto largo)
+                const lines = text.split('\n').filter(l => l.length > 10);
+                if(lines.length > 0) {
+                    document.getElementById('fname').value = lines[0].trim().toUpperCase();
+                }
+
+                await worker.terminate();
+            } catch (e) {
+                alert("Error analizando la imagen. Prueba de nuevo con más luz.");
+            } finally {
+                statusDiv.classList.add('hidden');
+            }
         }
     </script>
 </body>

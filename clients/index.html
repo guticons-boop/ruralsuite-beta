@@ -11,8 +11,9 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .table-container { border-radius: 24px; overflow: hidden; border: 1px solid #f1f5f9; background: white; }
-        .btn-action { transition: all 0.3s ease; }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .filter-card { cursor: pointer; transition: all 0.3s ease; }
+        .filter-card:hover { transform: translateY(-5px); shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .active-filter { border: 2px solid #fb7185 !important; background-color: #fff1f2 !important; }
     </style>
 </head>
 <body class="p-6 md:p-12">
@@ -25,109 +26,91 @@
                 </button>
                 <h1 class="serif text-4xl italic text-rose-950">Base de Datos</h1>
             </div>
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Gestión Inteligente de Huéspedes</p>
+            <p id="filter-label" class="text-[10px] font-black uppercase tracking-[0.3em] text-rose-500">Mostrando: Todos los Huéspedes</p>
         </div>
-
         <div class="flex gap-3">
-            <button class="btn-action px-6 py-3 bg-white border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="upload" class="w-4 h-4"></i> Importar
+            <button class="px-6 py-3 bg-white border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-slate-50 transition-all">
+                <i data-lucide="download" class="w-4 h-4"></i> Exportar PDF
             </button>
-            <button class="btn-action px-6 py-3 bg-white border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="download" class="w-4 h-4"></i> Exportar
-            </button>
-            <button class="btn-action px-8 py-3 bg-rose-950 text-white rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+            <button class="px-8 py-3 bg-rose-950 text-white rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-all">
                 <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Huésped
             </button>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div class="md:col-span-2 relative">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                <input type="text" placeholder="Buscar por nombre, DNI o email..." class="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm focus:outline-none">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div onclick="filterHuespedes('todos')" class="filter-card bg-white p-6 rounded-3xl border border-slate-100 flex justify-between items-center shadow-sm" id="card-todos">
+                <div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Huéspedes Totales</div>
+                    <div class="text-3xl serif italic text-rose-950" id="count-total">0</div>
+                </div>
+                <i data-lucide="users" class="w-8 h-8 text-slate-200"></i>
             </div>
-            <select class="px-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm text-slate-500 focus:outline-none">
-                <option>Filtrar por Apartamento</option>
-                <option>Apt 1 - La Casona</option>
-                <option>Apt 2 - El Mirador</option>
-                <option>Apt 3 - El Jardín</option>
-            </select>
-            <select class="px-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm text-slate-500 focus:outline-none">
-                <option>Segmento: Todos</option>
-                <option>Parejas</option>
-                <option>Familias</option>
-                <option>VIP</option>
-            </select>
+            <div onclick="filterHuespedes('cumple')" class="filter-card bg-white p-6 rounded-3xl border border-slate-100 flex justify-between items-center shadow-sm" id="card-cumple">
+                <div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-rose-400 mb-1">Cumpleaños Enero</div>
+                    <div class="text-3xl serif italic text-rose-950" id="count-cumple">0</div>
+                </div>
+                <i data-lucide="gift" class="w-8 h-8 text-rose-200"></i>
+            </div>
+            <div onclick="filterHuespedes('retorno')" class="filter-card bg-white p-6 rounded-3xl border border-slate-100 flex justify-between items-center shadow-sm" id="card-retorno">
+                <div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-1">Tasa de Retorno</div>
+                    <div class="text-3xl serif italic text-rose-950" id="count-retorno">0</div>
+                </div>
+                <i data-lucide="refresh-cw" class="w-8 h-8 text-emerald-200"></i>
+            </div>
         </div>
 
         <div class="table-container shadow-sm">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-100">
-                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Huésped</th>
+                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Huésped (A-Z)</th>
                         <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Cumpleaños</th>
                         <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Contacto</th>
                         <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Estado</th>
                         <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-50">
-                    <tr class="hover:bg-rose-50/30 transition-colors group text-sm">
-                        <td class="p-6">
-                            <div class="font-bold text-rose-950">Antonio López</div>
-                            <div class="text-[10px] text-slate-400 uppercase tracking-tight">DNI: 45889922K</div>
-                        </td>
-                        <td class="p-6">
-                            <div class="flex items-center gap-2 text-slate-600">
-                                <i data-lucide="cake" class="w-4 h-4 text-rose-400"></i>
-                                12 de Marzo
-                            </div>
-                        </td>
-                        <td class="p-6">
-                            <div class="text-slate-600">antonio.l@email.com</div>
-                            <div class="text-[10px] text-slate-400">+34 600 000 000</div>
-                        </td>
-                        <td class="p-6">
-                            <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold">VIP</span>
-                        </td>
-                        <td class="p-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button title="Ver Ficha" class="p-2 hover:bg-white rounded-lg border border-transparent hover:border-slate-100 shadow-sm"><i data-lucide="eye" class="w-4 h-4 text-slate-400"></i></button>
-                                <button title="WhatsApp" class="p-2 hover:bg-white rounded-lg border border-transparent hover:border-slate-100 shadow-sm"><i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i></button>
-                                <button title="Eliminar" class="p-2 hover:bg-white rounded-lg border border-transparent hover:border-slate-100 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4 text-rose-300"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="lista-huespedes" class="divide-y divide-slate-50 font-medium">
+                    </tbody>
             </table>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            <div class="bg-blue-50/50 p-6 rounded-3xl border border-blue-100 flex justify-between items-center">
-                <div>
-                    <div class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-1">Huéspedes Totales</div>
-                    <div class="text-3xl serif italic text-blue-900">1,248</div>
-                </div>
-                <i data-lucide="users" class="w-8 h-8 text-blue-200"></i>
-            </div>
-            <div class="bg-rose-50/50 p-6 rounded-3xl border border-rose-100 flex justify-between items-center">
-                <div>
-                    <div class="text-[10px] font-black uppercase tracking-widest text-rose-400 mb-1">Cumpleaños del Mes</div>
-                    <div class="text-3xl serif italic text-rose-900">14</div>
-                </div>
-                <i data-lucide="gift" class="w-8 h-8 text-rose-200"></i>
-            </div>
-            <div class="bg-emerald-50/50 p-6 rounded-3xl border border-emerald-100 flex justify-between items-center">
-                <div>
-                    <div class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-1">Tasa Retorno</div>
-                    <div class="text-3xl serif italic text-emerald-900">32%</div>
-                </div>
-                <i data-lucide="trending-up" class="w-8 h-8 text-emerald-200"></i>
-            </div>
         </div>
     </main>
 
-    <script>lucide.createIcons();</script>
-</body>
-</html>
+    <script>
+        // BASE DE DATOS DE EJEMPLO
+        const huespedes = [
+            { nombre: "Ana Belén García", dni: "45123987S", mes: 1, fecha: "15 Ene", email: "ana.garcia@mail.com", tel: "600 111 222", retorno: true, estado: "VIP" },
+            { nombre: "Antonio López", dni: "45889922K", mes: 3, fecha: "12 Mar", email: "antonio.l@mail.com", tel: "611 000 999", retorno: true, estado: "Frecuente" },
+            { nombre: "Beatriz Sanchis", dni: "22334455P", mes: 1, fecha: "02 Ene", email: "bea.s@mail.com", tel: "655 444 333", retorno: false, estado: "Nuevo" },
+            { nombre: "Carlos Vives", dni: "11223344M", mes: 5, fecha: "20 May", email: "c.vives@mail.com", tel: "677 888 999", retorno: true, estado: "VIP" },
+            { nombre: "Daniela Ortiz", dni: "99887766L", mes: 1, fecha: "28 Ene", email: "dani.o@mail.com", tel: "644 333 222", retorno: false, estado: "Nuevo" },
+            { nombre: "Fernando Hierro", dni: "77665544X", mes: 8, fecha: "10 Ago", email: "f.hierro@mail.com", tel: "633 222 111", retorno: true, estado: "Frecuente" }
+        ];
+
+        function renderTable(data) {
+            const container = document.getElementById('lista-huespedes');
+            // Ordenar alfabéticamente
+            const sortedData = data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            
+            container.innerHTML = sortedData.map(h => `
+                <tr class="hover:bg-rose-50/30 transition-colors group">
+                    <td class="p-6">
+                        <div class="font-bold text-rose-950">${h.nombre}</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-tight">DNI: ${h.dni}</div>
+                    </td>
+                    <td class="p-6">
+                        <div class="flex items-center gap-2 text-sm text-slate-600">
+                            <i data-lucide="cake" class="w-4 h-4 ${h.mes === 1 ? 'text-rose-500 font-bold' : 'text-slate-300'}"></i>
+                            ${h.fecha}
+                        </div>
+                    </td>
+                    <td class="p-6">
+                        <div class="text-xs text-slate-600 font-semibold">${h.email}</div>
+                        <div class="text-[10px] text-slate-400">+34 ${h.tel}</div>
+                    </td>
+                    <td class="p-6">
+                        <span class="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-

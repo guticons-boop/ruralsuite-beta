@@ -12,10 +12,9 @@
         .serif { font-family: 'DM+Serif+Display', serif; }
         .hero-half { 
             height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), 
-                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop'); /* Finca Rural con Piscina */
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1544894079-e81a9eb1da8b?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center;
             border-radius: 0 0 60px 60px;
         }
         .app-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #f1f5f9; }
@@ -26,8 +25,8 @@
 
     <nav class="absolute top-0 left-0 w-full p-8 md:p-12 flex justify-between items-center z-20">
         <h1 class="serif text-4xl italic text-white">RuralGestión</h1>
-        <div class="flex gap-8 items-center">
-            <button class="text-white text-[10px] font-black uppercase tracking-widest hover:opacity-70 transition-opacity">Acceso a Planes</button>
+        <div class="flex gap-8 items-center text-white">
+            <button class="text-[10px] font-black uppercase tracking-widest hover:opacity-70 transition-opacity">Acceso a Planes</button>
             <button onclick="window.location.href='hub/index.html'" class="px-10 py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-all">
                 Iniciar Sesión
             </button>
@@ -37,74 +36,73 @@
     <header class="hero-half flex items-center justify-center text-center px-6 relative">
         <div class="max-w-5xl">
             <h2 class="serif text-7xl md:text-9xl italic text-white mb-4 leading-tight">Soluciones inteligentes para tu negocio.</h2>
-            <p class="text-white/80 text-[11px] font-black uppercase tracking-[0.6em]">Gestión integral para alojamientos rurales</p>
+            <p class="text-white/80 text-[11px] font-black uppercase tracking-[0.6em]">Ecosistema digital para alojamientos con alma</p>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-8 py-24">
-        <div class="mb-20">
-            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-rose-950/30 mb-4">Ecosistema RuralGestión</p>
+        <div class="mb-20 text-center md:text-left">
+            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-rose-950/30 mb-4">Módulos del Sistema</p>
             <h3 class="serif text-6xl italic text-rose-950">Nuestras Herramientas</h3>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <div onclick="window.location.href='info-admin.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="line-chart"></i></div>
                 <h4 class="serif text-3xl italic mb-4">Admin & Tax</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">Control de ingresos netos, gastos y borrador fiscal automático.</p>
-                <span class="text-[9px] font-black uppercase text-blue-500 tracking-widest group-hover:underline">Saber más →</span>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Contabilidad inteligente y liquidación de impuestos.</p>
+                <span class="text-[9px] font-black uppercase text-blue-500 tracking-widest">Saber más →</span>
             </div>
-
             <div onclick="window.location.href='info-clientes.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="database"></i></div>
                 <h4 class="serif text-3xl italic mb-4">Base de Datos</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">CRM de huéspedes, histórico de estancias e importación VIP.</p>
-                <span class="text-[9px] font-black uppercase text-amber-500 tracking-widest group-hover:underline">Saber más →</span>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">CRM centralizado para perfiles de huéspedes.</p>
+                <span class="text-[9px] font-black uppercase text-amber-500 tracking-widest">Saber más →</span>
             </div>
-
             <div onclick="window.location.href='info-agenda.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="calendar"></i></div>
                 <h4 class="serif text-3xl italic mb-4">Agenda Global</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">Sincronización total de calendarios iCal para evitar el overbooking.</p>
-                <span class="text-[9px] font-black uppercase text-purple-500 tracking-widest group-hover:underline">Saber más →</span>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Control total de entradas y salidas en un calendario.</p>
+                <span class="text-[9px] font-black uppercase text-purple-500 tracking-widest">Saber más →</span>
             </div>
-
             <div onclick="window.location.href='info-motor.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="globe"></i></div>
                 <h4 class="serif text-3xl italic mb-4">Motor Reservas</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">Venta directa en tu web oficial sin comisiones de terceros.</p>
-                <span class="text-[9px] font-black uppercase text-emerald-500 tracking-widest group-hover:underline">Saber más →</span>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Venta directa sin comisiones desde tu web.</p>
+                <span class="text-[9px] font-black uppercase text-emerald-500 tracking-widest">Saber más →</span>
             </div>
-
             <div onclick="window.location.href='info-checkin.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="scan"></i></div>
                 <h4 class="serif text-3xl italic mb-4">Check-in OCR</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">Escaneo de documentos y envío automático a hospederías.</p>
-                <span class="text-[9px] font-black uppercase text-indigo-500 tracking-widest group-hover:underline">Saber más →</span>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Lectura de documentos y envío legal automático.</p>
+                <span class="text-[9px] font-black uppercase text-indigo-500 tracking-widest">Saber más →</span>
             </div>
-
             <div onclick="window.location.href='info-limpieza.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="sparkles"></i></div>
-                <h4 class="serif text-3xl italic mb-4">Limpieza</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">Gestión de tareas, turnos y mantenimiento preventivo.</p>
-                <span class="text-[9px] font-black uppercase text-rose-500 tracking-widest group-hover:underline">Saber más →</span>
+                <h4 class="serif text-3xl italic mb-4">Limpieza & Staff</h4>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Organización de equipos y reportes de averías.</p>
+                <span class="text-[9px] font-black uppercase text-rose-500 tracking-widest">Saber más →</span>
             </div>
-
             <div onclick="window.location.href='info-web.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
                 <div class="w-14 h-14 bg-cyan-50 text-cyan-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="layout"></i></div>
                 <h4 class="serif text-3xl italic mb-4">Tu Web Pro</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-6">Diseño de tu escaparate online optimizado para reservas.</p>
-                <span class="text-[9px] font-black uppercase text-cyan-500 tracking-widest group-hover:underline">Saber más →</span>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Constructor visual para la web de tu alojamiento.</p>
+                <span class="text-[9px] font-black uppercase text-cyan-500 tracking-widest">Saber más →</span>
             </div>
-
+            <div onclick="window.location.href='info-marketing.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
+                <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="megaphone"></i></div>
+                <h4 class="serif text-3xl italic mb-4">Marketing</h4>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Fidelización y captación de reservas directas.</p>
+                <span class="text-[9px] font-black uppercase text-orange-500 tracking-widest">Saber más →</span>
+            </div>
+            <div onclick="window.location.href='info-experiencias.html'" class="app-card bg-white p-10 rounded-[50px] cursor-pointer group">
+                <div class="w-14 h-14 bg-lime-50 text-lime-600 rounded-2xl flex items-center justify-center mb-8"><i data-lucide="map"></i></div>
+                <h4 class="serif text-3xl italic mb-4">Experiencias</h4>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Aumenta ingresos con servicios extra y actividades.</p>
+                <span class="text-[9px] font-black uppercase text-lime-600 tracking-widest">Saber más →</span>
+            </div>
         </div>
     </main>
-
-    <footer class="p-16 text-center text-[10px] font-bold text-slate-300 uppercase tracking-widest border-t border-slate-50">
-        © 2026 RuralGestión Enterprise • Made with passion for hosts
-    </footer>
-
     <script>lucide.createIcons();</script>
 </body>
 </html>

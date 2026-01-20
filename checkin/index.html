@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check-in OCR | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -11,170 +10,91 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
         .tab-active { border-bottom: 2px solid #1a1a1a; color: #1a1a1a; }
-        #video { width: 100%; height: 100%; object-fit: cover; border-radius: 40px; }
     </style>
 </head>
-<body class="p-6 md:p-12 pb-32">
+<body class="p-6 md:p-12">
     <div class="max-w-4xl mx-auto">
         <header class="flex justify-between items-center mb-12">
-            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm hover:bg-slate-50 transition-all">
-                <i data-lucide="arrow-left" class="w-6 h-6 text-rose-950"></i>
-            </button>
-            <div class="text-right">
-                <p id="localizador-display" class="text-[10px] font-black text-rose-950 bg-rose-50 px-4 py-2 rounded-full tracking-widest uppercase">LOC: RG-2026-X</p>
-            </div>
+            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
+            <p id="loc-auto" class="text-[10px] font-black bg-rose-50 text-rose-900 px-4 py-2 rounded-full uppercase tracking-widest">LOC: RG-2026-X</p>
         </header>
 
-        <nav class="flex gap-8 md:gap-12 mb-12 border-b border-slate-100 overflow-x-auto whitespace-nowrap">
-            <button onclick="switchTab('scanner')" id="tab-scanner" class="tab-active pb-6 text-[10px] font-black uppercase tracking-widest">Escáner OCR</button>
-            <button onclick="switchTab('enlace')" id="tab-enlace" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Enviar Enlace</button>
-            <button onclick="switchTab('database')" id="tab-database" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Base de Datos</button>
+        <nav class="flex gap-12 mb-12 border-b border-slate-100">
+            <button onclick="st('scan')" id="b-scan" class="tab-active pb-6 text-[10px] font-black uppercase tracking-widest">Escáner OCR</button>
+            <button onclick="st('link')" id="b-link" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Enviar Enlace</button>
+            <button onclick="st('db')" id="b-db" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Base de Datos</button>
         </nav>
 
-        <div id="sec-scanner" class="space-y-8">
-            <div class="relative bg-black aspect-video rounded-[40px] overflow-hidden shadow-2xl">
-                <video id="video" autoplay playsinline class="opacity-70"></video>
-                <div class="absolute inset-8 border border-white/20 rounded-2xl pointer-events-none"></div>
-                <button onclick="takeSnapshot()" class="absolute bottom-6 left-1/2 -translate-x-1/2 p-6 bg-white text-rose-950 rounded-full shadow-xl hover:scale-110 transition-transform">
-                    <i data-lucide="scan-line" class="w-8 h-8"></i>
-                </button>
+        <div id="s-scan" class="space-y-8">
+            <div class="bg-black aspect-video rounded-[40px] overflow-hidden relative shadow-2xl">
+                <video id="v" class="w-full h-full object-cover opacity-60" autoplay playsinline></video>
+                <button onclick="take()" class="absolute bottom-6 left-1/2 -translate-x-1/2 p-6 bg-white text-rose-950 rounded-full shadow-2xl"><i data-lucide="camera"></i></button>
             </div>
-
             <div class="bg-white p-10 rounded-[50px] border border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-2">
-                    <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-[0.2em]">Nombre Completo</label>
-                    <input type="text" id="form-nombre" class="w-full p-5 bg-slate-50 rounded-2xl outline-none font-bold" placeholder="Detectando...">
-                </div>
-                <div class="space-y-2">
-                    <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-[0.2em]">DNI / Pasaporte</label>
-                    <input type="text" id="form-dni" class="w-full p-5 bg-slate-50 rounded-2xl outline-none font-mono" placeholder="Detectando...">
-                </div>
-                <div class="space-y-2 md:col-span-2">
-                    <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-[0.2em]">Localizador de Reserva</label>
-                    <input type="text" id="form-loc" readonly class="w-full p-5 bg-slate-100 rounded-2xl outline-none text-rose-950 font-black tracking-widest">
-                </div>
-                <button onclick="saveCheckin()" class="md:col-span-2 w-full py-8 bg-rose-950 text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em] shadow-xl hover:bg-slate-900 transition-all">Registrar y Enviar a Hospedajes</button>
+                <input type="text" id="fn" placeholder="Nombre Completo" class="p-5 bg-slate-50 rounded-2xl outline-none font-bold">
+                <input type="text" id="fd" placeholder="DNI / Pasaporte" class="p-5 bg-slate-50 rounded-2xl outline-none font-mono">
+                <input type="text" id="fl" readonly class="p-5 bg-slate-100 rounded-2xl outline-none text-rose-950 font-black md:col-span-2 tracking-widest">
+                <button onclick="save()" class="md:col-span-2 py-8 bg-rose-950 text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em]">Registrar Cliente</button>
             </div>
         </div>
 
-        <div id="sec-enlace" class="hidden space-y-8">
-            <div class="bg-white p-12 rounded-[50px] border border-slate-100 text-center">
-                <div class="w-20 h-20 bg-rose-50 text-rose-950 rounded-full flex items-center justify-center mx-auto mb-8">
-                    <i data-lucide="smartphone-nfc" class="w-10 h-10"></i>
-                </div>
-                <h3 class="serif text-4xl italic mb-4">Check-in Online</h3>
-                <p class="text-slate-400 text-sm max-w-sm mx-auto mb-10">Genera un enlace único para que el cliente realice el escaneado desde su propio móvil antes de llegar.</p>
-                <div class="flex flex-col gap-4">
-                    <button onclick="copyLink()" class="w-full py-6 bg-slate-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest">Copiar Enlace de Invitación</button>
-                    <button onclick="shareWhatsApp()" class="w-full py-6 bg-emerald-500 text-white rounded-full font-black text-[10px] uppercase tracking-widest">Enviar por WhatsApp</button>
-                </div>
-            </div>
+        <div id="s-link" class="hidden text-center bg-white p-20 rounded-[50px] border border-slate-100">
+            <i data-lucide="link-2" class="w-12 h-12 mx-auto mb-6 text-rose-950"></i>
+            <h3 class="serif text-3xl mb-10">Check-in Online</h3>
+            <button onclick="alert('Copiado')" class="w-full py-6 bg-slate-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest mb-4 italic">Copiar Enlace Cliente</button>
+            <button onclick="alert('WhatsApp')" class="w-full py-6 bg-emerald-500 text-white rounded-full font-black text-[10px] uppercase tracking-widest italic">Enviar por WhatsApp</button>
         </div>
 
-        <div id="sec-database" class="hidden space-y-6">
-            <div class="flex justify-between items-end mb-4">
-                <h3 class="serif text-4xl italic text-rose-950">Historial</h3>
-                <button onclick="clearDB()" class="text-[9px] font-black uppercase text-rose-300 tracking-widest">Vaciar Registro</button>
-            </div>
-            <div id="db-container" class="space-y-4">
-                </div>
+        <div id="s-db" class="hidden space-y-4">
+            <div id="historial" class="space-y-4"></div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-
-        // Lógica de Localizador Dinámico
-        function generateLoc() {
-            const random = Math.floor(1000 + Math.random() * 9000);
-            const loc = `RG-2026-${random}`;
-            document.getElementById('localizador-display').innerText = `LOC: ${loc}`;
-            document.getElementById('form-loc').value = loc;
+        function st(t){
+            document.querySelectorAll('[id^="s-"]').forEach(x=>x.classList.add('hidden'));
+            document.getElementById('s-'+t).classList.remove('hidden');
+            document.querySelectorAll('nav button').forEach(b=>b.className="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400");
+            document.getElementById('b-'+t).className="tab-active pb-6 text-[10px] font-black uppercase tracking-widest";
+            if(t==='db') load();
         }
-        generateLoc();
-
-        // Switch de Pestañas
-        function switchTab(t) {
-            document.querySelectorAll('[id^="sec-"]').forEach(s => s.classList.add('hidden'));
-            document.getElementById('sec-' + t).classList.remove('hidden');
-            document.querySelectorAll('nav button').forEach(b => {
-                b.classList.remove('tab-active', 'text-slate-900');
-                b.classList.add('text-slate-400');
-            });
-            document.getElementById('tab-' + t).classList.add('tab-active', 'text-slate-900');
-            if(t === 'database') renderDB();
+        function gLoc(){
+            const l = `RG-2026-${Math.floor(1000+Math.random()*9000)}`;
+            document.getElementById('loc-auto').innerText = `LOC: ${l}`;
+            document.getElementById('fl').value = l;
         }
-
-        // Cámara
-        const video = document.getElementById('video');
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(s => video.srcObject = s);
-
-        // Simulación OCR y Guardado
-        function takeSnapshot() {
-            document.getElementById('form-nombre').value = "PROCESANDO...";
-            setTimeout(() => {
-                document.getElementById('form-nombre').value = "CARLOS SOLER SAEZ";
-                document.getElementById('form-dni').value = "55221144K";
-            }, 1500);
+        gLoc();
+        function take(){
+            document.getElementById('fn').value = "CARLOS SAEZ";
+            document.getElementById('fd').value = "55443322X";
         }
-
-        function saveCheckin() {
-            const nombre = document.getElementById('form-nombre').value;
-            const dni = document.getElementById('form-dni').value;
-            const loc = document.getElementById('form-loc').value;
-
-            if(!nombre || nombre === "PROCESANDO...") return alert("Primero escanea el documento");
-
-            const guest = { nombre, dni, loc, fecha: new Date().toLocaleDateString() };
-            let guests = JSON.parse(localStorage.getItem('guests') || '[]');
-            guests.push(guest);
-            localStorage.setItem('guests', JSON.stringify(guests));
-
-            alert(`Registro ${loc} enviado a Hospedajes`);
-            generateLoc(); // Nuevo localizador para el siguiente
-            document.getElementById('form-nombre').value = "";
-            document.getElementById('form-dni').value = "";
+        function save(){
+            const g = { n: document.getElementById('fn').value, d: document.getElementById('fd').value, l: document.getElementById('fl').value };
+            let s = JSON.parse(localStorage.getItem('rg_guests') || '[]');
+            s.push(g);
+            localStorage.setItem('rg_guests', JSON.stringify(s));
+            alert('Guardado');
+            gLoc();
         }
-
-        function renderDB() {
-            const container = document.getElementById('db-container');
-            const guests = JSON.parse(localStorage.getItem('guests') || '[]');
-            container.innerHTML = guests.length ? '' : '<p class="text-center py-20 text-slate-300 font-bold uppercase text-[10px]">No hay registros</p>';
-            
-            guests.reverse().forEach((g, index) => {
-                container.innerHTML += `
-                    <div class="bg-white p-8 rounded-[30px] border border-slate-100 flex justify-between items-center">
-                        <div>
-                            <p class="text-[9px] font-black text-rose-900 uppercase tracking-widest">${g.loc}</p>
-                            <h4 class="serif text-xl italic mt-1">${g.nombre}</h4>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${g.dni} · ${g.fecha}</p>
-                        </div>
-                        <button onclick="deleteGuest(${guests.length - 1 - index})" class="p-3 text-slate-200 hover:text-rose-500 transition-colors">
-                            <i data-lucide="trash-2" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                `;
-            });
+        function load(){
+            const h = document.getElementById('historial');
+            const s = JSON.parse(localStorage.getItem('rg_guests') || '[]');
+            h.innerHTML = s.map((x,i)=>`
+                <div class="bg-white p-8 rounded-[30px] border border-slate-100 flex justify-between items-center">
+                    <div><p class="text-[9px] font-black text-rose-900">${x.l}</p><h4 class="serif text-xl">${x.n}</h4></div>
+                    <button onclick="del(${i})" class="text-rose-300"><i data-lucide="trash-2"></i></button>
+                </div>
+            `).join('');
             lucide.createIcons();
         }
-
-        function deleteGuest(index) {
-            let guests = JSON.parse(localStorage.getItem('guests') || '[]');
-            guests.splice(index, 1);
-            localStorage.setItem('guests', JSON.stringify(guests));
-            renderDB();
+        function del(i){
+            let s = JSON.parse(localStorage.getItem('rg_guests') || '[]');
+            s.splice(i,1);
+            localStorage.setItem('rg_guests', JSON.stringify(s));
+            load();
         }
-
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href + "?mode=client");
-            alert("Enlace copiado. El cliente solo verá el escáner.");
-        }
-
-        function shareWhatsApp() {
-            const url = encodeURIComponent(window.location.href + "?mode=client");
-            window.open(`https://wa.me/?text=Hola, por favor realiza tu check-in digital aquí: ${url}`);
-        }
+        navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(s=>document.getElementById('v').srcObject=s);
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub de Gestión | RuralGestión</title>
+    <title>Panel de Control | RuralGestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -16,12 +16,11 @@
             position: relative;
         }
         .app-btn:hover { transform: scale(1.05); border-color: #fb7185; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08); }
-        
-        /* Tooltip de descripción */
         .desc-popup {
             position: absolute; bottom: -10px; opacity: 0; pointer-events: none;
             transition: all 0.3s ease; background: #1a1a1a; color: white;
-            padding: 10px 15px; border-radius: 12px; font-size: 10px; width: 180px; z-index: 50;
+            padding: 12px 18px; border-radius: 12px; font-size: 10px; width: 220px; z-index: 50;
+            text-align: center; line-height: 1.4;
         }
         .app-btn:hover .desc-popup { opacity: 1; transform: translateY(20px); }
     </style>
@@ -30,37 +29,33 @@
     <header class="max-w-7xl mx-auto flex justify-between items-center mb-24">
         <div>
             <h1 class="serif text-5xl italic text-rose-950">RuralGestión</h1>
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control de tus Alojamientos</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control Activo</p>
         </div>
         <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
-            <i data-lucide="log-out" class="w-4 h-4"></i> Salir
+            <i data-lucide="log-out" class="w-4 h-4"></i> Salir al Inicio
         </button>
     </header>
 
     <main class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
-        <script>
-            const tools = [
-                { icon: 'line-chart', link: '../tax/index.html', label: 'Administración', color: 'text-blue-500', desc: 'Gestiona ingresos, gastos y el borrador fiscal trimestral.' },
-                { icon: 'database', link: '../clients/index.html', label: 'Base de Datos', color: 'text-amber-500', desc: 'Accede al historial completo y fichas de tus huéspedes.' },
-                { icon: 'calendar', link: '../calendar/index.html', label: 'Agenda Global', color: 'text-purple-500', desc: 'Sincroniza todos tus canales en un solo calendario iCal.' },
-                { icon: 'globe', link: '../booking/index.html', label: 'Motor Reservas', color: 'text-emerald-500', desc: 'Recibe reservas directas desde tu web sin pagar comisiones.' },
-                { icon: 'scan', link: '../checkin/index.html', label: 'Check-in OCR', color: 'text-indigo-500', desc: 'Escanea DNI/Pasaportes y envía los partes a la policía.' },
-                { icon: 'sparkles', link: '../cleaning/index.html', label: 'Limpieza', color: 'text-rose-500', desc: 'Coordina el personal de limpieza y reporta averías al instante.' },
-                { icon: 'layout', link: '../web/index.html', label: 'Tu Web Pro', color: 'text-cyan-500', desc: 'Edita el contenido y las fotos de tu página web oficial.' },
-                { icon: 'megaphone', link: '../marketing/index.html', label: 'Marketing', color: 'text-orange-500', desc: 'Envía ofertas especiales y fideliza a tus antiguos clientes.' },
-                { icon: 'map', link: '../experiencias/index.html', label: 'Experiencias', color: 'text-lime-600', desc: 'Crea servicios extra para aumentar la rentabilidad de cada estancia.' }
-            ];
+        <div onclick="window.location.href='admin/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
+            <i data-lucide="line-chart" class="text-blue-500 w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
+            <h3 class="serif text-2xl italic text-rose-950">Administración</h3>
+            <div class="desc-popup">Control de tus 3 apartamentos, totales en negro y borrador fiscal trimestral.</div>
+        </div>
 
-            document.write(tools.map(tool => `
-                <div onclick="window.location.href='${tool.link}'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
-                    <i data-lucide="${tool.icon}" class="${tool.color} w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="serif text-2xl italic text-rose-950">${tool.label}</h3>
-                    <div class="desc-popup">${tool.desc}</div>
-                </div>
-            `).join(''));
-        </script>
+        <div onclick="window.location.href='clientes/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
+            <i data-lucide="database" class="text-amber-500 w-14 h-14 mb-6"></i>
+            <h3 class="serif text-2xl italic text-rose-950">Base de Datos</h3>
+            <div class="desc-popup">Accede a la ficha técnica de tus huéspedes e histórico de visitas.</div>
+        </div>
+
+        <div onclick="window.location.href='agenda/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
+            <i data-lucide="calendar" class="text-purple-500 w-14 h-14 mb-6"></i>
+            <h3 class="serif text-2xl italic text-rose-950">Agenda Global</h3>
+            <div class="desc-popup">Calendario unificado con sincronización automática iCal.</div>
+        </div>
+
+        <script>lucide.createIcons();</script>
     </main>
-
-    <script>lucide.createIcons();</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | Soluciones para tus Alojamientos</title>
+    <title>RuralGestión | Soluciones para tus Alojamientos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -12,19 +12,29 @@
         .serif { font-family: 'DM+Serif+Display', serif; }
         .hero-half { 
             height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), 
-                        url('https://images.unsplash.com/photo-1544894079-e81a9eb1da8b?q=80&w=2070&auto=format&fit=crop');
+            background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.45)), 
+                        url('https://images.unsplash.com/photo-1544894079-e81a9eb1da8b?q=80&w=2070&auto=format&fit=crop'); 
             background-size: cover; background-position: center;
             border-radius: 0 0 60px 60px;
         }
-        .app-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #f1f5f9; text-align: center; }
+        /* Estilo de icono premium inspirado en la imagen */
+        .icon-wrap {
+            position: relative;
+            width: 70px; height: 70px;
+            display: flex; align-items: center; justify-center;
+            border-radius: 22px;
+            margin: 0 auto 30px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .app-card:hover .icon-wrap { transform: scale(1.1) rotate(5deg); }
+        .app-card { transition: all 0.4s ease; border: 1px solid #f1f5f9; text-align: center; }
         .app-card:hover { transform: translateY(-10px); border-color: #fb7185; box-shadow: 0 30px 60px -15px rgba(26,11,11,0.08); }
     </style>
 </head>
 <body>
 
     <nav class="absolute top-0 left-0 w-full p-8 md:p-12 flex justify-between items-center z-20">
-        <h1 class="serif text-4xl italic text-white">RuralGesto</h1>
+        <h1 class="serif text-4xl italic text-white tracking-tight">RuralGestión</h1>
         <div class="flex gap-8 items-center text-white">
             <button class="text-[10px] font-black uppercase tracking-widest hover:opacity-70 transition-opacity">Planes</button>
             <button onclick="window.location.href='hub/index.html'" class="px-10 py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-all">
@@ -34,7 +44,7 @@
     </nav>
 
     <header class="hero-half flex items-center justify-center text-center px-6 relative">
-        <div class="max-w-5xl">
+        <div class="max-w-5xl reveal">
             <h2 class="serif text-7xl md:text-8xl italic text-white mb-4 leading-tight">Soluciones para tus alojamientos.</h2>
             <p class="text-white/90 text-[11px] font-black uppercase tracking-[0.6em]">Ecosistema digital con alma</p>
         </div>
@@ -46,37 +56,33 @@
             <h3 class="serif text-6xl italic text-rose-950">Nuestras Herramientas</h3>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <script>
                 const apps = [
-                    { name: 'Admin & Tax', icon: 'line-chart', color: 'blue', desc: 'Contabilidad inteligente y fiscalidad.' },
-                    { name: 'Base de Datos', icon: 'database', color: 'amber', desc: 'CRM centralizado de huéspedes.' },
-                    { name: 'Agenda Global', icon: 'calendar', color: 'purple', desc: 'Sincronización total de reservas.' },
-                    { name: 'Motor Reservas', icon: 'globe', color: 'emerald', desc: 'Venta directa sin comisiones.' },
-                    { name: 'Check-in OCR', icon: 'scan', color: 'indigo', desc: 'Lectura de documentos automática.' },
-                    { name: 'Limpieza & Staff', icon: 'sparkles', color: 'rose', desc: 'Gestión de equipos y mantenimiento.' },
-                    { name: 'Tu Web Pro', icon: 'layout', color: 'cyan', desc: 'Constructor visual de tu sitio web.' },
-                    { name: 'Marketing', icon: 'megaphone', color: 'orange', desc: 'Fidelización y ofertas directas.' },
-                    { name: 'Experiencias', icon: 'map', color: 'lime', desc: 'Servicios extra y actividades.' }
+                    { name: 'Admin & Tax', icon: 'line-chart', color: 'bg-blue-500', text: 'text-blue-500', bg: 'bg-blue-50', desc: 'Contabilidad inteligente y fiscalidad.' },
+                    { name: 'Base de Datos', icon: 'database', color: 'bg-amber-500', text: 'text-amber-500', bg: 'bg-amber-50', desc: 'CRM centralizado de huéspedes.' },
+                    { name: 'Agenda Global', icon: 'calendar', color: 'bg-purple-500', text: 'text-purple-500', bg: 'bg-purple-50', desc: 'Sincronización total de reservas.' },
+                    { name: 'Motor Reservas', icon: 'globe', color: 'bg-emerald-500', text: 'text-emerald-500', bg: 'bg-emerald-50', desc: 'Venta directa sin comisiones.' },
+                    { name: 'Check-in OCR', icon: 'scan', color: 'bg-indigo-500', text: 'text-indigo-500', bg: 'bg-indigo-50', desc: 'Lectura de documentos automática.' },
+                    { name: 'Limpieza & Staff', icon: 'sparkles', color: 'bg-rose-500', text: 'text-rose-500', bg: 'bg-rose-50', desc: 'Gestión de equipos y mantenimiento.' },
+                    { name: 'Tu Web Pro', icon: 'layout', color: 'bg-cyan-500', text: 'text-cyan-500', bg: 'bg-cyan-50', desc: 'Constructor visual de tu sitio web.' },
+                    { name: 'Marketing', icon: 'megaphone', color: 'bg-orange-500', text: 'text-orange-500', bg: 'bg-orange-50', desc: 'Fidelización y ofertas directas.' },
+                    { name: 'Experiencias', icon: 'map', color: 'bg-lime-600', text: 'text-lime-600', bg: 'bg-lime-50', desc: 'Servicios extra y actividades.' }
                 ];
                 
                 document.write(apps.map(app => `
-                    <div onclick="window.location.href='info-${app.name.toLowerCase().replace(/ /g, "")}.html'" class="app-card bg-white p-12 rounded-[50px] cursor-pointer group">
-                        <div class="w-16 h-16 bg-${app.color}-50 text-${app.color}-500 rounded-3xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform shadow-sm">
-                            <i data-lucide="${app.icon}" class="w-8 h-8"></i>
+                    <div onclick="window.location.href='info-${app.name.toLowerCase().replace(/ /g, "").replace("&", "n")}.html'" class="app-card bg-white p-12 rounded-[50px] cursor-pointer group">
+                        <div class="icon-wrap ${app.bg} flex items-center justify-center shadow-inner">
+                            <i data-lucide="${app.icon}" class="${app.text} w-8 h-8"></i>
                         </div>
                         <h4 class="serif text-3xl italic mb-4 text-rose-950">${app.name}</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed mb-8">${app.desc}</p>
-                        <span class="px-6 py-2 border border-slate-100 rounded-full text-[9px] font-black uppercase tracking-widest group-hover:bg-rose-950 group-hover:text-white transition-all italic">Saber más →</span>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-10">${app.desc}</p>
+                        <span class="px-8 py-3 border border-slate-100 rounded-full text-[9px] font-black uppercase tracking-widest group-hover:bg-rose-950 group-hover:text-white transition-all">Saber más</span>
                     </div>
                 `).join(''));
             </script>
         </div>
     </main>
-
-    <footer class="p-20 text-center text-[10px] font-bold text-slate-300 uppercase tracking-widest">
-        © 2026 RuralGesto • Hecho para particulares y empresas
-    </footer>
 
     <script>lucide.createIcons();</script>
 </body>

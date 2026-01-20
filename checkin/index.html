@@ -10,50 +10,170 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .scanner-line { height: 2px; background: white; box-shadow: 0 0 20px white; position: absolute; width: 100%; top: 0; animation: scan 3s infinite; }
-        @keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+        .tab-active { border-bottom: 2px solid #1a1a1a; color: #1a1a1a; }
+        #video { width: 100%; height: 100%; object-fit: cover; border-radius: 40px; }
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-2xl mx-auto">
-        <header class="flex items-center gap-8 mb-16">
-            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-[24px] border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
-            <h2 class="serif text-4xl italic text-rose-950">Check-in OCR</h2>
+<body class="p-6 md:p-12 pb-32">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm hover:bg-slate-50 transition-all">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-rose-950"></i>
+            </button>
+            <div class="text-right">
+                <p id="localizador-display" class="text-[10px] font-black text-rose-950 bg-rose-50 px-4 py-2 rounded-full tracking-widest uppercase">LOC: RG-2026-X</p>
+            </div>
         </header>
 
-        <div class="relative bg-black aspect-[4/3] rounded-[50px] overflow-hidden shadow-2xl mb-12">
-            <video id="v" class="w-full h-full object-cover opacity-60" autoplay playsinline></video>
-            <div class="absolute inset-12 border-2 border-dashed border-white/20 rounded-3xl pointer-events-none">
-                <div class="scanner-line"></div>
+        <nav class="flex gap-8 md:gap-12 mb-12 border-b border-slate-100 overflow-x-auto whitespace-nowrap">
+            <button onclick="switchTab('scanner')" id="tab-scanner" class="tab-active pb-6 text-[10px] font-black uppercase tracking-widest">Escáner OCR</button>
+            <button onclick="switchTab('enlace')" id="tab-enlace" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Enviar Enlace</button>
+            <button onclick="switchTab('database')" id="tab-database" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Base de Datos</button>
+        </nav>
+
+        <div id="sec-scanner" class="space-y-8">
+            <div class="relative bg-black aspect-video rounded-[40px] overflow-hidden shadow-2xl">
+                <video id="video" autoplay playsinline class="opacity-70"></video>
+                <div class="absolute inset-8 border border-white/20 rounded-2xl pointer-events-none"></div>
+                <button onclick="takeSnapshot()" class="absolute bottom-6 left-1/2 -translate-x-1/2 p-6 bg-white text-rose-950 rounded-full shadow-xl hover:scale-110 transition-transform">
+                    <i data-lucide="scan-line" class="w-8 h-8"></i>
+                </button>
             </div>
-            <button onclick="snap()" class="absolute bottom-8 left-1/2 -translate-x-1/2 p-8 bg-white text-rose-950 rounded-full shadow-2xl active:scale-90 transition-transform">
-                <i data-lucide="camera" class="w-8 h-8"></i>
-            </button>
+
+            <div class="bg-white p-10 rounded-[50px] border border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-[0.2em]">Nombre Completo</label>
+                    <input type="text" id="form-nombre" class="w-full p-5 bg-slate-50 rounded-2xl outline-none font-bold" placeholder="Detectando...">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-[0.2em]">DNI / Pasaporte</label>
+                    <input type="text" id="form-dni" class="w-full p-5 bg-slate-50 rounded-2xl outline-none font-mono" placeholder="Detectando...">
+                </div>
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-[0.2em]">Localizador de Reserva</label>
+                    <input type="text" id="form-loc" readonly class="w-full p-5 bg-slate-100 rounded-2xl outline-none text-rose-950 font-black tracking-widest">
+                </div>
+                <button onclick="saveCheckin()" class="md:col-span-2 w-full py-8 bg-rose-950 text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em] shadow-xl hover:bg-slate-900 transition-all">Registrar y Enviar a Hospedajes</button>
+            </div>
         </div>
 
-        <div class="bg-white p-12 rounded-[60px] border border-slate-100 space-y-8">
-            <div class="space-y-2">
-                <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-widest italic">Huésped Detectado</label>
-                <input id="n" type="text" placeholder="Nombre completo" class="w-full p-6 bg-slate-50 rounded-[24px] outline-none font-bold text-rose-950">
+        <div id="sec-enlace" class="hidden space-y-8">
+            <div class="bg-white p-12 rounded-[50px] border border-slate-100 text-center">
+                <div class="w-20 h-20 bg-rose-50 text-rose-950 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <i data-lucide="smartphone-nfc" class="w-10 h-10"></i>
+                </div>
+                <h3 class="serif text-4xl italic mb-4">Check-in Online</h3>
+                <p class="text-slate-400 text-sm max-w-sm mx-auto mb-10">Genera un enlace único para que el cliente realice el escaneado desde su propio móvil antes de llegar.</p>
+                <div class="flex flex-col gap-4">
+                    <button onclick="copyLink()" class="w-full py-6 bg-slate-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest">Copiar Enlace de Invitación</button>
+                    <button onclick="shareWhatsApp()" class="w-full py-6 bg-emerald-500 text-white rounded-full font-black text-[10px] uppercase tracking-widest">Enviar por WhatsApp</button>
+                </div>
             </div>
-            <div class="space-y-2">
-                <label class="text-[9px] font-black uppercase text-slate-300 ml-4 tracking-widest italic">Nº Identificación</label>
-                <input id="d" type="text" placeholder="DNI / NIE / Pasaporte" class="w-full p-6 bg-slate-50 rounded-[24px] outline-none font-mono">
+        </div>
+
+        <div id="sec-database" class="hidden space-y-6">
+            <div class="flex justify-between items-end mb-4">
+                <h3 class="serif text-4xl italic text-rose-950">Historial</h3>
+                <button onclick="clearDB()" class="text-[9px] font-black uppercase text-rose-300 tracking-widest">Vaciar Registro</button>
             </div>
-            <button onclick="alert('Enviado correctamente a Hospedajes del Ministerio')" class="w-full py-8 bg-rose-950 text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em] shadow-2xl">Validar y Enviar a Hospedajes</button>
+            <div id="db-container" class="space-y-4">
+                </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const v = document.getElementById('v');
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(s => v.srcObject = s);
-        function snap(){
-            document.getElementById('n').value = "PROCESANDO...";
+
+        // Lógica de Localizador Dinámico
+        function generateLoc() {
+            const random = Math.floor(1000 + Math.random() * 9000);
+            const loc = `RG-2026-${random}`;
+            document.getElementById('localizador-display').innerText = `LOC: ${loc}`;
+            document.getElementById('form-loc').value = loc;
+        }
+        generateLoc();
+
+        // Switch de Pestañas
+        function switchTab(t) {
+            document.querySelectorAll('[id^="sec-"]').forEach(s => s.classList.add('hidden'));
+            document.getElementById('sec-' + t).classList.remove('hidden');
+            document.querySelectorAll('nav button').forEach(b => {
+                b.classList.remove('tab-active', 'text-slate-900');
+                b.classList.add('text-slate-400');
+            });
+            document.getElementById('tab-' + t).classList.add('tab-active', 'text-slate-900');
+            if(t === 'database') renderDB();
+        }
+
+        // Cámara
+        const video = document.getElementById('video');
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(s => video.srcObject = s);
+
+        // Simulación OCR y Guardado
+        function takeSnapshot() {
+            document.getElementById('form-nombre').value = "PROCESANDO...";
             setTimeout(() => {
-                document.getElementById('n').value = "MARTINEZ RUIZ, ELENA";
-                document.getElementById('d').value = "48772211S";
-            }, 2000);
+                document.getElementById('form-nombre').value = "CARLOS SOLER SAEZ";
+                document.getElementById('form-dni').value = "55221144K";
+            }, 1500);
+        }
+
+        function saveCheckin() {
+            const nombre = document.getElementById('form-nombre').value;
+            const dni = document.getElementById('form-dni').value;
+            const loc = document.getElementById('form-loc').value;
+
+            if(!nombre || nombre === "PROCESANDO...") return alert("Primero escanea el documento");
+
+            const guest = { nombre, dni, loc, fecha: new Date().toLocaleDateString() };
+            let guests = JSON.parse(localStorage.getItem('guests') || '[]');
+            guests.push(guest);
+            localStorage.setItem('guests', JSON.stringify(guests));
+
+            alert(`Registro ${loc} enviado a Hospedajes`);
+            generateLoc(); // Nuevo localizador para el siguiente
+            document.getElementById('form-nombre').value = "";
+            document.getElementById('form-dni').value = "";
+        }
+
+        function renderDB() {
+            const container = document.getElementById('db-container');
+            const guests = JSON.parse(localStorage.getItem('guests') || '[]');
+            container.innerHTML = guests.length ? '' : '<p class="text-center py-20 text-slate-300 font-bold uppercase text-[10px]">No hay registros</p>';
+            
+            guests.reverse().forEach((g, index) => {
+                container.innerHTML += `
+                    <div class="bg-white p-8 rounded-[30px] border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-[9px] font-black text-rose-900 uppercase tracking-widest">${g.loc}</p>
+                            <h4 class="serif text-xl italic mt-1">${g.nombre}</h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${g.dni} · ${g.fecha}</p>
+                        </div>
+                        <button onclick="deleteGuest(${guests.length - 1 - index})" class="p-3 text-slate-200 hover:text-rose-500 transition-colors">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function deleteGuest(index) {
+            let guests = JSON.parse(localStorage.getItem('guests') || '[]');
+            guests.splice(index, 1);
+            localStorage.setItem('guests', JSON.stringify(guests));
+            renderDB();
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href + "?mode=client");
+            alert("Enlace copiado. El cliente solo verá el escáner.");
+        }
+
+        function shareWhatsApp() {
+            const url = encodeURIComponent(window.location.href + "?mode=client");
+            window.open(`https://wa.me/?text=Hola, por favor realiza tu check-in digital aquí: ${url}`);
         }
     </script>
 </body>

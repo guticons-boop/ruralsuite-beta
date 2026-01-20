@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub de Gestión | RuralGestión</title>
+    <title>Panel de Control | RuralGestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -16,39 +16,59 @@
             position: relative;
         }
         .app-btn:hover { transform: scale(1.05); border-color: #fb7185; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08); }
+        
+        /* Estilo del Popup descriptivo */
         .desc-popup {
-            position: absolute; bottom: -10px; opacity: 0; pointer-events: none;
+            position: absolute; bottom: -15px; opacity: 0; pointer-events: none;
             transition: all 0.3s ease; background: #1a1a1a; color: white;
             padding: 12px 18px; border-radius: 12px; font-size: 10px; width: 220px; z-index: 50;
-            text-align: center;
+            text-align: center; line-height: 1.4; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         .app-btn:hover .desc-popup { opacity: 1; transform: translateY(20px); }
     </style>
 </head>
 <body class="p-8 md:p-16">
-    <header class="max-w-7xl mx-auto flex justify-between items-center mb-24">
+    <header class="max-w-7xl mx-auto flex justify-between items-center mb-20">
         <div>
-            <h1 class="serif text-5xl italic text-rose-950">RuralGestión</h1>
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control de tus Alojamientos</p>
+            <h1 class="serif text-5xl italic text-rose-950 tracking-tight">RuralGestión</h1>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control Activo</p>
         </div>
-        <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50">
-            <i data-lucide="log-out" class="w-4 h-4"></i> Salir al Inicio
-        </button>
+        <div class="flex items-center gap-6">
+            <span class="text-[9px] font-black uppercase tracking-widest text-slate-300">Usuario: Toni</span>
+            <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
+                <i data-lucide="log-out" class="w-4 h-4 text-rose-500"></i> Salir
+            </button>
+        </div>
     </header>
 
-    <main class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
-        <div onclick="window.location.href='admin/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
-            <i data-lucide="line-chart" class="text-blue-500 w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
-            <h3 class="serif text-2xl italic text-rose-950">Administración</h3>
-            <div class="desc-popup">Control de tus 3 apartamentos y borrador fiscal.</div>
-        </div>
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-center">
+        <script>
+            const tools = [
+                { id: 'admin', n: 'Administración', i: 'line-chart', c: 'text-blue-500', d: 'Gestión de los 3 apartamentos, totales en negro y borrador fiscal trimestral.' },
+                { id: 'clientes', n: 'Base de Datos', i: 'database', c: 'text-amber-500', d: 'Histórico de huéspedes, preferencias de estancia y fichas de cliente.' },
+                { id: 'agenda', n: 'Agenda Global', i: 'calendar', c: 'text-purple-500', d: 'Sincronización total de calendarios iCal para evitar el overbooking.' },
+                { id: 'reservas', n: 'Motor Reservas', i: 'globe', c: 'text-emerald-500', d: 'Panel de control de reservas directas recibidas desde tu sitio web.' },
+                { id: 'checkin', n: 'Check-in OCR', i: 'scan', c: 'text-indigo-500', d: 'Escaneo de documentos y envío automático de partes a la policía.' },
+                { id: 'staff', n: 'Limpieza & Staff', i: 'sparkles', c: 'text-rose-500', d: 'Coordinación de turnos de limpieza y reporte de averías/mantenimiento.' },
+                { id: 'web', n: 'Tu Web Pro', i: 'layout', c: 'text-cyan-500', d: 'Editor visual para cambiar fotos y contenidos de tu página oficial.' },
+                { id: 'marketing', n: 'Marketing', i: 'megaphone', c: 'text-orange-500', d: 'Envío masivo de ofertas y promociones para fidelizar clientes.' },
+                { id: 'experiencias', n: 'Experiencias', i: 'map', c: 'text-lime-600', d: 'Configuración de actividades y servicios extra para los huéspedes.' }
+            ];
 
-        <div class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group opacity-40">
-            <i data-lucide="database" class="text-amber-500 w-14 h-14 mb-6"></i>
-            <h3 class="serif text-2xl italic text-rose-950">Base de Datos</h3>
-            <div class="desc-popup">Próximamente disponible.</div>
-        </div>
-        </main>
+            document.write(tools.map(t => `
+                <div onclick="window.location.href='${t.id}/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group shadow-sm">
+                    <i data-lucide="${t.i}" class="${t.c} w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="serif text-2xl italic text-rose-950">${t.n}</h3>
+                    <div class="desc-popup">${t.d}</div>
+                </div>
+            `).join(''));
+        </script>
+    </main>
+
+    <footer class="mt-24 text-center">
+        <p class="text-[9px] font-black uppercase tracking-[0.4em] text-slate-300 italic">RuralGestión Digital Ecosystem 2026</p>
+    </footer>
+
     <script>lucide.createIcons();</script>
 </body>
 </html>

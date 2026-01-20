@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Datos de Clientes | RuralGestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .btn-accion { transition: all 0.3s ease; }
+        .btn-accion:hover { transform: translateY(-2px); }
+        table { border-spacing: 0 10px; border-collapse: separate; }
+        tr { transition: all 0.2s; }
+        tr:hover { transform: scale(1.005); }
+        .badge-vip { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #92400e; }
+    </style>
+</head>
+<body class="p-4 md:p-12 pb-32">
+    <div class="max-w-6xl mx-auto">
+        
+        <header class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+            <button onclick="window.location.href='../hub/index.html'" class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm hover:bg-slate-50 transition-all">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-rose-950"></i>
+            </button>
+            <div class="text-center md:text-left flex-1 md:ml-8">
+                <h1 class="serif text-5xl italic text-rose-950">Fichas de Huéspedes</h1>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Gestión Centralizada de Clientes</p>
+            </div>
+            <div class="flex gap-3">
+                <button class="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-slate-400 hover:text-rose-950 btn-accion" title="Exportar Excel">
+                    <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
+                </button>
+                <button class="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-slate-400 hover:text-rose-950 btn-accion" title="Exportar PDF">
+                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                </button>
+                <button class="px-8 py-4 bg-rose-950 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg btn-accion">
+                    + Añadir Huésped
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
+                <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Total Huéspedes</p>
+                <p class="serif text-3xl italic text-rose-950">1.432</p>
+            </div>
+            <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
+                <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Repetidores</p>
+                <p class="serif text-3xl italic text-rose-950">24%</p>
+            </div>
+            <div class="md:col-span-2 bg-rose-50/50 p-6 rounded-[35px] border border-rose-100 flex items-center justify-between">
+                <div>
+                    <p class="text-[9px] font-black uppercase text-rose-900 tracking-widest mb-1">Importación Masiva</p>
+                    <p class="text-xs text-rose-700/70">Sube tus archivos CSV o Excel de otras plataformas.</p>
+                </div>
+                <button class="px-6 py-3 bg-rose-950 text-white rounded-xl text-[9px] font-black uppercase tracking-widest">Subir Archivo</button>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-[40px] border border-slate-100 shadow-sm mb-10 flex items-center">
+            <div class="flex-1 relative">
+                <i data-lucide="search" class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 w-5 h-5"></i>
+                <input type="text" placeholder="Buscar por nombre, DNI, email o teléfono..." class="w-full pl-16 pr-6 py-5 bg-transparent rounded-3xl outline-none font-bold text-rose-950 placeholder:text-slate-300">
+            </div>
+            <button class="hidden md:flex items-center gap-2 px-6 py-4 bg-slate-50 rounded-[25px] text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-all ml-4">
+                <i data-lucide="sliders-horizontal" class="w-4 h-4"></i> Filtros Avanzados
+            </button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 px-6">
+                        <th class="pb-6 pl-10">Huésped</th>
+                        <th class="pb-6">DNI / Pasaporte</th>
+                        <th class="pb-6">Procedencia</th>
+                        <th class="pb-6">Historial</th>
+                        <th class="pb-6 text-right pr-10">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="space-y-4">
+                    <tr class="bg-white border border-slate-50 shadow-sm rounded-[40px]">
+                        <td class="py-8 pl-10 rounded-l-[40px]">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-rose-950 text-white rounded-2xl flex items-center justify-center font-bold serif italic text-xl">JD</div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-bold text-rose-950">Juan Delgado</p>
+                                        <span class="px-2 py-0.5 badge-vip rounded-md text-[8px] font-black uppercase tracking-tighter">VIP</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400">juan.del@email.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-8 font-mono text-xs text-slate-500 italic">12345678Z</td>
+                        <td class="py-8">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">🇪🇸</span>
+                                <span class="text-xs font-bold text-slate-600">Madrid</span>
+                            </div>
+                        </td>
+                        <td class="py-8">
+                            <div>
+                                <p class="text-xs font-bold text-rose-950">4 estancias</p>
+                                <p class="text-[9px] text-emerald-500 font-black uppercase">Última: Enero 2026</p>
+                            </div>
+                        </td>
+                        <td class="py-8 text-right pr-10 rounded-r-[40px]">
+                            <div class="flex justify-end gap-2">
+                                <button class="p-3 bg-slate-50 rounded-xl text-slate-400 hover:text-rose-950 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                <button class="p-3 bg-slate-50 rounded-xl text-slate-400 hover:text-rose-950 transition-colors"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="bg-white border border-slate-50 shadow-sm rounded-[40px]">
+                        <td class="py-8 pl-10 rounded-l-[40px]">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center font-bold serif italic text-xl">ML</div>
+                                <div>
+                                    <p class="font-bold text-rose-950">Marta López</p>
+                                    <p class="text-[10px] text-slate-400">marta.l@email.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-8 font-mono text-xs text-slate-500 italic">98765432W</td>
+                        <td class="py-8">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">🇫🇷</span>
+                                <span class="text-xs font-bold text-slate-600">París</span>
+                            </div>
+                        </td>
+                        <td class="py-8">
+                            <div>
+                                <p class="text-xs font-bold text-rose-950">1 estancia</p>
+                                <p class="text-[9px] text-slate-300 font-black uppercase">Última: Dic 2025</p>
+                            </div>
+                        </td>
+                        <td class="py-8 text-right pr-10 rounded-r-[40px]">
+                            <div class="flex justify-end gap-2">
+                                <button class="p-3 bg-slate-50 rounded-xl text-slate-400 hover:text-rose-950 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                <button class="p-3 bg-slate-50 rounded-xl text-slate-400 hover:text-rose-950 transition-colors"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => { lucide.createIcons(); };
+    </script>
+</body>
+</html>

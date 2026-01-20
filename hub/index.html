@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control | RuralGestión</title>
+    <title>Hub de Gestión | RuralGestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
             position: absolute; bottom: -10px; opacity: 0; pointer-events: none;
             transition: all 0.3s ease; background: #1a1a1a; color: white;
             padding: 12px 18px; border-radius: 12px; font-size: 10px; width: 220px; z-index: 50;
-            text-align: center; line-height: 1.4;
+            text-align: center;
         }
         .app-btn:hover .desc-popup { opacity: 1; transform: translateY(20px); }
     </style>
@@ -29,9 +29,9 @@
     <header class="max-w-7xl mx-auto flex justify-between items-center mb-24">
         <div>
             <h1 class="serif text-5xl italic text-rose-950">RuralGestión</h1>
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control Activo</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control de tus Alojamientos</p>
         </div>
-        <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
+        <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50">
             <i data-lucide="log-out" class="w-4 h-4"></i> Salir al Inicio
         </button>
     </header>
@@ -40,22 +40,15 @@
         <div onclick="window.location.href='admin/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
             <i data-lucide="line-chart" class="text-blue-500 w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
             <h3 class="serif text-2xl italic text-rose-950">Administración</h3>
-            <div class="desc-popup">Control de tus 3 apartamentos, totales en negro y borrador fiscal trimestral.</div>
+            <div class="desc-popup">Control de tus 3 apartamentos y borrador fiscal.</div>
         </div>
 
-        <div onclick="window.location.href='clientes/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
+        <div class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group opacity-40">
             <i data-lucide="database" class="text-amber-500 w-14 h-14 mb-6"></i>
             <h3 class="serif text-2xl italic text-rose-950">Base de Datos</h3>
-            <div class="desc-popup">Accede a la ficha técnica de tus huéspedes e histórico de visitas.</div>
+            <div class="desc-popup">Próximamente disponible.</div>
         </div>
-
-        <div onclick="window.location.href='agenda/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group">
-            <i data-lucide="calendar" class="text-purple-500 w-14 h-14 mb-6"></i>
-            <h3 class="serif text-2xl italic text-rose-950">Agenda Global</h3>
-            <div class="desc-popup">Calendario unificado con sincronización automática iCal.</div>
-        </div>
-
-        <script>lucide.createIcons();</script>
-    </main>
+        </main>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

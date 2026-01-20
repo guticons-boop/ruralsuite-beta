@@ -1,96 +1,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planes | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #0f172a; }
-        .serif { font-family: 'DM+Serif+Display', serif; }
-        .plan-card { transition: all 0.4s ease; border: 1px solid #f1f5f9; }
-        .plan-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05); }
-        .plan-popular { border: 2px solid #10b981; position: relative; }
-        .badge-popular { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); }
-    </style>
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }</style>
 </head>
-<body class="p-6 md:p-12 pb-32">
+<body class="p-6 md:p-20">
+    <header class="max-w-6xl mx-auto mb-20 flex justify-between items-center">
+        <button onclick="location.href='index.html'" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a Inicio
+        </button>
+        <h1 class="serif text-4xl italic text-rose-950">Planes de Gestión</h1>
+    </header>
 
-    <div class="max-w-6xl mx-auto">
-        <header class="text-center mb-16">
-            <h2 class="serif text-4xl italic text-emerald-950 mb-4 font-bold">Planes diseñados para el mundo rural</h2>
-            <p class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em]">RuralGesto: Transparencia y Crecimiento</p>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <div class="plan-card bg-white p-8 rounded-[45px] flex flex-col">
-                <div class="mb-8">
-                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-600 mb-2">Esencial</h3>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black italic">19€</span>
-                        <span class="text-slate-400 text-xs">/mes</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mt-4 font-bold italic">Hasta 2 alojamientos</p>
-                </div>
-                <ul class="space-y-4 mb-10 flex-1 text-xs font-semibold text-slate-600">
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Calendario Unificado</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Motor de Reservas Web</li>
-                </ul>
-                <button class="w-full py-4 bg-slate-50 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest">Elegir Plan</button>
-            </div>
-
-            <div class="plan-card bg-white p-8 rounded-[45px] flex flex-col plan-popular shadow-xl shadow-emerald-900/5">
-                <span class="badge-popular bg-emerald-500 text-white px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter italic">Más Popular</span>
-                <div class="mb-8">
-                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-600 mb-2">Crecimiento</h3>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black italic">29€</span>
-                        <span class="text-slate-400 text-xs">/mes</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mt-4 font-bold italic">Hasta 5 alojamientos</p>
-                </div>
-                <ul class="space-y-4 mb-10 flex-1 text-xs font-semibold text-slate-600">
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Todo lo del Esencial</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Asistente Fiscal IA</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Marketing con IA</li>
-                </ul>
-                <button class="w-full py-4 bg-emerald-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition shadow-lg">Tu Plan Actual</button>
-            </div>
-
-            <div class="plan-card bg-white p-8 rounded-[45px] flex flex-col">
-                <div class="mb-8">
-                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-600 mb-2">Profesional</h3>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black italic">49€</span>
-                        <span class="text-slate-400 text-xs">/mes</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mt-4 font-bold italic">Hasta 10 alojamientos</p>
-                </div>
-                <ul class="space-y-4 mb-10 flex-1 text-xs font-semibold text-slate-600">
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Todo lo del Crecimiento</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Gestión de Limpiezas Pro</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Multi-usuario</li>
-                </ul>
-                <button class="w-full py-4 bg-slate-50 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest">Elegir Plan</button>
-            </div>
-
-            <div class="plan-card bg-emerald-50 p-8 rounded-[45px] flex flex-col border-dashed border-emerald-200">
-                <div class="mb-8">
-                    <h3 class="font-black text-[10px] uppercase tracking-widest text-emerald-800 mb-2 italic text-center">Grandes Gestores</h3>
-                    <div class="text-center py-4">
-                        <span class="serif text-3xl italic font-bold text-emerald-900">A medida</span>
-                    </div>
-                    <p class="text-[11px] text-emerald-700 mt-4 text-center font-bold">Más de 10 alojamientos</p>
-                </div>
-                <button class="w-full py-4 border-2 border-emerald-900 text-emerald-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-900 hover:text-white transition">Contactar</button>
-            </div>
-
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-10 bg-white rounded-[50px] border border-slate-100 shadow-sm">
+            <h3 class="serif text-3xl italic mb-6">Básico</h3>
+            <p class="text-slate-500 text-sm mb-8 italic text-xs">Ideal para el control operativo diario.</p>
+            <ul class="space-y-4 mb-10 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                <li>Check-in OCR</li>
+                <li>Agenda Centralizada</li>
+            </ul>
+            <button class="w-full py-4 border border-rose-950 text-rose-950 rounded-full text-[10px] font-black uppercase">Seleccionar</button>
         </div>
-    </div>
-
+        <div class="p-10 bg-rose-950 text-white rounded-[50px] shadow-2xl scale-105">
+            <h3 class="serif text-3xl italic mb-6">Profesional</h3>
+            <p class="text-white/60 text-sm mb-8 italic text-xs">Gestión fiscal y operativa completa.</p>
+            <ul class="space-y-4 mb-10 text-[10px] font-black uppercase tracking-widest">
+                <li>Check-in + Administración</li>
+                <li>Gráficos de Rentabilidad</li>
+            </ul>
+            <button class="w-full py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase">Más Popular</button>
+        </div>
+        <div class="p-10 bg-white rounded-[50px] border border-slate-100 shadow-sm">
+            <h3 class="serif text-3xl italic mb-6">Premium</h3>
+            <p class="text-slate-500 text-sm mb-8 italic text-xs">Venta directa y marketing avanzado.</p>
+            <ul class="space-y-4 mb-10 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                <li>Todo lo anterior</li>
+                <li>Motor de Reservas Pro</li>
+            </ul>
+            <button class="w-full py-4 border border-rose-950 text-rose-950 rounded-full text-[10px] font-black uppercase">Seleccionar</button>
+        </div>
+    </main>
     <script>lucide.createIcons();</script>
 </body>
 </html>

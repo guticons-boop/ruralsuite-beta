@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Datos | RuralGestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .table-container { border-radius: 24px; overflow: hidden; border: 1px solid #f1f5f9; background: white; }
+        .btn-action { transition: all 0.3s ease; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <header class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+        <div>
+            <div class="flex items-center gap-4 mb-2">
+                <button onclick="window.location.href='../hub/index.html'" class="p-2 hover:bg-rose-50 rounded-full transition-colors">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-rose-950"></i>
+                </button>
+                <h1 class="serif text-4xl italic text-rose-950">Base de Datos</h1>
+            </div>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Gestión Inteligente de Huéspedes</p>
+        </div>
+
+        <div class="flex gap-3">
+            <button class="btn-action px-6 py-3 bg-white border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                <i data-lucide="upload" class="w-4 h-4"></i> Importar
+            </button>
+            <button class="btn-action px-6 py-3 bg-white border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i> Exportar
+            </button>
+            <button class="btn-action px-8 py-3 bg-rose-950 text-white rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Huésped
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="md:col-span-2 relative">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input type="text" placeholder="Buscar por nombre, DNI o email..." class="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm focus:outline-none">
+            </div>
+            <select class="px-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm text-slate-500 focus:outline-none">
+                <option>Filtrar por Apartamento</option>
+                <option>Apt 1 - La Casona</option>
+                <option>Apt 2 - El Mirador</option>
+                <option>Apt 3 - El Jardín</option>
+            </select>
+            <select class="px-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm text-slate-500 focus:outline-none">
+                <option>Segmento: Todos</option>
+                <option>Parejas</option>
+                <option>Familias</option>
+                <option>VIP</option>
+            </select>
+        </div>
+
+        <div class="table-container shadow-sm">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-100">
+                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Huésped</th>
+                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Cumpleaños</th>
+                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Contacto</th>
+                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Estado</th>
+                        <th class="p-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    <tr class="hover:bg-rose-50/30 transition-colors group text-sm">
+                        <td class="p-6">
+                            <div class="font-bold text-rose-950">Antonio López</div>
+                            <div class="text-[10px] text-slate-400 uppercase tracking-tight">DNI: 45889922K</div>
+                        </td>
+                        <td class="p-6">
+                            <div class="flex items-center gap-2 text-slate-600">
+                                <i data-lucide="cake" class="w-4 h-4 text-rose-400"></i>
+                                12 de Marzo
+                            </div>
+                        </td>
+                        <td class="p-6">
+                            <div class="text-slate-600">antonio.l@email.com</div>
+                            <div class="text-[10px] text-slate-400">+34 600 000 000</div>
+                        </td>
+                        <td class="p-6">
+                            <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold">VIP</span>
+                        </td>
+                        <td class="p-6 text-right">
+                            <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button title="Ver Ficha" class="p-2 hover:bg-white rounded-lg border border-transparent hover:border-slate-100 shadow-sm"><i data-lucide="eye" class="w-4 h-4 text-slate-400"></i></button>
+                                <button title="WhatsApp" class="p-2 hover:bg-white rounded-lg border border-transparent hover:border-slate-100 shadow-sm"><i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i></button>
+                                <button title="Eliminar" class="p-2 hover:bg-white rounded-lg border border-transparent hover:border-slate-100 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4 text-rose-300"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-blue-50/50 p-6 rounded-3xl border border-blue-100 flex justify-between items-center">
+                <div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-1">Huéspedes Totales</div>
+                    <div class="text-3xl serif italic text-blue-900">1,248</div>
+                </div>
+                <i data-lucide="users" class="w-8 h-8 text-blue-200"></i>
+            </div>
+            <div class="bg-rose-50/50 p-6 rounded-3xl border border-rose-100 flex justify-between items-center">
+                <div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-rose-400 mb-1">Cumpleaños del Mes</div>
+                    <div class="text-3xl serif italic text-rose-900">14</div>
+                </div>
+                <i data-lucide="gift" class="w-8 h-8 text-rose-200"></i>
+            </div>
+            <div class="bg-emerald-50/50 p-6 rounded-3xl border border-emerald-100 flex justify-between items-center">
+                <div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-1">Tasa Retorno</div>
+                    <div class="text-3xl serif italic text-emerald-900">32%</div>
+                </div>
+                <i data-lucide="trending-up" class="w-8 h-8 text-emerald-200"></i>
+            </div>
+        </div>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

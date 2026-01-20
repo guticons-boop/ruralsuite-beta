@@ -3,40 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limpieza | RuralGesto</title>
+    <title>Limpieza y Mantenimiento | RuralGesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
+        .status-dirty { background-color: #fee2e2; color: #991b1b; } /* Rojo suave */
+        .status-clean { background-color: #dcfce7; color: #166534; } /* Verde suave */
+        .status-progress { background-color: #fef9c3; color: #854d0e; } /* Amarillo suave */
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-2xl mx-auto">
-        <header class="flex justify-between items-center mb-16">
-            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-[24px] border border-slate-100"><i data-lucide="arrow-left"></i></button>
-            <button onclick="alert('Enlace de equipo copiado')" class="px-6 py-3 bg-rose-950 text-white rounded-full text-[9px] font-black uppercase tracking-widest"><i data-lucide="share" class="inline w-3 h-3 mr-2"></i> Equipo</button>
+<body class="p-4 md:p-12 pb-32">
+    <div class="max-w-md mx-auto">
+        <header class="flex justify-between items-center mb-10">
+            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-rose-950"></i>
+            </button>
+            <div class="text-right">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Personal de Staff</p>
+                <p class="serif text-xl italic">Control de Estado</p>
+            </div>
         </header>
 
         <div class="space-y-6">
-            <div class="bg-white p-10 rounded-[40px] border border-slate-100 flex justify-between items-center shadow-sm">
-                <div>
-                    <h4 class="serif text-3xl italic text-rose-950">La Tirolina</h4>
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Salida hoy: 11:00h</p>
+            <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 ml-2">Estado de Unidades</h3>
+            
+            <div class="bg-white rounded-[40px] border border-slate-100 overflow-hidden shadow-sm">
+                <div class="p-6 flex justify-between items-center">
+                    <div>
+                        <h4 class="serif text-2xl italic text-rose-950">La Tirolina</h4>
+                        <span class="text-[8px] font-black uppercase px-3 py-1 rounded-full status-dirty" id="status-tag-1">Pendiente de Limpieza</span>
+                    </div>
+                    <button onclick="openChecklist('La Tirolina', 1)" class="p-4 bg-rose-950 text-white rounded-2xl shadow-lg">
+                        <i data-lucide="list-checks" class="w-6 h-6"></i>
+                    </button>
                 </div>
-                <button onclick="this.className='px-8 py-3 bg-emerald-500 text-white rounded-full text-[9px] font-black uppercase tracking-widest'; this.innerText='Lista'" class="px-8 py-3 bg-slate-50 rounded-full text-[9px] font-black uppercase tracking-widest text-slate-400">Pendiente</button>
+                <div class="px-6 pb-6 flex gap-2">
+                    <button onclick="reportIssue('La Tirolina')" class="flex-1 py-3 bg-slate-50 text-slate-400 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-3 h-3 text-rose-400"></i> Reportar Avería
+                    </button>
+                </div>
             </div>
 
-            <div onclick="prompt('Describa la incidencia:')" class="bg-rose-50 p-8 rounded-[40px] border border-rose-100 flex items-center gap-6 cursor-pointer hover:bg-rose-100 transition-colors">
-                <div class="p-4 bg-white rounded-2xl text-rose-600 shadow-sm"><i data-lucide="alert-triangle"></i></div>
-                <div>
-                    <p class="text-[10px] font-black uppercase text-rose-900 tracking-widest">¿Hay alguna avería?</p>
-                    <p class="text-xs text-rose-700/60 font-medium">Pulsa aquí para reportar roturas o mantenimiento.</p>
+            <div class="bg-white rounded-[40px] border border-slate-100 overflow-hidden shadow-sm opacity-60">
+                <div class="p-6 flex justify-between items-center">
+                    <div>
+                        <h4 class="serif text-2xl italic text-rose-950">La Ermita</h4>
+                        <span class="text-[8px] font-black uppercase px-3 py-1 rounded-full status-clean">Lista para entrada</span>
+                    </div>
+                    <i data-lucide="check-circle-2" class="text-emerald-500 w-8 h-8"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-checklist" class="fixed inset-0 bg-rose-950/20 backdrop-blur-md hidden z-50 flex items-end">
+            <div class="bg-white w-full rounded-t-[50px] p-10 shadow-2xl animate-bounce-in">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 id="modal-title" class="serif text-3xl italic">Checklist</h3>
+                    <button onclick="closeModal()" class="text-slate-300"><i data-lucide="x"></i></button>
+                </div>
+                <div class="space-y-4 mb-10">
+                    <label class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer">
+                        <input type="checkbox" class="w-5 h-5 accent-rose-950">
+                        <span class="text-sm font-bold">Cambio de sábanas y toallas</span>
+                    </label>
+                    <label class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer">
+                        <input type="checkbox" class="w-5 h-5 accent-rose-950">
+                        <span class="text-sm font-bold">Reposición de amenities (café, jabón)</span>
+                    </label>
+                    <label class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer">
+                        <input type="checkbox" class="w-5 h-5 accent-rose-950">
+                        <span class="text-sm font-bold">Limpieza de terraza y piscina</span>
+                    </label>
+                    <label class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer">
+                        <input type="checkbox" class="w-5 h-5 accent-rose-950">
+                        <span class="text-sm font-bold">Revisión de luces y aire acondicionado</span>
+                    </label>
+                </div>
+                <button onclick="finishCleaning()" class="w-full py-6 bg-rose-950 text-white rounded-full font-black text-[10px] uppercase tracking-[0.3em]">Marcar como Finalizado</button>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-rose-50 p-8 rounded-[40px] border border-rose-100">
+            <h4 class="serif text-xl italic text-rose-950 mb-4">Mantenimiento Activo</h4>
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-2xl flex items-center gap-4 border border-rose-100">
+                    <div class="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center text-rose-600">
+                        <i data-lucide="wrench" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold">Grifo cocina pierde agua</p>
+                        <p class="text-[8px] text-slate-400 uppercase font-black">La Ermita · Pendiente</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>lucide.createIcons();</script>
+
+    <script>
+        lucide.createIcons();
+        let currentUnitId = null;
+
+        function openChecklist(name, id) {
+            currentUnitId = id;
+            document.getElementById('modal-title').innerText = name;
+            document.getElementById('modal-checklist').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-checklist').classList.add('hidden');
+        }
+
+        function finishCleaning() {
+            const tag = document.getElementById('status-tag-' + currentUnitId);
+            tag.innerText = "Lista para entrada";
+            tag.classList.remove('status-dirty');
+            tag.classList.add('status-clean');
+            closeModal();
+            alert("Estado actualizado. El administrador ya puede ver que el apartamento está listo.");
+        }
+
+        function reportIssue(unit) {
+            const desc = prompt("Describe la avería en " + unit);
+            if(desc) {
+                alert("Avería registrada y notificada al equipo de mantenimiento.");
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,61 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuralGesto | El Rinconcito del Matarraña</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido | RuralGestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #fdfdfb; 
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .hero-img { height: 70vh; object-fit: cover; width: 100%; border-radius: 60px; }
+        .fade-in { animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
-    <nav class="flex justify-between items-center px-6 py-8 md:px-20">
-        <div class="serif text-2xl italic font-bold text-rose-950">RuralGesto</div>
-        <div class="flex gap-8 items-center">
-            <a href="planes.html" class="text-[10px] font-black uppercase tracking-widest text-slate-400">Ver Planes</a>
-            <button onclick="location.href='hub/index.html'" class="px-8 py-3 bg-rose-950 text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">Acceso Panel</button>
-        </div>
-    </nav>
-
-    <main class="px-6 md:px-20">
-        <div class="mb-24">
-            <h1 class="serif text-5xl md:text-7xl leading-none italic text-rose-950 mb-10 text-center">Gestión de alojamientos con alma rural<br>y precisión digital.</h1>
-            <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&q=80&w=2000" alt="Casa con piscina" class="hero-img shadow-2xl">
-        </div>
-
-        <div class="max-w-6xl mx-auto pb-32">
-            <h2 class="serif text-4xl italic text-rose-950 mb-16 text-center">Soluciones inteligentes para tu negocio</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="p-10 bg-white rounded-[40px] border border-slate-100">
-                    <h3 class="serif text-2xl italic mb-4">Check-in OCR</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed italic">Escaneado legal de documentos, firma digital y envío automático a las autoridades sin contacto físico.</p>
-                </div>
-                <div class="p-10 bg-white rounded-[40px] border border-slate-100">
-                    <h3 class="serif text-2xl italic mb-4">Administración & Tax</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed italic">Control de ingresos netos, desglose de comisiones por plataforma y borradores para la declaración de la renta.</p>
-                </div>
-                <div class="p-10 bg-white rounded-[40px] border border-slate-100 text-rose-900 bg-rose-50/30">
-                    <h3 class="serif text-2xl italic mb-4">Channel Manager</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed italic">Sincronización total con Booking, Airbnb y plataformas personalizadas con gestión de comisiones variables.</p>
-                </div>
-                <div class="p-10 bg-white rounded-[40px] border border-slate-100">
-                    <h3 class="serif text-2xl italic mb-4">Limpieza & Staff</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed italic">Gestión de turnos, reportes de averías en tiempo real y checklists de preparación para cada apartamento.</p>
-                </div>
-                <div class="p-10 bg-white rounded-[40px] border border-slate-100">
-                    <h3 class="serif text-2xl italic mb-4">Web Corporativa</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed italic">Tu escaparate propio en internet optimizado para SEO y Google Vacation Rentals para potenciar la venta directa.</p>
-                </div>
-                <div class="p-10 bg-white rounded-[40px] border border-slate-100">
-                    <h3 class="serif text-2xl italic mb-4">Marketing & SEO</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed italic">Análisis de competencia, posicionamiento orgánico y campañas para fidelizar al cliente del Matarraña.</p>
-                </div>
+<body class="h-screen flex items-center justify-center p-6">
+    <div class="text-center max-w-xl w-full fade-in">
+        <div class="mb-12">
+            <h1 class="serif text-7xl md:text-8xl italic text-rose-950 mb-4">RuralGestión</h1>
+            <div class="flex items-center justify-center gap-4">
+                <span class="h-[1px] w-12 bg-slate-200"></span>
+                <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Smart Software</p>
+                <span class="h-[1px] w-12 bg-slate-200"></span>
             </div>
         </div>
-    </main>
+        
+        <div class="bg-white p-12 rounded-[60px] shadow-[0_32px_64px_-15px_rgba(0,0,0,0.1)] border border-slate-100 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-rose-950"></div>
+            
+            <p class="text-slate-500 mb-10 font-medium leading-relaxed">
+                Bienvenido al ecosistema de gestión para alojamientos rurales. <br>Accede a tu panel centralizado para comenzar.
+            </p>
+            
+            <button onclick="window.location.href='hub/index.html'" class="group w-full py-7 bg-rose-950 text-white rounded-full font-black text-[11px] uppercase tracking-widest shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+                Entrar al Sistema
+                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+            
+            <div class="mt-8 pt-8 border-t border-slate-50 flex justify-center gap-6">
+                <i data-lucide="shield-check" class="w-5 h-5 text-slate-200"></i>
+                <i data-lucide="cloud" class="w-5 h-5 text-slate-200"></i>
+                <i data-lucide="database" class="w-5 h-5 text-slate-200"></i>
+            </div>
+        </div>
+        
+        <p class="mt-10 text-[9px] font-bold text-slate-300 uppercase tracking-widest">© 2026 RuralGestión Enterprise</p>
+    </div>
+
+    <script>
+        window.onload = () => { lucide.createIcons(); };
+    </script>
 </body>
 </html>

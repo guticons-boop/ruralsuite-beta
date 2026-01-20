@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-in OCR | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .tab-active { border-bottom: 2px solid #1a1a1a; color: #1a1a1a; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
+            <p id="loc-auto" class="text-[10px] font-black bg-rose-50 text-rose-900 px-4 py-2 rounded-full uppercase tracking-widest">LOC: RG-2026-X</p>
+        </header>
+
+        <nav class="flex gap-12 mb-12 border-b border-slate-100">
+            <button onclick="st('scan')" id="b-scan" class="tab-active pb-6 text-[10px] font-black uppercase tracking-widest">Escáner OCR</button>
+            <button onclick="st('link')" id="b-link" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Enviar Enlace</button>
+            <button onclick="st('db')" id="b-db" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Base de Datos</button>
+        </nav>
+
+        <div id="s-scan" class="space-y-8">
+            <div class="bg-black aspect-video rounded-[40px] overflow-hidden relative shadow-2xl">
+                <video id="v" class="w-full h-full object-cover opacity-60" autoplay playsinline></video>
+                <button onclick="take()" class="absolute bottom-6 left-1/2 -translate-x-1/2 p-6 bg-white text-rose-950 rounded-full shadow-2xl"><i data-lucide="camera"></i></button>
+            </div>
+            <div class="bg-white p-10 rounded-[50px] border border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input type="text" id="fn" placeholder="Nombre Completo" class="p-5 bg-slate-50 rounded-2xl outline-none font-bold">
+                <input type="text" id="fd" placeholder="DNI / Pasaporte" class="p-5 bg-slate-50 rounded-2xl outline-none font-mono">
+                <input type="text" id="fl" readonly class="p-5 bg-slate-100 rounded-2xl outline-none text-rose-950 font-black md:col-span-2 tracking-widest">
+                <button onclick="save()" class="md:col-span-2 py-8 bg-rose-950 text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em]">Registrar Cliente</button>
+            </div>
+        </div>
+
+        <div id="s-link" class="hidden text-center bg-white p-20 rounded-[50px] border border-slate-100">
+            <i data-lucide="link-2" class="w-12 h-12 mx-auto mb-6 text-rose-950"></i>
+            <h3 class="serif text-3xl mb-10">Check-in Online</h3>
+            <button onclick="alert('Copiado')" class="w-full py-6 bg-slate-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest mb-4 italic">Copiar Enlace Cliente</button>
+            <button onclick="alert('WhatsApp')" class="w-full py-6 bg-emerald-500 text-white rounded-full font-black text-[10px] uppercase tracking-widest italic">Enviar por WhatsApp</button>
+        </div>
+
+        <div id="s-db" class="hidden space-y-4">
+            <div id="historial" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        function st(t){
+            document.querySelectorAll('[id^="s-"]').forEach(x=>x.classList.add('hidden'));
+            document.getElementById('s-'+t).classList.remove('hidden');
+            document.querySelectorAll('nav button').forEach(b=>b.className="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400");
+            document.getElementById('b-'+t).className="tab-active pb-6 text-[10px] font-black uppercase tracking-widest";
+            if(t==='db') load();
+        }
+        function gLoc(){
+            const l = `RG-2026-${Math.floor(1000+Math.random()*9000)}`;
+            document.getElementById('loc-auto').innerText = `LOC: ${l}`;
+            document.getElementById('fl').value = l;
+        }
+        gLoc();
+        function take(){
+            document.getElementById('fn').value = "CARLOS SAEZ";
+            document.getElementById('fd').value = "55443322X";
+        }
+        function save(){
+            const g = { n: document.getElementById('fn').value, d: document.getElementById('fd').value, l: document.getElementById('fl').value };
+            let s = JSON.parse(localStorage.getItem('rg_guests') || '[]');
+            s.push(g);
+            localStorage.setItem('rg_guests', JSON.stringify(s));
+            alert('Guardado');
+            gLoc();
+        }
+        function load(){
+            const h = document.getElementById('historial');
+            const s = JSON.parse(localStorage.getItem('rg_guests') || '[]');
+            h.innerHTML = s.map((x,i)=>`
+                <div class="bg-white p-8 rounded-[30px] border border-slate-100 flex justify-between items-center">
+                    <div><p class="text-[9px] font-black text-rose-900">${x.l}</p><h4 class="serif text-xl">${x.n}</h4></div>
+                    <button onclick="del(${i})" class="text-rose-300"><i data-lucide="trash-2"></i></button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+        function del(i){
+            let s = JSON.parse(localStorage.getItem('rg_guests') || '[]');
+            s.splice(i,1);
+            localStorage.setItem('rg_guests', JSON.stringify(s));
+            load();
+        }
+        navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(s=>document.getElementById('v').srcObject=s);
+    </script>
+</body>
+</html>

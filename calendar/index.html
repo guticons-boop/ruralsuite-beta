@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda | RuralGesto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-[9px] font-black; }
+        .booked { background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3; }
+        .free { color: #cbd5e1; border: 1px solid #f8fafc; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-20">
+            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-[24px] border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
+            <h2 class="serif text-5xl italic text-rose-950">Enero 2026</h2>
+            <div class="flex gap-4"><i data-lucide="chevron-left"></i><i data-lucide="chevron-right"></i></div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="bg-white p-10 rounded-[50px] border border-slate-100">
+                <p class="text-[9px] font-black uppercase tracking-[0.4em] text-rose-900 mb-8 text-center">La Tirolina</p>
+                <div class="grid grid-cols-7 gap-2" id="c1"></div>
+            </div>
+            <div class="bg-white p-10 rounded-[50px] border border-slate-100">
+                <p class="text-[9px] font-black uppercase tracking-[0.4em] text-rose-900 mb-8 text-center">La Ermita</p>
+                <div class="grid grid-cols-7 gap-2" id="c2"></div>
+            </div>
+            <div class="bg-white p-10 rounded-[50px] border border-slate-100">
+                <p class="text-[9px] font-black uppercase tracking-[0.4em] text-rose-900 mb-8 text-center">Los Almendros</p>
+                <div class="grid grid-cols-7 gap-2" id="c3"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+        function draw(id, b){
+            const el = document.getElementById(id);
+            for(let i=1; i<=31; i++){
+                const isB = b.includes(i);
+                el.innerHTML += `<div class="day ${isB?'booked':'free'}">${i}</div>`;
+            }
+        }
+        draw('c1', [4,5,12,13,14]); draw('c2', [1,2,3,20,21]); draw('c3', [25,26,27]);
+    </script>
+</body>
+</html>

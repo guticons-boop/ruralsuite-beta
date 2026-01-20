@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control | RuralGestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
+        .serif { font-family: 'DM+Serif+Display', serif; }
+        .app-btn { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #f1f5f9;
+            position: relative;
+        }
+        .app-btn:hover { transform: scale(1.05); border-color: #fb7185; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08); }
+        
+        .desc-popup {
+            position: absolute; bottom: -15px; opacity: 0; pointer-events: none;
+            transition: all 0.3s ease; background: #1a1a1a; color: white;
+            padding: 12px 18px; border-radius: 12px; font-size: 10px; width: 220px; z-index: 50;
+            text-align: center; line-height: 1.4; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .app-btn:hover .desc-popup { opacity: 1; transform: translateY(20px); }
+    </style>
+</head>
+<body class="p-8 md:p-16">
+    <header class="max-w-7xl mx-auto flex justify-between items-center mb-20">
+        <div>
+            <h1 class="serif text-5xl italic text-rose-950 tracking-tight">RuralGestión</h1>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control Activo</p>
+        </div>
+        <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
+            <i data-lucide="log-out" class="w-4 h-4 text-rose-500"></i> Salir
+        </button>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-center">
+        <script>
+            // He ajustado las rutas basándome exactamente en tus carpetas de GitHub
+            const tools = [
+                { path: '../tax/index.html', n: 'Administración', i: 'line-chart', c: 'text-blue-500', d: 'Gestión de los 3 apartamentos y borrador fiscal (Versión Buena).' },
+                { path: '../clients/index.html', n: 'Base de Datos', i: 'database', c: 'text-amber-500', d: 'Histórico de huéspedes y fichas de cliente.' },
+                { path: '../calendar/index.html', n: 'Agenda Global', i: 'calendar', c: 'text-purple-500', d: 'Sincronización de calendarios iCal.' },
+                { path: '../reservas/index.html', n: 'Motor Reservas', i: 'globe', c: 'text-emerald-500', d: 'Venta directa desde tu web sin comisiones.' },
+                { path: '../checkin/index.html', n: 'Check-in OCR', i: 'scan', c: 'text-indigo-500', d: 'Escaneo de documentos y partes de viajeros.' },
+                { path: '../limpieza/index.html', n: 'Limpieza & Staff', i: 'sparkles', c: 'text-rose-500', d: 'Coordinación de turnos y mantenimiento.' },
+                { path: '../web/index.html', n: 'Tu Web Pro', i: 'layout', c: 'text-cyan-500', d: 'Editor de contenidos de tu sitio oficial.' },
+                { path: '../marketing/index.html', n: 'Marketing', i: 'megaphone', c: 'text-orange-500', d: 'Envío de ofertas y fidelización de clientes.' },
+                { path: '../experiencias/index.html', n: 'Experiencias', i: 'map', c: 'text-lime-600', d: 'Servicios extra y actividades locales.' }
+            ];
+
+            document.write(tools.map(t => `
+                <div onclick="window.location.href='${t.path}'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group shadow-sm">
+                    <i data-lucide="${t.i}" class="${t.c} w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="serif text-2xl italic text-rose-950">${t.n}</h3>
+                    <div class="desc-popup">${t.d}</div>
+                </div>
+            `).join(''));
+        </script>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -13,18 +13,18 @@
         .hero-half { 
             height: 65vh;
             background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1544894079-e81a9eb1da8b?q=80&w=2070&auto=format&fit=crop'); 
+                        url('https://images.unsplash.com/photo-1560185127-6ed189bf02f4?q=80&w=2070&auto=format&fit=crop'); /* Foto de casa de piedra rústica con piscina */
             background-size: cover; background-position: center;
             border-radius: 0 0 60px 60px;
         }
-        .app-card { transition: all 0.4s ease; border: 1px solid #f1f5f9; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .app-card { transition: all 0.4s ease; border: 1px solid #f1f5f9; text-align: center; display: flex; flex-direction: column; align-items: center; height: 100%; }
         .app-card:hover { transform: translateY(-10px); border-color: #fb7185; box-shadow: 0 30px 60px -15px rgba(26,11,11,0.08); }
     </style>
 </head>
 <body>
 
     <nav class="absolute top-0 left-0 w-full p-8 md:p-12 flex justify-between items-center z-20">
-        <h1 class="serif text-4xl italic text-white">RuralGestión</h1>
+        <h1 class="serif text-4xl italic text-white tracking-tight text-shadow-sm">RuralGestión</h1>
         <div class="flex gap-8 items-center text-white">
             <a href="#planes" class="text-[10px] font-black uppercase tracking-widest hover:opacity-70 transition-opacity">Planes</a>
             <button onclick="window.location.href='hub/index.html'" class="px-10 py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-all">
@@ -60,9 +60,9 @@
                     { n: 'Experiencias', i: 'map', c: 'lime', d: 'Aumenta tus ingresos ofreciendo servicios extra, actividades y productos locales.' }
                 ];
                 document.write(apps.map(app => `
-                    <div class="app-card bg-white p-12 rounded-[50px] group cursor-pointer">
-                        <div class="w-16 h-16 bg-${app.c}-50 text-${app.c}-500 rounded-3xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-all">
-                            <i data-lucide="${app.i}"></i>
+                    <div class="app-card bg-white p-12 rounded-[50px] group cursor-pointer shadow-sm">
+                        <div class="w-16 h-16 bg-${app.c}-50 text-${app.c}-500 rounded-3xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-all shadow-inner">
+                            <i data-lucide="${app.i}" class="w-8 h-8"></i>
                         </div>
                         <h4 class="serif text-3xl italic mb-4 text-rose-950">${app.n}</h4>
                         <p class="text-[13px] text-slate-400 mb-8 leading-relaxed px-4">${app.d}</p>
@@ -72,31 +72,31 @@
             </script>
         </div>
 
-        <div id="planes" class="pt-20">
+        <div id="planes" class="pt-20 border-t border-slate-100">
             <h3 class="serif text-6xl italic text-rose-950 mb-16 text-center">Planes a tu medida</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left">
+                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left hover:border-rose-200 transition-all">
                     <h4 class="font-black uppercase text-[10px] tracking-widest text-slate-400 mb-4">Esencial</h4>
                     <div class="serif text-5xl text-rose-950 mb-6">19€<span class="text-lg">/mes</span></div>
-                    <p class="text-xs text-slate-500 mb-8 italic">Para particulares con hasta 2 apartamentos.</p>
+                    <p class="text-xs text-slate-500 mb-8 italic">Hasta 2 apartamentos.</p>
                     <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-950 hover:text-white transition-all">Seleccionar</button>
                 </div>
                 <div class="bg-rose-950 p-10 rounded-[40px] text-left text-white shadow-2xl scale-105 border-4 border-rose-500/20">
                     <h4 class="font-black uppercase text-[10px] tracking-widest text-rose-200 mb-4">Crecimiento</h4>
                     <div class="serif text-5xl mb-6">29€<span class="text-lg">/mes</span></div>
-                    <p class="text-xs text-rose-100/60 mb-8 italic">Gestión profesional de 2 a 5 apartamentos.</p>
+                    <p class="text-xs text-rose-100/60 mb-8 italic">De 2 a 5 apartamentos.</p>
                     <button class="w-full py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest">El más popular</button>
                 </div>
-                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left">
+                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left hover:border-rose-200 transition-all">
                     <h4 class="font-black uppercase text-[10px] tracking-widest text-slate-400 mb-4">Pro</h4>
                     <div class="serif text-5xl text-rose-950 mb-6">49€<span class="text-lg">/mes</span></div>
-                    <p class="text-xs text-slate-500 mb-8 italic">Control total de 5 a 10 apartamentos.</p>
+                    <p class="text-xs text-slate-500 mb-8 italic">De 5 a 10 apartamentos.</p>
                     <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-950 hover:text-white transition-all">Seleccionar</button>
                 </div>
-                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left">
+                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left hover:border-rose-200 transition-all">
                     <h4 class="font-black uppercase text-[10px] tracking-widest text-slate-400 mb-4">Enterprise</h4>
                     <div class="serif text-4xl text-rose-950 mb-6 italic">Personal</div>
-                    <p class="text-xs text-slate-500 mb-8 italic">Soluciones para más de 10 apartamentos.</p>
+                    <p class="text-xs text-slate-500 mb-8 italic">Más de 10 apartamentos.</p>
                     <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-950 hover:text-white transition-all">Contactar</button>
                 </div>
             </div>

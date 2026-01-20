@@ -3,50 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control | RuralGesto</title>
+    <title>Panel | RuralGestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0c0c0c; color: #fff; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080808; color: #fff; overflow: hidden; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        
         .icon-box { 
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             position: relative;
         }
-        .icon-box:hover { transform: scale(1.15); background-color: rgba(255,255,255,0.05); }
-        
-        /* Tooltip que aparece al pasar el ratón */
+        .icon-box:hover { transform: scale(1.2); }
         .tooltip { 
-            opacity: 0; transform: translateY(10px); transition: all 0.3s ease;
-            position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+            opacity: 0; transform: translateY(15px); transition: all 0.4s ease;
+            position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
             white-space: nowrap; font-size: 10px; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 0.2em; color: #fb7185;
+            letter-spacing: 0.3em; color: #fb7185; pointer-events: none;
         }
         .icon-box:hover .tooltip { opacity: 1; transform: translateY(0) translateX(-50%); }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-8 md:p-20">
+<body class="flex flex-col items-center justify-center min-h-screen">
 
-    <header class="w-full max-w-7xl flex justify-between items-center mb-32">
-        <h1 class="serif text-4xl italic text-white/90">RuralGesto</h1>
-        <div class="flex items-center gap-4 text-white/40">
-            <span class="text-[9px] font-black uppercase tracking-[0.3em]">Sesión Activa: Rinconcito</span>
-            <button onclick="window.location.href='../index.html'" class="w-10 h-10 border border-white/10 rounded-full flex items-center justify-center hover:bg-white/10 transition-all">
-                <i data-lucide="log-out" class="w-4 h-4"></i>
-            </button>
+    <header class="fixed top-12 w-full px-20 flex justify-between items-center">
+        <h1 class="serif text-3xl italic text-white/90">RuralGestión</h1>
+        <div class="flex items-center gap-6">
+            <div class="h-px w-20 bg-white/10"></div>
+            <button onclick="window.location.href='../index.html'" class="text-[9px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors">Cerrar Sesión</button>
         </div>
     </header>
 
-    <main class="grid grid-cols-3 md:grid-cols-3 gap-12 md:gap-24">
-        
+    <main class="grid grid-cols-3 gap-24">
         <script>
             const tools = [
-                { icon: 'line-chart', link: '../tax/index.html', label: 'Administración' },
-                { icon: 'database', link: '../clients/index.html', label: 'Clientes' },
+                { icon: 'line-chart', link: '../tax/index.html', label: 'Admin' },
+                { icon: 'database', link: '../clients/index.html', label: 'Base Datos' },
                 { icon: 'calendar', link: '../calendar/index.html', label: 'Agenda' },
-                { icon: 'globe', link: '../booking/index.html', label: 'Reservas' },
+                { icon: 'globe', link: '../booking/index.html', label: 'Motor' },
                 { icon: 'scan', link: '../checkin/index.html', label: 'Check-in' },
                 { icon: 'sparkles', link: '../cleaning/index.html', label: 'Limpieza' },
                 { icon: 'layout', link: '../web/index.html', label: 'Web' },
@@ -55,13 +49,14 @@
             ];
 
             document.write(tools.map(tool => `
-                <div onclick="window.location.href='${tool.link}'" class="icon-box group w-24 h-24 md:w-32 md:h-32 border border-white/5 rounded-[40px] flex items-center justify-center cursor-pointer shadow-2xl">
-                    <i data-lucide="${tool.icon}" class="w-10 h-10 md:w-12 md:h-12 text-white/80 group-hover:text-rose-400 transition-colors"></i>
+                <div onclick="window.location.href='${tool.link}'" class="icon-box group flex flex-col items-center justify-center cursor-pointer">
+                    <div class="w-24 h-24 rounded-[35px] bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-rose-500/50 group-hover:bg-rose-500/5 transition-all duration-500">
+                        <i data-lucide="${tool.icon}" class="w-10 h-10 text-white/70 group-hover:text-white transition-all"></i>
+                    </div>
                     <span class="tooltip">${tool.label}</span>
                 </div>
             `).join(''));
         </script>
-
     </main>
 
     <script>lucide.createIcons();</script>

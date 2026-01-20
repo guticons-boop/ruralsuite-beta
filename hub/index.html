@@ -3,80 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub | RuralGesto</title>
+    <title>RuralGestión | Panel de Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
         .serif { font-family: 'DM+Serif+Display', serif; }
-        .card-menu { border-bottom: 1px solid #f1f1f1; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        .card-menu:hover { padding-left: 32px; background: white; border-bottom-color: #1a1a1a; box-shadow: 0 20px 40px rgba(0,0,0,0.02); }
+        
+        /* Efecto de elevación en tarjetas */
+        .card-app { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .card-app:hover { 
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(26, 11, 11, 0.1);
+        }
+        
+        /* Modal Blindado */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(26, 11, 11, 0.7); 
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="p-6 md:p-20">
+<body class="p-6 md:p-16">
+
     <div class="max-w-7xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+        <header class="flex flex-col md:flex-row justify-between items-end gap-6 mb-20">
             <div>
-                <h1 class="serif text-8xl md:text-[120px] italic text-rose-950 leading-none tracking-tighter">RuralGesto</h1>
-                <p class="text-[10px] font-black uppercase tracking-[0.6em] text-slate-400 mt-6">Centro de operaciones profesional</p>
+                <h1 class="serif text-7xl italic text-rose-950 mb-4">RuralGestión</h1>
+                <p class="text-xs font-black uppercase tracking-[0.4em] text-slate-400">Soluciones inteligentes para tu negocio</p>
             </div>
-            <div class="text-right">
-                <p class="text-[10px] font-black uppercase text-rose-900 tracking-widest">Martes, 20 Enero 2026</p>
-                <p class="text-xs text-slate-400">Matarraña, Teruel</p>
+            <div class="flex items-center gap-4 bg-white p-5 rounded-[30px] border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 bg-rose-100 rounded-2xl flex items-center justify-center">
+                    <i data-lucide="building-2" class="text-rose-950 w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Establecimiento</p>
+                    <p class="font-bold text-sm">El Rinconcito del Matarraña</p>
+                </div>
             </div>
         </header>
 
-        <nav class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-4">
-            <div onclick="location.href='../checkin/index.html'" class="card-menu group py-12 flex justify-between items-center cursor-pointer">
-                <div>
-                    <h3 class="serif text-4xl italic text-rose-950">Check-in OCR</h3>
-                    <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.3em] mt-2">Registro legal de viajeros</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div onclick="abrirPrevia('admin')" class="card-app bg-white p-12 rounded-[60px] border border-slate-100 shadow-sm">
+                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8">
+                    <i data-lucide="trending-up" class="text-blue-600 w-7 h-7"></i>
                 </div>
-                <i data-lucide="camera" class="w-6 h-6 text-slate-200 group-hover:text-rose-950 transition-colors"></i>
+                <h3 class="serif text-3xl italic mb-4">Administración & Tax</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Gestión de ingresos netos, comisiones y fiscalidad.</p>
             </div>
 
-            <div onclick="location.href='../tax/index.html'" class="card-menu group py-12 flex justify-between items-center cursor-pointer">
-                <div>
-                    <h3 class="serif text-4xl italic text-rose-950">Administración</h3>
-                    <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.3em] mt-2">Salud fiscal y contabilidad</p>
+            <div onclick="abrirPrevia('clientes')" class="card-app bg-white p-12 rounded-[60px] border border-slate-100 shadow-sm">
+                <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mb-8">
+                    <i data-lucide="database" class="text-amber-600 w-7 h-7"></i>
                 </div>
-                <i data-lucide="briefcase" class="w-6 h-6 text-slate-200 group-hover:text-rose-950 transition-colors"></i>
+                <h3 class="serif text-3xl italic mb-4">Base de Datos</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Central de huéspedes. Importación y exportación masiva.</p>
             </div>
 
-            <div onclick="location.href='../calendar/index.html'" class="card-menu group py-12 flex justify-between items-center cursor-pointer">
-                <div>
-                    <h3 class="serif text-4xl italic text-rose-950">Agenda</h3>
-                    <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.3em] mt-2">Ocupación y reservas</p>
+            <div onclick="abrirPrevia('motor')" class="card-app bg-white p-12 rounded-[60px] border border-slate-100 shadow-sm">
+                <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8">
+                    <i data-lucide="globe" class="text-emerald-600 w-7 h-7"></i>
                 </div>
-                <i data-lucide="calendar" class="w-6 h-6 text-slate-200 group-hover:text-rose-950 transition-colors"></i>
+                <h3 class="serif text-3xl italic mb-4">Motor de Reservas</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Venta directa en tu web sincronizada con calendarios.</p>
             </div>
 
-            <div onclick="location.href='../limpieza/index.html'" class="card-menu group py-12 flex justify-between items-center cursor-pointer">
-                <div>
-                    <h3 class="serif text-4xl italic text-rose-950">Limpieza</h3>
-                    <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.3em] mt-2">Estados e incidencias</p>
-                </div>
-                <i data-lucide="sparkles" class="w-6 h-6 text-slate-200 group-hover:text-rose-950 transition-colors"></i>
-            </div>
-
-            <div onclick="location.href='../config/canales.html'" class="card-menu group py-12 flex justify-between items-center cursor-pointer">
-                <div>
-                    <h3 class="serif text-4xl italic text-rose-950">Configuración</h3>
-                    <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.3em] mt-2">Gestión de canales OTA</p>
-                </div>
-                <i data-lucide="settings" class="w-6 h-6 text-slate-200 group-hover:text-rose-950 transition-colors"></i>
-            </div>
-
-            <div onclick="location.href='../marketing/index.html'" class="card-menu group py-12 flex justify-between items-center cursor-pointer">
-                <div>
-                    <h3 class="serif text-4xl italic text-rose-950">Marketing Pro</h3>
-                    <p class="text-[9px] font-black uppercase text-slate-300 tracking-[0.3em] mt-2">SEO y Venta Directa</p>
-                </div>
-                <i data-lucide="trending-up" class="w-6 h-6 text-slate-200 group-hover:text-rose-950 transition-colors"></i>
-            </div>
-        </nav>
-    </div>
-    <script>lucide.createIcons();</script>
-</body>
-</html>
+            <div onclick="abrirPrevia('checkin')" class="

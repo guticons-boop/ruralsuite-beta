@@ -19,8 +19,6 @@
         }
         .app-card { transition: all 0.4s ease; border: 1px solid #f1f5f9; text-align: center; }
         .app-card:hover { transform: translateY(-10px); border-color: #fb7185; box-shadow: 0 30px 60px -15px rgba(26,11,11,0.08); }
-        .plan-card { transition: all 0.3s ease; }
-        .plan-card:hover { transform: scale(1.02); }
     </style>
 </head>
 <body>
@@ -42,76 +40,67 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-8 py-24">
-        <div class="mb-20 text-center">
+    <main class="max-w-7xl mx-auto px-8 py-24 text-center">
+        <div class="mb-20">
             <p class="text-[10px] font-black uppercase tracking-[0.5em] text-rose-950/30 mb-4">Módulos del Sistema</p>
             <h3 class="serif text-6xl italic text-rose-950">Nuestras Herramientas</h3>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-32">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-40">
             <script>
                 const apps = [
-                    { name: 'Admin & Tax', icon: 'line-chart', color: 'blue', desc: 'Contabilidad inteligente y fiscalidad.' },
-                    { name: 'Base de Datos', icon: 'database', color: 'amber', desc: 'CRM centralizado de huéspedes.' },
-                    { name: 'Agenda Global', icon: 'calendar', color: 'purple', desc: 'Sincronización total de reservas.' },
-                    { name: 'Motor Reservas', icon: 'globe', color: 'emerald', desc: 'Venta directa sin comisiones.' },
-                    { name: 'Check-in OCR', icon: 'scan', color: 'indigo', desc: 'Lectura de documentos automática.' },
-                    { name: 'Limpieza & Staff', icon: 'sparkles', color: 'rose', desc: 'Gestión de equipos y mantenimiento.' },
-                    { name: 'Tu Web Pro', icon: 'layout', color: 'cyan', desc: 'Constructor visual de tu sitio web.' },
-                    { name: 'Marketing', icon: 'megaphone', color: 'orange', desc: 'Fidelización y ofertas directas.' },
-                    { name: 'Experiencias', icon: 'map', color: 'lime', desc: 'Servicios extra y actividades.' }
+                    { n: 'Admin & Tax', i: 'line-chart', c: 'blue' },
+                    { n: 'Base de Datos', i: 'database', c: 'amber' },
+                    { n: 'Agenda Global', i: 'calendar', c: 'purple' },
+                    { n: 'Motor Reservas', i: 'globe', c: 'emerald' },
+                    { n: 'Check-in OCR', i: 'scan', c: 'indigo' },
+                    { n: 'Limpieza & Staff', i: 'sparkles', c: 'rose' },
+                    { n: 'Tu Web Pro', i: 'layout', c: 'cyan' },
+                    { n: 'Marketing', i: 'megaphone', c: 'orange' },
+                    { n: 'Experiencias', i: 'map', c: 'lime' }
                 ];
                 document.write(apps.map(app => `
-                    <div onclick="window.location.href='info-${app.name.toLowerCase().replace(/ /g, "").replace("&", "n")}.html'" class="app-card bg-white p-12 rounded-[50px] cursor-pointer group">
-                        <div class="w-16 h-16 bg-${app.color}-50 text-${app.color}-500 rounded-3xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform">
-                            <i data-lucide="${app.icon}" class="w-8 h-8"></i>
+                    <div class="app-card bg-white p-12 rounded-[50px] group cursor-pointer">
+                        <div class="w-16 h-16 bg-${app.c}-50 text-${app.c}-500 rounded-3xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-all">
+                            <i data-lucide="${app.i}"></i>
                         </div>
-                        <h4 class="serif text-3xl italic mb-4 text-rose-950">${app.name}</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed mb-8">${app.desc}</p>
+                        <h4 class="serif text-3xl italic mb-4 text-rose-950">${app.n}</h4>
                         <span class="px-6 py-2 border border-slate-100 rounded-full text-[9px] font-black uppercase tracking-widest group-hover:bg-rose-950 group-hover:text-white transition-all italic">Saber más →</span>
                     </div>
                 `).join(''));
             </script>
         </div>
 
-        <div id="planes" class="pt-20 border-t border-slate-100">
-            <div class="text-center mb-16">
-                <p class="text-[10px] font-black uppercase tracking-[0.5em] text-rose-950/30 mb-4">Suscripción</p>
-                <h3 class="serif text-6xl italic text-rose-950">Planes a tu medida</h3>
-            </div>
-
+        <div id="planes" class="pt-20">
+            <h3 class="serif text-6xl italic text-rose-950 mb-16 text-center">Planes a tu medida</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="plan-card bg-white border border-slate-100 p-10 rounded-[40px] flex flex-col">
-                    <h4 class="font-bold uppercase text-[10px] tracking-widest text-slate-400 mb-4">Esencial</h4>
+                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left">
+                    <h4 class="font-black uppercase text-[10px] tracking-widest text-slate-400 mb-4">Esencial</h4>
                     <div class="serif text-5xl text-rose-950 mb-6">19€<span class="text-lg">/mes</span></div>
-                    <p class="text-xs text-slate-500 mb-8 flex-grow">Para particulares con hasta **2 apartamentos**.</p>
-                    <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-950 hover:text-white transition-all">Seleccionar</button>
+                    <p class="text-xs text-slate-500 mb-8">Hasta 2 apartamentos.</p>
+                    <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black">Seleccionar</button>
                 </div>
-                <div class="plan-card bg-rose-950 p-10 rounded-[40px] flex flex-col text-white shadow-2xl">
-                    <h4 class="font-bold uppercase text-[10px] tracking-widest text-rose-200 mb-4">Crecimiento</h4>
+                <div class="bg-rose-950 p-10 rounded-[40px] text-left text-white shadow-2xl scale-105">
+                    <h4 class="font-black uppercase text-[10px] tracking-widest text-rose-200 mb-4">Crecimiento</h4>
                     <div class="serif text-5xl mb-6">29€<span class="text-lg">/mes</span></div>
-                    <p class="text-xs text-rose-100/60 mb-8 flex-grow">Gestión profesional de **2 a 5 apartamentos**.</p>
-                    <button class="w-full py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest">El más popular</button>
+                    <p class="text-xs text-rose-100/60 mb-8">De 2 a 5 apartamentos.</p>
+                    <button class="w-full py-4 bg-white text-rose-950 rounded-full text-[10px] font-black uppercase">Más popular</button>
                 </div>
-                <div class="plan-card bg-white border border-slate-100 p-10 rounded-[40px] flex flex-col">
-                    <h4 class="font-bold uppercase text-[10px] tracking-widest text-slate-400 mb-4">Pro</h4>
+                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left">
+                    <h4 class="font-black uppercase text-[10px] tracking-widest text-slate-400 mb-4">Pro</h4>
                     <div class="serif text-5xl text-rose-950 mb-6">49€<span class="text-lg">/mes</span></div>
-                    <p class="text-xs text-slate-500 mb-8 flex-grow">Control total de **5 a 10 apartamentos**.</p>
-                    <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-950 hover:text-white transition-all">Seleccionar</button>
+                    <p class="text-xs text-slate-500 mb-8">De 5 a 10 apartamentos.</p>
+                    <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black">Seleccionar</button>
                 </div>
-                <div class="plan-card bg-white border border-slate-100 p-10 rounded-[40px] flex flex-col">
-                    <h4 class="font-bold uppercase text-[10px] tracking-widest text-slate-400 mb-4">Enterprise</h4>
-                    <div class="serif text-4xl text-rose-950 mb-6">Personal</div>
-                    <p class="text-xs text-slate-500 mb-8 flex-grow">Soluciones a medida para **más de 10 apartamentos**.</p>
-                    <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-950 hover:text-white transition-all">Contactar</button>
+                <div class="bg-white border border-slate-100 p-10 rounded-[40px] text-left">
+                    <h4 class="font-black uppercase text-[10px] tracking-widest text-slate-400 mb-4">Enterprise</h4>
+                    <div class="serif text-4xl text-rose-950 mb-6 italic">A medida</div>
+                    <p class="text-xs text-slate-500 mb-8">Más de 10 apartamentos.</p>
+                    <button class="w-full py-4 bg-slate-50 text-rose-950 rounded-full text-[10px] font-black">Contactar</button>
                 </div>
             </div>
         </div>
     </main>
-
-    <footer class="p-20 text-center text-[10px] font-bold text-slate-300 uppercase tracking-widest">
-        © 2026 RuralGestión • Hecho para particulares y empresas
-    </footer>
 
     <script>lucide.createIcons();</script>
 </body>

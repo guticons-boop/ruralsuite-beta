@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Limpieza | RuralGesto</title>
-    <script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; }
@@ -12,23 +14,26 @@
 </head>
 <body class="p-6 md:p-12">
     <div class="max-w-2xl mx-auto">
-        <header class="flex items-center gap-6 mb-12">
-            <button onclick="location.href='../hub/index.html'" class="p-4 bg-white rounded-3xl border border-slate-100 shadow-sm"><i data-lucide="arrow-left"></i></button>
-            <h2 class="serif text-3xl italic text-rose-950">Limpieza</h2>
+        <header class="flex justify-between items-center mb-16">
+            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-[24px] border border-slate-100"><i data-lucide="arrow-left"></i></button>
+            <button onclick="alert('Enlace de equipo copiado')" class="px-6 py-3 bg-rose-950 text-white rounded-full text-[9px] font-black uppercase tracking-widest"><i data-lucide="share" class="inline w-3 h-3 mr-2"></i> Equipo</button>
         </header>
 
-        <div class="space-y-4">
-            <div class="bg-white p-8 rounded-[40px] border border-slate-100 flex justify-between items-center">
-                <div><h4 class="serif text-2xl italic">La Tirolina</h4><p class="text-[9px] font-black uppercase text-slate-400 mt-1">Salida hoy</p></div>
-                <button onclick="this.innerText='LISTA'; this.className='px-6 py-3 bg-emerald-500 text-white rounded-full text-[9px] font-black uppercase tracking-widest';" class="px-6 py-3 bg-slate-50 rounded-full text-[9px] font-black uppercase tracking-widest transition-all">Pendiente</button>
+        <div class="space-y-6">
+            <div class="bg-white p-10 rounded-[40px] border border-slate-100 flex justify-between items-center shadow-sm">
+                <div>
+                    <h4 class="serif text-3xl italic text-rose-950">La Tirolina</h4>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Salida hoy: 11:00h</p>
+                </div>
+                <button onclick="this.className='px-8 py-3 bg-emerald-500 text-white rounded-full text-[9px] font-black uppercase tracking-widest'; this.innerText='Lista'" class="px-8 py-3 bg-slate-50 rounded-full text-[9px] font-black uppercase tracking-widest text-slate-400">Pendiente</button>
             </div>
-            <div class="bg-white p-8 rounded-[40px] border border-slate-100 flex justify-between items-center">
-                <div><h4 class="serif text-2xl italic">La Ermita</h4><p class="text-[9px] font-black uppercase text-slate-400 mt-1">Limpia</p></div>
-                <span class="px-6 py-3 bg-emerald-500 text-white rounded-full text-[9px] font-black uppercase tracking-widest">Lista</span>
-            </div>
-            <div class="bg-rose-50 p-8 rounded-[40px] border border-rose-100 flex justify-between items-center">
-                <div><h4 class="serif text-2xl italic text-rose-900">Los Almendros</h4><p class="text-[9px] font-black uppercase text-rose-400 mt-1">Avería en caldera</p></div>
-                <i data-lucide="alert-triangle" class="text-rose-600"></i>
+
+            <div onclick="prompt('Describa la incidencia:')" class="bg-rose-50 p-8 rounded-[40px] border border-rose-100 flex items-center gap-6 cursor-pointer hover:bg-rose-100 transition-colors">
+                <div class="p-4 bg-white rounded-2xl text-rose-600 shadow-sm"><i data-lucide="alert-triangle"></i></div>
+                <div>
+                    <p class="text-[10px] font-black uppercase text-rose-900 tracking-widest">¿Hay alguna avería?</p>
+                    <p class="text-xs text-rose-700/60 font-medium">Pulsa aquí para reportar roturas o mantenimiento.</p>
+                </div>
             </div>
         </div>
     </div>

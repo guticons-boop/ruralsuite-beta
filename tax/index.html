@@ -1,126 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración | RuralGesto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfb; color: #1a1a1a; }
-        .serif { font-family: 'DM+Serif+Display', serif; }
-        .tab-active { border-bottom: 2px solid #1a1a1a; color: #1a1a1a; }
-        .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-        .collapse-open { max-height: 1000px; }
-    </style>
-</head>
-<body class="p-6 md:p-12 pb-32">
-    <div class="max-w-5xl mx-auto">
-        <header class="flex justify-between items-center mb-16">
-            <button onclick="location.href='../hub/index.html'" class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm hover:bg-slate-50 transition-all">
-                <i data-lucide="arrow-left" class="w-6 h-6 text-rose-950"></i>
-            </button>
-            <div class="flex bg-slate-100 p-1.5 rounded-2xl">
-                <button id="b-sem" onclick="setPeriod('sem')" class="px-6 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400">Semanal</button>
-                <button id="b-mes" onclick="setPeriod('mes')" class="px-6 py-2 bg-white shadow-sm rounded-xl text-[10px] font-black uppercase tracking-widest text-rose-950 font-bold">Mensual</button>
+<div class="bg-white rounded-[35px] border border-slate-100 overflow-hidden shadow-sm mb-6">
+    <div onclick="toggleAcc('acc-tirolina')" class="p-8 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-colors">
+        <div>
+            <h4 class="serif text-2xl italic text-rose-950">La Tirolina</h4>
+            <div class="flex gap-4 mt-1">
+                <span class="text-[8px] font-black text-rose-900 bg-rose-50 px-2 py-0.5 rounded uppercase">Bruto: 1.850€</span>
+                <span class="text-[8px] font-black text-slate-400 bg-slate-50 px-2 py-0.5 rounded uppercase">Comisiones: -286€</span>
             </div>
-        </header>
-
-        <nav class="flex gap-8 md:gap-12 mb-12 border-b border-slate-100 overflow-x-auto whitespace-nowrap">
-            <button onclick="tab('resumen')" id="t-resumen" class="tab-active pb-6 text-[10px] font-black uppercase tracking-widest">Resumen Desglosado</button>
-            <button onclick="tab('graficos')" id="t-graficos" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Rendimiento Visual</button>
-            <button onclick="tab('fiscal')" id="t-fiscal" class="pb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Borrador Fiscal</button>
-        </nav>
-
-        <div id="s-resumen" class="space-y-6">
-            <div class="bg-white border border-slate-100 p-6 rounded-[30px] flex justify-between items-center mb-8">
+        </div>
+        <div class="text-right">
+            <span class="text-[9px] font-black text-slate-300 uppercase block tracking-tighter">Neto Estimado</span>
+            <span class="serif text-3xl italic text-rose-950">1.564€</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-300 inline ml-2"></i>
+        </div>
+    </div>
+    <div id="acc-tirolina" class="collapse-content bg-slate-50/50">
+        <div class="p-8 space-y-6 border-t border-slate-100">
+            <div class="flex justify-between items-center text-xs">
                 <div>
-                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 italic">Cálculo de Impuestos</span>
-                    <h4 class="serif text-xl italic text-rose-950">Aplicar IVA (10%) / IRPF</h4>
+                    <p class="font-bold text-rose-950">05/01 - Reserva Booking (4 noches)</p>
+                    <p class="text-[9px] text-slate-400 uppercase">Plataforma: Booking.com (18% comisión)</p>
                 </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" onchange="toggleIVA(this)" class="sr-only peer">
-                    <div class="w-14 h-8 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-rose-950"></div>
-                </label>
+                <div class="text-right">
+                    <p class="font-bold">720,00€</p>
+                    <p class="text-[9px] text-rose-400">-129,60€ comisión</p>
+                </div>
             </div>
-
-            <div class="space-y-4">
-                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 ml-4">Ingresos Brutos</h3>
-                
-                <div class="bg-white rounded-[35px] border border-slate-100 overflow-hidden shadow-sm">
-                    <div onclick="toggleAcc('acc-tirolina')" class="p-8 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-colors">
-                        <div>
-                            <h4 class="serif text-2xl italic text-rose-950">La Tirolina</h4>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase mt-1">4 Reservas este mes</p>
-                        </div>
-                        <div class="text-right">
-                            <span id="val-tirolina" class="serif text-3xl italic text-rose-950">1.850€</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-300 inline ml-2"></i>
-                        </div>
-                    </div>
-                    <div id="acc-tirolina" class="collapse-content bg-slate-50/50">
-                        <div class="p-8 space-y-4 border-t border-slate-100">
-                            <div class="flex justify-between text-xs"><span>05/01 - Reserva Booking (4 noches)</span><span class="font-bold">720,00€</span></div>
-                            <div class="flex justify-between text-xs"><span>12/01 - Venta Directa (2 noches)</span><span class="font-bold">380,00€</span></div>
-                            <div class="flex justify-between text-xs"><span>20/01 - Reserva Airbnb (5 noches)</span><span class="font-bold">750,00€</span></div>
-                        </div>
-                    </div>
+            <div class="flex justify-between items-center text-xs">
+                <div>
+                    <p class="font-bold text-rose-950">12/01 - Venta Directa (2 noches)</p>
+                    <p class="text-[9px] text-slate-400 uppercase">Plataforma: Web Propia (0% comisión)</p>
                 </div>
-
-                <div class="bg-white rounded-[35px] border border-slate-100 overflow-hidden shadow-sm">
-                    <div onclick="toggleAcc('acc-ermita')" class="p-8 flex justify-between items-center cursor-pointer hover:bg-slate-50">
-                        <h4 class="serif text-2xl italic text-rose-950">La Ermita</h4>
-                        <div class="text-right">
-                            <span id="val-ermita" class="serif text-3xl italic text-rose-950">1.200€</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-300 inline ml-2"></i>
-                        </div>
-                    </div>
-                    <div id="acc-ermita" class="collapse-content bg-slate-50/50">
-                        <div class="p-8 space-y-4 border-t border-slate-100">
-                            <div class="flex justify-between text-xs"><span>10/01 - Reserva Booking</span><span class="font-bold">600,00€</span></div>
-                            <div class="flex justify-between text-xs"><span>18/01 - Reserva Airbnb</span><span class="font-bold">600,00€</span></div>
-                        </div>
-                    </div>
+                <div class="text-right">
+                    <p class="font-bold">380,00€</p>
+                    <p class="text-[9px] text-emerald-500">Neto íntegro</p>
                 </div>
             </div>
         </div>
-
-        <div id="s-graficos" class="hidden space-y-8">
-            <div class="bg-white p-12 rounded-[50px] border border-slate-100 shadow-sm">
-                <h3 class="serif text-3xl italic text-center mb-10 text-rose-950">Rendimiento por Canal y Propiedad</h3>
-                <div class="max-w-sm mx-auto">
-                    <canvas id="chartAdmin"></canvas>
-                </div>
-                <div class="grid grid-cols-3 gap-4 mt-12">
-                    <div class="text-center"><p class="text-[8px] font-black uppercase text-slate-300">Tirolina</p><div class="w-full h-1.5 bg-[#bfdbfe] rounded-full mt-2"></div></div>
-                    <div class="text-center"><p class="text-[8px] font-black uppercase text-slate-300">Ermita</p><div class="w-full h-1.5 bg-[#fed7aa] rounded-full mt-2"></div></div>
-                    <div class="text-center"><p class="text-[8px] font-black uppercase text-slate-300">Almendros</p><div class="w-full h-1.5 bg-[#fef08a] rounded-full mt-2"></div></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="s-fiscal" class="hidden space-y-8">
-            <div class="bg-white p-10 rounded-[50px] border border-slate-100">
-                <div class="flex gap-4 mb-10">
-                    <button onclick="setPerfil('particular')" id="p-particular" class="flex-1 py-4 rounded-2xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest">Particular</button>
-                    <button onclick="setPerfil('autonomo')" id="p-autonomo" class="flex-1 py-4 rounded-2xl bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest">Autónomo</button>
-                    <button onclick="setPerfil('empresa')" id="p-empresa" class="flex-1 py-4 rounded-2xl bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest">Empresa</button>
-                </div>
-
-                <form id="form-fiscal" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="md:col-span-2"><h4 class="serif text-2xl italic text-rose-950 mb-4 border-b pb-4">Datos del Declarante</h4></div>
-                    <div class="space-y-2">
-                        <label class="text-[9px] font-black uppercase text-slate-300 ml-4">Nombre / Razón Social</label>
-                        <input type="text" class="w-full p-5 bg-slate-50 rounded-2xl outline-none font-bold" value="El Rinconcito del Matarraña SL">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-[9px] font-black uppercase text-slate-300 ml-4">NIF / CIF</label>
-                        <input type="text" class="w-full p-5 bg-slate-50 rounded-2xl outline-none font-mono" value="B-12345678">
-                    </div>
-                    <div id="campo-extra" class="md:col-span-2 space-y-2">
-                        </div>
-
-                    <div class="md:col-span-2 grid grid-cols-2 gap-4 mt-8">
-                        <button type="button" class="py
+    </div>
+</div>

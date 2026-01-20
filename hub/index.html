@@ -17,7 +17,6 @@
         }
         .app-btn:hover { transform: scale(1.05); border-color: #fb7185; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08); }
         
-        /* Estilo del Popup descriptivo */
         .desc-popup {
             position: absolute; bottom: -15px; opacity: 0; pointer-events: none;
             transition: all 0.3s ease; background: #1a1a1a; color: white;
@@ -34,7 +33,6 @@
             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Panel de Control Activo</p>
         </div>
         <div class="flex items-center gap-6">
-            <span class="text-[9px] font-black uppercase tracking-widest text-slate-300">Usuario: Toni</span>
             <button onclick="window.location.href='../index.html'" class="flex items-center gap-3 px-6 py-3 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
                 <i data-lucide="log-out" class="w-4 h-4 text-rose-500"></i> Salir
             </button>
@@ -43,20 +41,21 @@
 
     <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-center">
         <script>
+            // Aquí configuramos las rutas exactas de las carpetas
             const tools = [
-                { id: 'admin', n: 'Administración', i: 'line-chart', c: 'text-blue-500', d: 'Gestión de los 3 apartamentos, totales en negro y borrador fiscal trimestral.' },
-                { id: 'clientes', n: 'Base de Datos', i: 'database', c: 'text-amber-500', d: 'Histórico de huéspedes, preferencias de estancia y fichas de cliente.' },
-                { id: 'agenda', n: 'Agenda Global', i: 'calendar', c: 'text-purple-500', d: 'Sincronización total de calendarios iCal para evitar el overbooking.' },
-                { id: 'reservas', n: 'Motor Reservas', i: 'globe', c: 'text-emerald-500', d: 'Panel de control de reservas directas recibidas desde tu sitio web.' },
-                { id: 'checkin', n: 'Check-in OCR', i: 'scan', c: 'text-indigo-500', d: 'Escaneo de documentos y envío automático de partes a la policía.' },
-                { id: 'staff', n: 'Limpieza & Staff', i: 'sparkles', c: 'text-rose-500', d: 'Coordinación de turnos de limpieza y reporte de averías/mantenimiento.' },
-                { id: 'web', n: 'Tu Web Pro', i: 'layout', c: 'text-cyan-500', d: 'Editor visual para cambiar fotos y contenidos de tu página oficial.' },
-                { id: 'marketing', n: 'Marketing', i: 'megaphone', c: 'text-orange-500', d: 'Envío masivo de ofertas y promociones para fidelizar clientes.' },
-                { id: 'experiencias', n: 'Experiencias', i: 'map', c: 'text-lime-600', d: 'Configuración de actividades y servicios extra para los huéspedes.' }
+                { folder: 'admin', n: 'Administración', i: 'line-chart', c: 'text-blue-500', d: 'Gestión de apartamentos, totales en negro y fiscalidad.' },
+                { folder: 'clientes', n: 'Base de Datos', i: 'database', c: 'text-amber-500', d: 'Fichas de huéspedes e histórico de estancias.' },
+                { folder: 'agenda', n: 'Agenda Global', i: 'calendar', c: 'text-purple-500', d: 'Sincronización de calendarios iCal.' },
+                { folder: 'reservas', n: 'Motor Reservas', i: 'globe', c: 'text-emerald-500', d: 'Gestión de reservas directas sin comisiones.' },
+                { folder: 'checkin', n: 'Check-in OCR', i: 'scan', c: 'text-indigo-500', d: 'Escaneo de documentos y partes legales.' },
+                { folder: 'staff', n: 'Limpieza & Staff', i: 'sparkles', c: 'text-rose-500', d: 'Coordinación de personal y mantenimiento.' },
+                { folder: 'web', n: 'Tu Web Pro', i: 'layout', c: 'text-cyan-500', d: 'Editor de contenidos de tu web oficial.' },
+                { folder: 'marketing', n: 'Marketing', i: 'megaphone', c: 'text-orange-500', d: 'Campañas de fidelización y ofertas.' },
+                { folder: 'experiencias', n: 'Experiencias', i: 'map', c: 'text-lime-600', d: 'Servicios extra y actividades locales.' }
             ];
 
             document.write(tools.map(t => `
-                <div onclick="window.location.href='${t.id}/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group shadow-sm">
+                <div onclick="window.location.href='${t.folder}/index.html'" class="app-btn bg-white p-12 rounded-[50px] flex flex-col items-center justify-center cursor-pointer group shadow-sm">
                     <i data-lucide="${t.i}" class="${t.c} w-14 h-14 mb-6 group-hover:scale-110 transition-transform"></i>
                     <h3 class="serif text-2xl italic text-rose-950">${t.n}</h3>
                     <div class="desc-popup">${t.d}</div>
@@ -64,10 +63,6 @@
             `).join(''));
         </script>
     </main>
-
-    <footer class="mt-24 text-center">
-        <p class="text-[9px] font-black uppercase tracking-[0.4em] text-slate-300 italic">RuralGestión Digital Ecosystem 2026</p>
-    </footer>
 
     <script>lucide.createIcons();</script>
 </body>
